@@ -19,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
@@ -58,20 +60,20 @@ public class WebSecurityConfig{
                                 .anyRequest().permitAll()
                 );
 
-        http.formLogin((formLogin) ->
-                        formLogin
-                                .loginPage("/login")
-                );
 
         http.sessionManagement(sessionManagement ->
                 sessionManagement
                         .invalidSessionUrl("/login") // 세션 만료 시 리다이렉트할 URL 설정
         );
 
+        http.exceptionHandling((exceptionHandling) ->
+                exceptionHandling.accessDeniedPage("/login"));
 
 
-        http.addFilterBefore(AuthorizationFilter(),AuthenticationFilter.class);
         http.addFilterBefore(AuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(AuthorizationFilter(),AuthenticationFilter.class);
+
+
 
 
 
