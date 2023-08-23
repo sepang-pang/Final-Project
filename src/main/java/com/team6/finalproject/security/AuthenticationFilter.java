@@ -2,16 +2,20 @@ package com.team6.finalproject.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team6.finalproject.user.dto.UserRequestDto;
+import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -39,5 +43,14 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        log.info("로그인 성공 및 세션 생성");
+        HttpSession session = request.getSession();
+        session.setAttribute("username", authResult.getPrincipal());
+        Cookie cookie = new Cookie("Authorization",session.toString());
+        response.addCookie(cookie);
     }
 }

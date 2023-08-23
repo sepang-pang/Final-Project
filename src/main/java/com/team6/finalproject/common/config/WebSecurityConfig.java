@@ -53,6 +53,8 @@ public class WebSecurityConfig{
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/signup").permitAll()
                                 .anyRequest().permitAll()
                 );
 
@@ -61,10 +63,16 @@ public class WebSecurityConfig{
                                 .loginPage("/login")
                 );
 
+        http.sessionManagement(sessionManagement ->
+                sessionManagement
+                        .invalidSessionUrl("/login") // 세션 만료 시 리다이렉트할 URL 설정
+        );
+
 
 
         http.addFilterBefore(AuthorizationFilter(),AuthenticationFilter.class);
         http.addFilterBefore(AuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
+
 
 
         return http.build();

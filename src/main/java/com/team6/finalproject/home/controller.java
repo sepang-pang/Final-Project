@@ -1,5 +1,6 @@
 package com.team6.finalproject.home;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,8 @@ public class controller {
     }
 
     @GetMapping("/main")
-    public String main() {
+    public String main(HttpServletRequest httpServletRequest) {
+
         return "main";
     }
 }
