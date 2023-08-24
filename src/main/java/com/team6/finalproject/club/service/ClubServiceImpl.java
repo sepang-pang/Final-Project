@@ -52,7 +52,16 @@ public class ClubServiceImpl implements ClubService{
 
         // 동호회 개설
         log.info("동호회 개설");
-        Club club = new Club(user, clubRequestDto, interestMinor, join, activity);
+        Club club = Club.builder()
+                .username(user.getUsername())
+                .name(clubRequestDto.getName())
+                .description(clubRequestDto.getDescription())
+                .maxMember(clubRequestDto.getMaxMember())
+                .activityType(activity)
+                .joinType(join)
+                .minor(interestMinor)
+                .isTrialAvailable(clubRequestDto.isTrialAvailable())
+                .build();
 
         // DB 저장
         log.info("DB 저장");

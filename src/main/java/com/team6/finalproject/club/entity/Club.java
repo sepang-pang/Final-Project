@@ -7,14 +7,13 @@ import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
-@Setter
 @Entity
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,14 +50,4 @@ public class Club extends Timestamped {
     @JoinColumn(name = "interest_minor_id")
     private InterestMinor minor;
 
-    public Club(User user, ClubRequestDto clubRequestDto, InterestMinor minor, JoinTypeEnum join, ActivityTypeEnum activity) {
-        this.username = user.getUsername();
-        this.name = clubRequestDto.getName();
-        this.description = clubRequestDto.getDescription();
-        this.maxMember = clubRequestDto.getMaxMember();
-        this.isTrialAvailable = clubRequestDto.isTrialAvailable();
-        this.minor = minor;
-        this.joinType = join;
-        this.activityType = activity;
-    }
 }
