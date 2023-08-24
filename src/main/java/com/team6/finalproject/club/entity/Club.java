@@ -1,16 +1,14 @@
 package com.team6.finalproject.club.entity;
 
 import com.team6.finalproject.club.dto.ClubRequestDto;
+import com.team6.finalproject.club.enums.ActivityTypeEnum;
+import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.common.entity.Timestamped;
-import com.team6.finalproject.interest.entity.InterestMajor;
-import com.team6.finalproject.interest.entity.InterestMinor;
+import com.team6.finalproject.club.interest.entity.InterestMinor;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

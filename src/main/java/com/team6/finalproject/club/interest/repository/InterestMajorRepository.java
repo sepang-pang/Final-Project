@@ -1,6 +1,6 @@
-package com.team6.finalproject.interest.repository;
+package com.team6.finalproject.club.interest.repository;
 
-import com.team6.finalproject.interest.entity.InterestMajor;
+import com.team6.finalproject.club.interest.entity.InterestMajor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

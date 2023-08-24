@@ -1,9 +1,9 @@
 package com.team6.finalproject.common.initializer;
 
-import com.team6.finalproject.interest.entity.InterestMajor;
-import com.team6.finalproject.interest.entity.InterestMinor;
-import com.team6.finalproject.interest.repository.InterestMajorRepository;
-import com.team6.finalproject.interest.repository.InterestMinorRepository;
+import com.team6.finalproject.club.interest.entity.InterestMajor;
+import com.team6.finalproject.club.interest.entity.InterestMinor;
+import com.team6.finalproject.club.interest.repository.InterestMajorRepository;
+import com.team6.finalproject.club.interest.repository.InterestMinorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

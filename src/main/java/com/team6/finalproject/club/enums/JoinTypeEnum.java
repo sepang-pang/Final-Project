@@ -1,4 +1,4 @@
-package com.team6.finalproject.club.entity;
+package com.team6.finalproject.club.enums;
 
 import lombok.Getter;
 

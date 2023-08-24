@@ -1,6 +1,6 @@
 package com.team6.finalproject.club.dto;
 
-import com.team6.finalproject.interest.entity.InterestMinor;
+import com.team6.finalproject.club.interest.entity.InterestMinor;
 import lombok.Getter;
 
 @Getter
