@@ -5,7 +5,7 @@ import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.repository.ProfileRepository;
-import com.team6.finalproject.security.UserDetailsImpl;
+import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,35 +15,37 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
     private final FileUploader fileUploader;
 
     // 프로필 생성
     @Override
-    public void createProfile(ProfileRequestDto requestDto, UserDetailsImpl userDetails) {
+    @Transactional
+    public ProfileResponseDto createProfile(ProfileRequestDto requestDto, User user) {
         Profile profile = Profile.builder()
                 .nickname(requestDto.getNickname())
                 .introduction(requestDto.getIntroduction())
-                .user(userDetails.getUser())
+                .user(user)
                 .build();
         profileRepository.save(profile);
+        return new ProfileResponseDto(profile);
     }
 
     // 자신의 프로필 조회
     @Override
     @Transactional(readOnly = true)
-    public ProfileResponseDto getProfile(UserDetailsImpl userDetails) {
-        Profile profile = findProfileByUserId(userDetails.getUser().getId());
+    public ProfileResponseDto getProfile(User user) {
+        Profile profile = findProfileByUserId(user.getId());
         return new ProfileResponseDto(profile);
     }
 
     // 프로필 nickname, introduction 수정
     @Override
     @Transactional
-    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, UserDetailsImpl userDetails) {
-        Profile profile = findProfileByUserId(userDetails.getUser().getId());
+    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
+        Profile profile = findProfileByUserId(user.getId());
 
         String nickname = requestDto.getNickname();
         String introduction = requestDto.getIntroduction();
@@ -55,8 +57,8 @@ public class ProfileServiceImpl implements ProfileService{
     // 프로필 이미지 작성/수정
     @Override
     @Transactional
-    public ProfileResponseDto updateImage(MultipartFile file, UserDetailsImpl userDetails) throws IOException {
-        Profile profile = findProfileByUserId(userDetails.getUser().getId());
+    public ProfileResponseDto updateImage(MultipartFile file, User user) throws IOException {
+        Profile profile = findProfileByUserId(user.getId());
         // 수정 시 기존 객체 버킷에서 삭제
         if (profile.getProfileImage() != null) {
             fileUploader.deleteFile(profile.getProfileImage());

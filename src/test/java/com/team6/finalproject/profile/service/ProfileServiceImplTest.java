@@ -69,7 +69,7 @@ class ProfileServiceImplTest {
         when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
 
         // when
-        ProfileResponseDto response = profileService.getProfile(userDetails);
+        ProfileResponseDto response = profileService.getProfile(userDetails.getUser());
 
         // then
         assertEquals(profile.getNickname(), response.getNickname());
@@ -93,7 +93,7 @@ class ProfileServiceImplTest {
         requestDto.setNickname("닉네임 수정");
 
         // when
-        profileService.updateProfile(requestDto, userDetails);
+        profileService.updateProfile(requestDto, userDetails.getUser());
 
         // then
         // 주입한 닉네임과 수정된 닉네임 비교
@@ -126,7 +126,7 @@ class ProfileServiceImplTest {
         when(fileUploader.upload(file)).thenReturn(profileImage);
 
         // when
-        ProfileResponseDto response = profileService.updateImage(file, userDetails);
+        ProfileResponseDto response = profileService.updateImage(file, userDetails.getUser());
 
         // then
         // 주입한 파일명과 응답 파일명 비교
