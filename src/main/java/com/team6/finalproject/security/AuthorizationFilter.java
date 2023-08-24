@@ -27,21 +27,30 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("authorizationFilter 필터");
-        if (request.getSession().getAttribute("username") != null) { // 조건 변경 해야함
-            UserDetails user = (UserDetailsImpl) request.getSession().getAttribute("username");
+        UserDetails user = (UserDetailsImpl) request.getSession().getAttribute("username");
+        if (user !=null) { // 조건 변경 해야함
             try {
+                log.info(request.getRequestURI() + " 인증 정보 있음");
                 setAuthentication(user.getUsername());
+                filterChain.doFilter(request,response);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-        } else {
-            log.info("인증정보없음");
-            response.sendRedirect("/login");
+        }
+
+        if (request.getRequestURI().equals("/api/login")) {
+            log.info("로그인 시도입니다");
+            log.info(request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
         }
-        filterChain.doFilter(request, response);
+
+        if (user==null) {
+            log.info("인증 정보가 없습니다. 로그인페이지로 이동합니다.");
+            log.info(request.getRequestURI());
+            response.sendRedirect("/login");
+        }
     }
 
     @Override

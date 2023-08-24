@@ -61,15 +61,6 @@ public class WebSecurityConfig{
                 );
 
 
-        http.sessionManagement(sessionManagement ->
-                sessionManagement
-                        .invalidSessionUrl("/login") // 세션 만료 시 리다이렉트할 URL 설정
-        );
-
-        http.exceptionHandling((exceptionHandling) ->
-                exceptionHandling.accessDeniedPage("/login"));
-
-
         http.addFilterBefore(AuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(AuthorizationFilter(),AuthenticationFilter.class);
 
