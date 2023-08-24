@@ -3,7 +3,6 @@ package com.team6.finalproject.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team6.finalproject.user.dto.UserRequestDto;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -11,17 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
-@Slf4j(topic = "로그인 및 세션 생성")
+@Slf4j(topic = "Authentication 필터입니다.")
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public AuthenticationFilter() {
         setFilterProcessesUrl("/api/login");
@@ -29,14 +22,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        log.info("로그인 시도");
+        log.info("Authentication 필터입니다.");
 
         try {
-
             UserRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), UserRequestDto.class);
-////            String a = new String(request.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-////            UserRequestDto requestDto = new ObjectMapper().readValue(a, UserRequestDto.class);
-//        log.info(requestDto.getUsername());
+
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
                             requestDto.getUsername(),
@@ -64,6 +54,4 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 //        SecurityContextHolder.setContext(context);
 //        log.info(userDetails.getUsername());
     }
-
-
 }

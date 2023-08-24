@@ -6,6 +6,7 @@ import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.service.UserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j(topic = "user 컨트롤러입니다.")
 public class UserController {
 
     private final UserService userService;
@@ -28,7 +30,7 @@ public class UserController {
 
     @GetMapping("/aa")
     public String  aa(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        System.out.println(userDetails.getUsername());
+        log.info(userDetails.getUsername());
         return "main";
     }
 }
