@@ -10,6 +10,7 @@ import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.repository.ClubRepository;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.repository.InterestMinorRepository;
+import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class ClubService {
 
     //동호회 개설
     // 생각할 것 : 동일한 이름의 동호회 개설 제약, 빌더 패턴 도임, 리포지토리 직접 참조 지양, 서비스로직 임플 분리
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto) {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) {
         // 소주제 존재 유무 확인
         InterestMinor interestMinor = interestMinorRepository.findById(clubRequestDto.getMinorId())
                 .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 종목입니다."));
@@ -45,7 +46,7 @@ public class ClubService {
 
         // 동호회 개설
         log.info("동호회 개설");
-        Club club = new Club(clubRequestDto, interestMinor, join, activity);
+        Club club = new Club(user, clubRequestDto, interestMinor, join, activity);
 
         // DB 저장
         log.info("DB 저장");
@@ -54,6 +55,7 @@ public class ClubService {
         // response 반환
         log.info("response 반환");
         return new ClubResponseDto(
+                user,
                 club,
                 new InterestMajorDto(club.getMinor().getInterestMajor()),
                 new InterestMinorDto(club.getMinor()));

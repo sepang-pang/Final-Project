@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ClubRequestDto {
+    private String username;
     private String name;
     private Long minorId;
     private String description;

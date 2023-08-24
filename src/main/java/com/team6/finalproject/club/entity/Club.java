@@ -5,6 +5,7 @@ import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
+import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,9 @@ public class Club extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "username")
+    private String username; // 동호회 개설자 이름
 
     @Column(name = "name")
     private String name; // 동호회 이름
@@ -47,7 +51,8 @@ public class Club extends Timestamped {
     @JoinColumn(name = "interest_minor_id")
     private InterestMinor minor;
 
-    public Club(ClubRequestDto clubRequestDto, InterestMinor minor, JoinTypeEnum join, ActivityTypeEnum activity) {
+    public Club(User user, ClubRequestDto clubRequestDto, InterestMinor minor, JoinTypeEnum join, ActivityTypeEnum activity) {
+        this.username = user.getUsername();
         this.name = clubRequestDto.getName();
         this.description = clubRequestDto.getDescription();
         this.maxMember = clubRequestDto.getMaxMember();
