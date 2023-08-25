@@ -10,12 +10,14 @@ import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.repository.ClubRepository;
+import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.dto.ProfileNickNameDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,5 +84,21 @@ public class ClubServiceImpl implements ClubService{
                 club,
                 new InterestMajorDto(club.getMinor().getInterestMajor()),
                 new InterestMinorDto(club.getMinor()));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ApiResponseDto> deleteClub(Long id, User user) {
+
+        //  본인 동호회인지 확인 및 동호회 존재 여부 확인
+        // QueryDsl 로 삭제된 유저나 동호회는 조회 필터에서 거르기
+        Club club = clubRepository.findByIdAndUsername(id, user.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
+
+        // Soft - Delete 메서드
+        club.deleteClub();
+
+        // 반환
+        return ResponseEntity.ok().body(new ApiResponseDto("동호회 삭제 성공", 200));
     }
 }
