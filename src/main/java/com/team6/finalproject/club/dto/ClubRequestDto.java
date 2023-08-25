@@ -1,8 +1,10 @@
 package com.team6.finalproject.club.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class ClubRequestDto {
     private String name;
     private Long minorId;
