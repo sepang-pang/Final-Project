@@ -2,7 +2,6 @@ package com.team6.finalproject.club.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.entity.Club;
-import com.team6.finalproject.club.entity.QClub;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

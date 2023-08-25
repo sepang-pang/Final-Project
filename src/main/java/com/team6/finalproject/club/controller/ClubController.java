@@ -5,7 +5,6 @@ import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.security.UserDetailsImpl;
-import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
