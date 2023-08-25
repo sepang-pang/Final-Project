@@ -55,4 +55,7 @@ public class Club extends Timestamped {
     @JoinColumn(name = "interest_minor_id")
     private InterestMinor minor;
 
+    public void deleteClub() {
+        this.isDeleted = true;
+    }
 }

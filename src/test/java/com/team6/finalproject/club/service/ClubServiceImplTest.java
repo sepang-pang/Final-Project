@@ -9,37 +9,46 @@ import com.team6.finalproject.club.interest.entity.InterestMajor;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.repository.ClubRepository;
+import com.team6.finalproject.club.repository.ClubRepositoryCustom;
+import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceImplTest {
+
     @Mock
-    private InterestMinorService interestMinorService;
+    private ProfileService profileService;
     @Mock
     private ClubRepository clubRepository;
     @Mock
-    private ProfileService profileService;
+    private ClubRepositoryCustom clubRepositoryCustom;
+    @Mock
+    private InterestMinorService interestMinorService;
     @InjectMocks
     private ClubServiceImpl clubServiceImpl;
 
     private ClubRequestDto requestDto;
     private Profile profile;
     private User user;
+    private User user2;
+    private InterestMajor interestMajor;
     private InterestMinor interestMinor;
     private Club savedClub;
 
@@ -68,7 +77,7 @@ class ClubServiceImplTest {
                 .introduction("안녕하세요")
                 .build();
 
-        InterestMajor interestMajor = InterestMajor.builder()
+        interestMajor = InterestMajor.builder()
                 .majorName("스포츠")
                 .build();
 
@@ -77,7 +86,7 @@ class ClubServiceImplTest {
                 .interestMajor(interestMajor)
                 .build();
 
-       savedClub = Club.builder()
+        savedClub = Club.builder()
                 .username(user.getUsername())
                 .nickName(profile.getNickname())
                 .name(requestDto.getName())
@@ -91,12 +100,13 @@ class ClubServiceImplTest {
 
     }
 
-    @Test // 동호회 생성 성공 테스트
+    @Test
+    @DisplayName("동호회 생성 성공 테스트")
     public void testCreateClub_Success() {
 
         // interestMinorService.existsInterestMinor()의 반환값 설정
-       when(interestMinorService.existsInterestMinor(1L)).thenReturn(interestMinor);
-       when(profileService.findProfileByUserId(user.getId())).thenReturn(profile);
+        when(interestMinorService.existsInterestMinor(1L)).thenReturn(interestMinor);
+        when(profileService.findProfileByUserId(user.getId())).thenReturn(profile);
 
         // 테스트 대상 메서드 호출
         ClubResponseDto responseDto = clubServiceImpl.createClub(requestDto, user);
@@ -117,7 +127,8 @@ class ClubServiceImplTest {
 
     }
 
-    @Test // 이미 존재하는 동호회 이름 생성시 예외 처리 성공 테스트
+    @Test
+    @DisplayName("이미 존재하는 동호회 이름 생성시 예외 처리 성공 테스트")
     public void testCreateClub_ClubNameAlreadyExists() {
         // clubRepository.findByName()의 반환값 설정
         when(clubRepository.findByName("축구 클럽")).thenReturn(Optional.of(savedClub));
@@ -128,7 +139,8 @@ class ClubServiceImplTest {
         });
     }
 
-    @Test // 존재하지 않는 소주제를 선택시 예외 처리 성공 테스트
+    @Test
+    @DisplayName("존재하지 않는 소주제를 선택시 예외 처리 성공 테스트")
     public void testCreateClub_InvalidMinorId() {
         // interestMinorService.existsInterestMinor()의 반환값 설정 (null로 설정하여 존재하지 않는 상태를 모방)
         when(interestMinorService.existsInterestMinor(1L)).thenReturn(null);
@@ -139,5 +151,37 @@ class ClubServiceImplTest {
         });
     }
 
+    @Test
+    @DisplayName("동호회 폐쇄 성공 테스트")
+    public void testDeleteClub_Success() {
+        Long clubId = 1L;
+        when(clubRepositoryCustom.findByIdAndUsername(eq(clubId), eq(user.getUsername())))
+                .thenReturn(Optional.of(savedClub));
 
+        ResponseEntity<ApiResponseDto> response = clubServiceImpl.deleteClub(clubId, user);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode()); // 응답 코드 확인
+        assertTrue(savedClub.isDeleted()); // 상태값이 true 로 즉, soft - delete 되었는지 확인
+
+        // clubRepositoryCustom의 findByIdAndUsername 메서드가 호출되었는지 검증
+        verify(clubRepositoryCustom, times(1)).findByIdAndUsername(eq(clubId), eq(user.getUsername()));
+    }
+
+    @Test
+    @DisplayName("삭제된 동호회 조회 테스트")
+    public void testGetDeleteClub() {
+        Long clubId = 1L;
+        when(clubRepositoryCustom.findByIdAndUsername(eq(clubId), eq(user.getUsername())))
+                .thenReturn(Optional.of(savedClub));
+
+        // 동호회 삭제
+        clubServiceImpl.deleteClub(clubId, user);
+
+        // 삭제된 동호회 조회 메서드 호출, 예외가 발생해야 함
+        assertThrows(IllegalArgumentException.class, () -> {
+            clubServiceImpl.findClub(clubId);
+        });
+
+        assertTrue(savedClub.isDeleted());
+    }
 }
