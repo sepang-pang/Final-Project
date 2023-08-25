@@ -155,7 +155,7 @@ class ClubServiceImplTest {
     @DisplayName("동호회 폐쇄 성공 테스트")
     public void testDeleteClub_Success() {
         Long clubId = 1L;
-        when(clubRepositoryCustom.findByIdAndUsername(eq(clubId), eq(user.getUsername())))
+        when(clubRepository.findActiveByIdAndUsername(eq(clubId), eq(user.getUsername())))
                 .thenReturn(Optional.of(savedClub));
 
         ResponseEntity<ApiResponseDto> response = clubServiceImpl.deleteClub(clubId, user);
@@ -164,14 +164,14 @@ class ClubServiceImplTest {
         assertTrue(savedClub.isDeleted()); // 상태값이 true 로 즉, soft - delete 되었는지 확인
 
         // clubRepositoryCustom의 findByIdAndUsername 메서드가 호출되었는지 검증
-        verify(clubRepositoryCustom, times(1)).findByIdAndUsername(eq(clubId), eq(user.getUsername()));
+        verify(clubRepository, times(1)).findActiveByIdAndUsername(eq(clubId), eq(user.getUsername()));
     }
 
     @Test
     @DisplayName("삭제된 동호회 조회 테스트")
     public void testGetDeleteClub() {
         Long clubId = 1L;
-        when(clubRepositoryCustom.findByIdAndUsername(eq(clubId), eq(user.getUsername())))
+        when(clubRepository.findActiveByIdAndUsername(eq(clubId), eq(user.getUsername())))
                 .thenReturn(Optional.of(savedClub));
 
         // 동호회 삭제

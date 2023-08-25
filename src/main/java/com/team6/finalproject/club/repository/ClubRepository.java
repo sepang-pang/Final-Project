@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ClubRepository extends JpaRepository<Club, Long> {
+public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositoryCustom {
     Optional<Club> findByName(String name);
-    Optional<Club> findByIdAndUsername(Long id, String username);
 }

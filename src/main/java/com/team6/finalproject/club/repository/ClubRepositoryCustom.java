@@ -5,7 +5,7 @@ import com.team6.finalproject.club.entity.Club;
 import java.util.Optional;
 
 public interface ClubRepositoryCustom {
-    public Optional<Club> findById(Long id);
-    public Optional<Club> findByName(String name);
-    public Optional<Club> findByIdAndUsername(Long id, String username);
+    public Optional<Club> findActiveClubById(Long id);
+    public Optional<Club> findActiveClubByName(String name);
+    public Optional<Club> findActiveByIdAndUsername(Long id, String username);
 }

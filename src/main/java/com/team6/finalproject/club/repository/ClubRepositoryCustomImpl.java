@@ -17,7 +17,7 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Optional<Club> findById(Long id){
+    public Optional<Club> findActiveClubById(Long id){
         return
                 Optional.ofNullable(
                         jpaQueryFactory
@@ -29,7 +29,7 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom{
     }
 
     @Override
-    public Optional<Club> findByName(String name){
+    public Optional<Club> findActiveClubByName(String name){
         return
                 Optional.ofNullable(
                         jpaQueryFactory
@@ -41,7 +41,7 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom{
     }
 
     @Override
-    public Optional<Club> findByIdAndUsername(Long id, String username) {
+    public Optional<Club> findActiveByIdAndUsername(Long id, String username) {
         return
                 Optional.ofNullable(
                         jpaQueryFactory

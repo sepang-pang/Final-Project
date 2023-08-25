@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClubServiceImpl implements ClubService{
 
     private final ClubRepository clubRepository;
-    private final ClubRepositoryCustom clubRepositoryCustom;
     private final InterestMinorService interestMinorService;
     private final ProfileService profileService;
 
@@ -94,7 +93,7 @@ public class ClubServiceImpl implements ClubService{
 
         //  본인 동호회인지 확인 및 동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
-        Club club = clubRepositoryCustom.findByIdAndUsername(id, user.getUsername())
+        Club club = clubRepository.findActiveByIdAndUsername(id, user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
@@ -106,7 +105,7 @@ public class ClubServiceImpl implements ClubService{
 
     // 동호회 조회 메서드
     public void findClub(Long id) {
-        clubRepositoryCustom.findById(id)
+        clubRepository.findActiveClubById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
     }
 }
