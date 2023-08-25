@@ -41,9 +41,11 @@ public class Club extends Timestamped {
     private boolean isTrialAvailable; // 소모임 가능 여부
 
     @Column(name = "activity_type")
+    @Enumerated(value = EnumType.STRING)
     private ActivityTypeEnum activityType; // 활동 방식 (온라인, 오프라인)
 
     @Column(name = "join_type")
+    @Enumerated(value = EnumType.STRING)
     private JoinTypeEnum joinType; // 가입 방식 (즉시 가입, 가입 승인)
 
     @ManyToOne(fetch = FetchType.LAZY)

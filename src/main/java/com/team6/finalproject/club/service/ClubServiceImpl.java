@@ -33,7 +33,7 @@ public class ClubServiceImpl implements ClubService{
 
         // 동호회 이름 존재 확인
         if(clubRepository.findByName(clubRequestDto.getName()).isPresent()){ // isPresent(): 존재하면 true, 존재하지 않으면 false
-            throw new RuntimeException("동호회 이름이 이미 존재합니다.");
+            throw new IllegalArgumentException("동호회 이름이 이미 존재합니다.");
         }
 
         // 가입 방식 설정
