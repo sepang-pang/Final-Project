@@ -42,7 +42,7 @@ public class ClubServiceImpl implements ClubService{
         InterestMinor interestMinor = interestMinorService.existsInterestMinor(clubRequestDto.getMinorId());
 
         // 동호회 이름 존재 확인
-        if(clubRepository.findByName(clubRequestDto.getName()).isPresent()){ // isPresent(): 존재하면 true, 존재하지 않으면 false
+        if(clubRepository.findActiveClubByName(clubRequestDto.getName()).isPresent()){ // isPresent(): 존재하면 true, 존재하지 않으면 false
             throw new IllegalArgumentException("동호회 이름이 이미 존재합니다.");
         }
 

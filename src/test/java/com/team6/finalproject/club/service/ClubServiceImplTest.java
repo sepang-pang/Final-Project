@@ -38,8 +38,6 @@ class ClubServiceImplTest {
     @Mock
     private ClubRepository clubRepository;
     @Mock
-    private ClubRepositoryCustom clubRepositoryCustom;
-    @Mock
     private InterestMinorService interestMinorService;
     @InjectMocks
     private ClubServiceImpl clubServiceImpl;
@@ -131,7 +129,7 @@ class ClubServiceImplTest {
     @DisplayName("이미 존재하는 동호회 이름 생성시 예외 처리 성공 테스트")
     public void testCreateClub_ClubNameAlreadyExists() {
         // clubRepository.findByName()의 반환값 설정
-        when(clubRepository.findByName("축구 클럽")).thenReturn(Optional.of(savedClub));
+        when(clubRepository.findActiveClubByName("축구 클럽")).thenReturn(Optional.of(savedClub));
 
         // 예외를 던지는지 확인
         assertThrows(IllegalArgumentException.class, () -> {
