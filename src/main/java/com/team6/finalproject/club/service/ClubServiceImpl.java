@@ -103,4 +103,10 @@ public class ClubServiceImpl implements ClubService{
         // 반환
         return ResponseEntity.ok().body(new ApiResponseDto("동호회 삭제 성공", 200));
     }
+
+    // 동호회 조회 메서드
+    public void findClub(Long id) {
+        clubRepositoryCustom.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
+    }
 }
