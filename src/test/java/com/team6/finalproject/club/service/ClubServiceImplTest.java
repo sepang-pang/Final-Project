@@ -37,7 +37,6 @@ class ClubServiceImplTest {
 
     private ClubRequestDto requestDto;
     private User user;
-    private InterestMajor interestMajor;
     private InterestMinor interestMinor;
     private Club savedClub;
 
@@ -61,7 +60,7 @@ class ClubServiceImplTest {
         user.setRole(UserRoleEnum.USER);
         user.setBirth("1997-04-11");
 
-        interestMajor = InterestMajor.builder()
+        InterestMajor interestMajor = InterestMajor.builder()
                 .majorName("스포츠")
                 .build();
 
