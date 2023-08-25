@@ -1,8 +1,9 @@
 package com.team6.finalproject.profile.controller;
 
+import com.team6.finalproject.profile.dto.InterestRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
-import com.team6.finalproject.profile.service.ProfileServiceImpl;
+import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,7 +17,7 @@ import java.io.IOException;
 @RequestMapping("/api")
 public class ProfileController {
 
-    private final ProfileServiceImpl profileService;
+    private final ProfileService profileService;
 
     @PostMapping("/profile")
     public ProfileResponseDto createProfile(@RequestBody ProfileRequestDto requestDto,
@@ -40,4 +41,11 @@ public class ProfileController {
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return profileService.updateImage(file, userDetails.getUser());
     }
+
+    @PostMapping("/profile/interests")
+    public ProfileResponseDto addInterests(@RequestBody InterestRequestDto requestDto,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return profileService.addInterests(requestDto, userDetails.getUser());
+    }
 }
+

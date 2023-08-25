@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.service;
 
+import com.team6.finalproject.profile.dto.InterestRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
@@ -17,6 +18,9 @@ public interface ProfileService {
     ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user);
     // 이미지 삽입/수정
     ProfileResponseDto updateImage(MultipartFile file, User user) throws IOException;
+    // 관심사 등록
+    ProfileResponseDto addInterests(InterestRequestDto requestDto, User user);
     // 현재 인가된 유저의 프로필 이름 추출
     Profile findProfileByUserId(Long id);
+
 }

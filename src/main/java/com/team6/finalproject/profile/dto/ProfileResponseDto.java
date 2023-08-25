@@ -4,6 +4,8 @@ import com.team6.finalproject.profile.entity.Profile;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ProfileResponseDto {
@@ -14,6 +16,7 @@ public class ProfileResponseDto {
     private Long userScore;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private List<String> profileInterestNames;
 
     public ProfileResponseDto(Profile profile) {
         this.nickname = profile.getNickname();
@@ -23,5 +26,8 @@ public class ProfileResponseDto {
         this.userScore = profile.getUserScore();
         this.createdAt = profile.getCreatedAt();
         this.modifiedAt = profile.getModifiedAt();
+        this.profileInterestNames = profile.getProfileInterests().stream()
+                .map(profileInterest -> profileInterest.getInterestMinor().getMinorName())
+                .collect(Collectors.toList());
     }
 }
