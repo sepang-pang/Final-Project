@@ -9,6 +9,8 @@ import com.team6.finalproject.club.interest.entity.InterestMajor;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.repository.ClubRepository;
+import com.team6.finalproject.profile.entity.Profile;
+import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,14 +30,15 @@ import static org.mockito.Mockito.when;
 class ClubServiceImplTest {
     @Mock
     private InterestMinorService interestMinorService;
-
     @Mock
     private ClubRepository clubRepository;
-
+    @Mock
+    private ProfileService profileService;
     @InjectMocks
     private ClubServiceImpl clubServiceImpl;
 
     private ClubRequestDto requestDto;
+    private Profile profile;
     private User user;
     private InterestMinor interestMinor;
     private Club savedClub;
@@ -60,6 +63,11 @@ class ClubServiceImplTest {
         user.setRole(UserRoleEnum.USER);
         user.setBirth("1997-04-11");
 
+        profile = Profile.builder()
+                .nickname("오세팡")
+                .introduction("안녕하세요")
+                .build();
+
         InterestMajor interestMajor = InterestMajor.builder()
                 .majorName("스포츠")
                 .build();
@@ -71,6 +79,7 @@ class ClubServiceImplTest {
 
        savedClub = Club.builder()
                 .username(user.getUsername())
+                .nickName(profile.getNickname())
                 .name(requestDto.getName())
                 .description(requestDto.getDescription())
                 .maxMember(requestDto.getMaxMember())
@@ -87,12 +96,14 @@ class ClubServiceImplTest {
 
         // interestMinorService.existsInterestMinor()의 반환값 설정
        when(interestMinorService.existsInterestMinor(1L)).thenReturn(interestMinor);
+       when(profileService.findProfileByUserId(user.getId())).thenReturn(profile);
 
         // 테스트 대상 메서드 호출
         ClubResponseDto responseDto = clubServiceImpl.createClub(requestDto, user);
 
         // 생성된 ClubResponseDto의 각 필드 검증
         assertEquals(savedClub.getName(), responseDto.getName()); // 동호회 이름
+        assertEquals(savedClub.getNickName(), responseDto.getNickName()); // 동호회 개설자
         assertEquals(savedClub.getDescription(), responseDto.getDescription()); // 동호회 소개
         assertEquals(savedClub.getMaxMember(), responseDto.getMaxMember()); // 동호회 최대 인원 수
         assertEquals(savedClub.getActivityType().getActivity(), responseDto.getActivityType()); // 활동 방식
