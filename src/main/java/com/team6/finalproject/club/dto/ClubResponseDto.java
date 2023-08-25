@@ -1,12 +1,14 @@
 package com.team6.finalproject.club.dto;
 
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.profile.dto.ProfileNickNameDto;
 import com.team6.finalproject.user.entity.User;
 import lombok.Getter;
 
 @Getter
 public class ClubResponseDto {
     private String username;
+    private String nickName;
     private String name;
     private String description;
     private boolean trialAvailable;
@@ -19,6 +21,7 @@ public class ClubResponseDto {
 
     public ClubResponseDto(User user, Club club, InterestMajorDto interestMajorDto, InterestMinorDto interestMinorDto) {
         this.username = user.getUsername();
+        this.nickName = club.getNickName();
         this.name = club.getName();
         this.description = club.getDescription();
         this.trialAvailable = club.isTrialAvailable();
