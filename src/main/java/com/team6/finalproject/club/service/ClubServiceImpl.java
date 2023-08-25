@@ -10,6 +10,9 @@ import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.repository.ClubRepository;
+import com.team6.finalproject.profile.dto.ProfileNickNameDto;
+import com.team6.finalproject.profile.entity.Profile;
+import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +26,14 @@ public class ClubServiceImpl implements ClubService{
 
     private final ClubRepository clubRepository;
     private final InterestMinorService interestMinorService;
+    private final ProfileService profileService;
 
     @Override
     @Transactional
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) {
+
+        // 유저 프로필 조회
+        Profile profile = profileService.findProfileByUserId(user.getId());
 
         // 소주제 존재 유무 확인
         InterestMinor interestMinor = interestMinorService.existsInterestMinor(clubRequestDto.getMinorId());
@@ -54,6 +61,7 @@ public class ClubServiceImpl implements ClubService{
         log.info("동호회 개설");
         Club club = Club.builder()
                 .username(user.getUsername())
+                .nickName(new ProfileNickNameDto(profile.getNickname()).getNickName())
                 .name(clubRequestDto.getName())
                 .description(clubRequestDto.getDescription())
                 .maxMember(clubRequestDto.getMaxMember())

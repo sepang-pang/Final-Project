@@ -20,7 +20,10 @@ public class Club extends Timestamped {
     private Long id;
 
     @Column(name = "username")
-    private String username; // 동호회 개설자 이름
+    private String username; // 동호회 개설자 아이디
+
+    @Column(name = "nink_name")
+    private String nickName; // 동호회 개설자 본명 및 별명
 
     @Column(name = "name")
     private String name; // 동호회 이름
