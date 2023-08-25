@@ -69,7 +69,9 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileResponseDto(profile);
     }
 
-    private Profile findProfileByUserId(Long id) { // 다른 곳에서 호출 필요 시 public으로 열어주세요
+    @Override
+    @Transactional(readOnly = true)
+    public Profile findProfileByUserId(Long id) { // 다른 곳에서 호출 필요 시 public으로 열어주세요
         return profileRepository.findByUserId(id).orElseThrow(
                 () -> new IllegalArgumentException("프로필을 찾을 수 없습니다."));
     }
