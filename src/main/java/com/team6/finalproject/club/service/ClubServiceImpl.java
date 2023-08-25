@@ -10,7 +10,6 @@ import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.repository.ClubRepository;
-import com.team6.finalproject.club.repository.ClubRepositoryCustom;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.dto.ProfileNickNameDto;
 import com.team6.finalproject.profile.entity.Profile;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClubServiceImpl implements ClubService{
 
     private final ClubRepository clubRepository;
-    private final ClubRepositoryCustom clubRepositoryCustom;
     private final InterestMinorService interestMinorService;
     private final ProfileService profileService;
 
@@ -43,7 +41,7 @@ public class ClubServiceImpl implements ClubService{
         InterestMinor interestMinor = interestMinorService.existsInterestMinor(clubRequestDto.getMinorId());
 
         // 동호회 이름 존재 확인
-        if(clubRepository.findByName(clubRequestDto.getName()).isPresent()){ // isPresent(): 존재하면 true, 존재하지 않으면 false
+        if(clubRepository.findActiveClubByName(clubRequestDto.getName()).isPresent()){ // isPresent(): 존재하면 true, 존재하지 않으면 false
             throw new IllegalArgumentException("동호회 이름이 이미 존재합니다.");
         }
 
@@ -94,7 +92,7 @@ public class ClubServiceImpl implements ClubService{
 
         //  본인 동호회인지 확인 및 동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
-        Club club = clubRepositoryCustom.findByIdAndUsername(id, user.getUsername())
+        Club club = clubRepository.findActiveByIdAndUsername(id, user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
@@ -106,7 +104,7 @@ public class ClubServiceImpl implements ClubService{
 
     // 동호회 조회 메서드
     public void findClub(Long id) {
-        clubRepositoryCustom.findById(id)
+        clubRepository.findActiveClubById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
     }
 }

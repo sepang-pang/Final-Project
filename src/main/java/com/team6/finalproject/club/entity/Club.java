@@ -1,11 +1,9 @@
 package com.team6.finalproject.club.entity;
 
-import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
-import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
-import com.team6.finalproject.user.entity.User;
+import com.team6.finalproject.common.entity.Timestamped;
 import jakarta.persistence.*;
 import lombok.*;
 
