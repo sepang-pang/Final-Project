@@ -93,7 +93,7 @@ public class ClubServiceImpl implements ClubService{
     public ResponseEntity<ApiResponseDto> deleteClub(Long id, User user) {
 
         //  본인 동호회인지 확인 및 동호회 존재 여부 확인
-        // QueryDsl 로 삭제된 유저나 동호회는 조회 필터에서 거르기
+        // QueryDsl 로 삭제된 동호회는 조회 x
         Club club = clubRepositoryCustom.findByIdAndUsername(id, user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
