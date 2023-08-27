@@ -7,5 +7,5 @@ import com.team6.finalproject.user.entity.User;
 import java.util.Optional;
 
 public interface MemberRepositoryCustom {
-    public Optional<Member> findActiveUserAndClub(User user, Club club);
+    public Optional<Member> findActiveUserAndClub(Long userId, Long clubId);
 }
