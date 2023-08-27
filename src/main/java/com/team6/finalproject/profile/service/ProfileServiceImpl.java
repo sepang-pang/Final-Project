@@ -103,12 +103,12 @@ public class ProfileServiceImpl implements ProfileService {
                 () -> new IllegalArgumentException("프로필을 찾을 수 없습니다."));
     }
 
-    @Override
+    @Override // 위치 기입 했는지 확인
     public Boolean existValidLocate(Long id) {
         return profileRepository.existValidLocate(id).isEmpty();
     }
 
-    @Override
+    @Override // 관심사 등록했는지 확인
     public Boolean existValidInterest(Long id) {
         return profileRepository.existValidInterest(id).isEmpty();
     }

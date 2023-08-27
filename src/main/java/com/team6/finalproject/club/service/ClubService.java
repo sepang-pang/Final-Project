@@ -14,9 +14,9 @@ public interface ClubService {
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user);
 
     // 동호회 폐쇄
-    public ResponseEntity<ApiResponseDto> deleteClub(Long id, User user);
+    public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user);
 
-    public Club findClub(Long id);
+    public Club findClub(Long clubId);
 
     // 동호회 가입 신청
     public ResponseEntity<ApiResponseDto> joinClub(Long clubId, User user);

@@ -97,16 +97,16 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 폐쇄
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> deleteClub(Long id, User user) {
+    public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) {
 
         //  본인 동호회인지 확인 및 동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
-        Club club = clubRepository.findActiveByIdAndUsername(id, user.getUsername())
+        Club targetClub = clubRepository.findActiveByIdAndUsername(clubId, user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
         // 동호회 멤버도 delete 하기
-        club.deleteClub();
+        targetClub.deleteClub();
 
         // 반환
         return ResponseEntity.ok().body(new ApiResponseDto("동호회 삭제 성공", 200));
@@ -147,12 +147,12 @@ public class ClubServiceImpl implements ClubService {
         }
 
         // 가입 신청서 제출
-        ApplyJoinClub apply = ApplyJoinClub.builder()
+        ApplyJoinClub application = ApplyJoinClub.builder()
                 .approvalStateEnum(ApprovalStateEnum.PENDING)
                 .user(user)
                 .club(targetClub)
                 .build();
-        applyJoinClubService.saveApplyJoinClub(apply);
+        applyJoinClubService.saveApplyJoinClub(application);
         return ResponseEntity.ok().body(new ApiResponseDto("동호회 가입 신청 성공", 200));
     }
 
