@@ -1,12 +1,19 @@
 package com.team6.finalproject.profile.service;
 
+import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.club.enums.ActivityTypeEnum;
+import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
+import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.file.FileUploader;
 import com.team6.finalproject.profile.dto.InterestRequestDto;
+import com.team6.finalproject.profile.dto.LikeClubRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
+import com.team6.finalproject.profile.likeclub.entity.LikeClub;
+import com.team6.finalproject.profile.likeclub.service.LikeClubService;
 import com.team6.finalproject.profile.profileinterest.entity.ProfileInterest;
 import com.team6.finalproject.profile.profileinterest.service.ProfileInterestService;
 import com.team6.finalproject.profile.repository.ProfileRepository;
@@ -44,6 +51,10 @@ class ProfileServiceImplTest {
     private InterestMinorService interestMinorService;
     @Mock
     private ProfileInterestService profileInterestService;
+    @Mock
+    private ClubService clubService;
+    @Mock
+    private LikeClubService likeClubService;
 
     private User user;
     private UserDetailsImpl userDetails;
@@ -51,12 +62,17 @@ class ProfileServiceImplTest {
 
     @BeforeEach
     void setup() {
-        // 유저 생성
+        // 유저 생성(Setter 지우고 builder 사용 시 변경)
         user = new User("유저네임", "비밀번호", "이메일", "2020-02-02", USER);
         user.setId(1L);
         userDetails = new UserDetailsImpl(user);
         //프로필 생성
-        profile = new Profile("닉네임", "소개글", "서울시", user);
+        profile = Profile.builder()
+                .nickname("닉네임")
+                .introduction("소개글")
+                .locate("서울시")
+                .user(user)
+                .build();
     }
 
     @Test
@@ -99,8 +115,9 @@ class ProfileServiceImplTest {
         when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
 
         // 수정할 닉네임 주입
-        ProfileRequestDto requestDto = new ProfileRequestDto();
-        requestDto.setNickname("닉네임 수정");
+        ProfileRequestDto requestDto = ProfileRequestDto.builder()
+                .nickname("닉네임 수정")
+                .build();
 
         // when
         profileService.updateProfile(requestDto, userDetails.getUser());
@@ -162,9 +179,49 @@ class ProfileServiceImplTest {
         when(interestMinorService.existsInterestMinor(request2)).thenReturn(interestMinor2);
 
         // when
-        ProfileResponseDto response = profileService.addInterests(requestDto, user);
+        profileService.addInterests(requestDto, user);
 
         // then
         verify(profileInterestService, times(2)).save(any(ProfileInterest.class));
+    }
+
+    @Test
+    @DisplayName("관심 동호회 등록 테스트")
+    void addLikeClubTest() {
+        // given
+        // 소주제 생성
+        InterestMinor interestMinor = InterestMinor.builder()
+                .id(1L)
+                .minorName("축구")
+                .build();
+        // 동호회 생성
+        Club club = Club.builder()
+                .name("동호회 이름")
+                .description("동호회 소개")
+                .maxMember(30)
+                .activityType(ActivityTypeEnum.ONLINE)
+                .joinType(JoinTypeEnum.IMMEDIATE)
+                .minor(interestMinor)
+                .isTrialAvailable(true)
+                .build();
+        // 관심 동호회 생성
+        LikeClub likeClub = LikeClub.builder()
+                .profile(profile)
+                .club(club)
+                .build();
+        // 관심 동호회 요청
+        LikeClubRequestDto requestDto = LikeClubRequestDto.builder()
+                .clubId(1L)
+                .build();
+
+        when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
+        when(clubService.findClub(requestDto.getClubId())).thenReturn(club);
+
+
+        //when
+        profileService.addLikeClub(requestDto, user);
+
+        //then
+        verify(likeClubService, times(1)).save(any(LikeClub.class));
     }
 }
