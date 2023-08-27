@@ -37,7 +37,7 @@ public class Profile extends Timestamped {
     @Column(nullable = false)
     private Long userScore;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
