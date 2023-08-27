@@ -49,7 +49,7 @@ public class ClubServiceImpl implements ClubService {
         InterestMinor interestMinor = interestMinorService.existsInterestMinor(clubRequestDto.getMinorId());
 
         // 동호회 이름 존재 확인
-        if (clubRepository.findActiveClubByName(clubRequestDto.getName()).isPresent()) { // isPresent(): 존재하면 true, 존재하지 않으면 false
+        if (clubRepository.findByActiveClubName(clubRequestDto.getName()).isPresent()) { // isPresent(): 존재하면 true, 존재하지 않으면 false
             throw new IllegalArgumentException("동호회 이름이 이미 존재합니다.");
         }
 
@@ -101,7 +101,7 @@ public class ClubServiceImpl implements ClubService {
 
         //  본인 동호회인지 확인 및 동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
-        Club targetClub = clubRepository.findActiveByIdAndUsername(clubId, user.getUsername())
+        Club targetClub = clubRepository.findByActiveIdAndUsername(clubId, user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
@@ -188,7 +188,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 조회 메서드
     @Override
     public Club findClub(Long id) {
-        return clubRepository.findActiveClubById(id)
+        return clubRepository.findByActiveId(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
     }
 }
