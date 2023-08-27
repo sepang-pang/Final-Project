@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum JoinTypeEnum {
-    IMMEDIATE(JoinTypeEnum.JoinType.IMMEDIATE),
-    APPROVAL(JoinTypeEnum.JoinType.APPROVAL);
+    IMMEDIATE(JoinType.IMMEDIATE),
+    APPROVAL(JoinType.APPROVAL);
 
     // 활동 유형 문자열 저장 필드
     private final String join;
