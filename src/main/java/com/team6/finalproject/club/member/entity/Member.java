@@ -1,6 +1,7 @@
 package com.team6.finalproject.club.member.entity;
 
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
@@ -21,6 +22,10 @@ public class Member extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "club_role")
+    @Enumerated(value = EnumType.STRING)
+    private ClubRoleEnum clubRoleEnum; // 멤버 권한
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
