@@ -26,7 +26,7 @@ public class User {
     private Long oAuth_id;
     private String birth;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "profile_id")
+    @OneToOne
     private Profile profile;
 
     public User(String userName, String password, String email, String birth, UserRoleEnum role) {
