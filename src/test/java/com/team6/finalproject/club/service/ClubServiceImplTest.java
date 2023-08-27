@@ -9,7 +9,6 @@ import com.team6.finalproject.club.interest.entity.InterestMajor;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.repository.ClubRepository;
-import com.team6.finalproject.club.repository.ClubRepositoryCustom;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.service.ProfileService;
@@ -129,7 +128,7 @@ class ClubServiceImplTest {
     @DisplayName("이미 존재하는 동호회 이름 생성시 예외 처리 성공 테스트")
     public void testCreateClub_ClubNameAlreadyExists() {
         // clubRepository.findByName()의 반환값 설정
-        when(clubRepository.findActiveClubByName("축구 클럽")).thenReturn(Optional.of(savedClub));
+        when(clubRepository.findByActiveClubName("축구 클럽")).thenReturn(Optional.of(savedClub));
 
         // 예외를 던지는지 확인
         assertThrows(IllegalArgumentException.class, () -> {
@@ -153,7 +152,7 @@ class ClubServiceImplTest {
     @DisplayName("동호회 폐쇄 성공 테스트")
     public void testDeleteClub_Success() {
         Long clubId = 1L;
-        when(clubRepository.findActiveByIdAndUsername(eq(clubId), eq(user.getUsername())))
+        when(clubRepository.findByActiveIdAndUsername(eq(clubId), eq(user.getUsername())))
                 .thenReturn(Optional.of(savedClub));
 
         ResponseEntity<ApiResponseDto> response = clubServiceImpl.deleteClub(clubId, user);
@@ -162,14 +161,14 @@ class ClubServiceImplTest {
         assertTrue(savedClub.isDeleted()); // 상태값이 true 로 즉, soft - delete 되었는지 확인
 
         // clubRepositoryCustom의 findByIdAndUsername 메서드가 호출되었는지 검증
-        verify(clubRepository, times(1)).findActiveByIdAndUsername(eq(clubId), eq(user.getUsername()));
+        verify(clubRepository, times(1)).findByActiveIdAndUsername(eq(clubId), eq(user.getUsername()));
     }
 
     @Test
     @DisplayName("삭제된 동호회 조회 테스트")
     public void testGetDeleteClub() {
         Long clubId = 1L;
-        when(clubRepository.findActiveByIdAndUsername(eq(clubId), eq(user.getUsername())))
+        when(clubRepository.findByActiveIdAndUsername(eq(clubId), eq(user.getUsername())))
                 .thenReturn(Optional.of(savedClub));
 
         // 동호회 삭제
