@@ -21,4 +21,9 @@ public class MemberService {
     public Boolean existJoinClub(User user, Club club) {
         return memberRepository.findActiveUserAndClub(user, club).isPresent();
     }
+
+    public Member findMember(User user, Club club) {
+        return memberRepository.findActiveUserAndClub(user, club)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
+    }
 }
