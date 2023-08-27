@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ProfileRequestDto {
     private String nickname;
     private String introduction;
+    private String locate;
 }

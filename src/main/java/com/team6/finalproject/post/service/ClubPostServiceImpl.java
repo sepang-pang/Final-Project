@@ -68,8 +68,7 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글에 미디어 업로드
     @Transactional
     public String uploadMedia(MultipartFile file) throws IOException {
-        String mediaUrl = fileUploader.upload(file);
-        return mediaUrl;
+        return fileUploader.upload(file);
     }
 
     // 모집글에 미디어 수정
