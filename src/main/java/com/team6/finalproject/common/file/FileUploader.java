@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,17 +25,18 @@ public class FileUploader {
     private String bucketName;
 
     public String upload(MultipartFile file) throws IOException {
-        File uploadFile = convert(file); // 받아온 MultipartFile -> File 변환
-        String fileName = uploadFile.getName();
 
         ObjectMetadata metadata = new ObjectMetadata();
+
         metadata.setContentLength(file.getSize());
+
         metadata.setContentType(file.getContentType()); // 요청받은 파일의 ContentType 메타데이터에 주입
 
-        String uploadFileUrl = putS3(uploadFile, fileName, metadata);   // S3에 업로드
+        String fileName = file.getOriginalFilename();
+        amazonS3.putObject(bucketName, fileName, file.getInputStream(), metadata);
 
-        uploadFile.delete();    // 로컬에 생성된 File 삭제 (MultipartFile -> File 전환 하며 로컬에 파일 생성됨)
-        return uploadFileUrl;   // 업로드된 파일의 S3 URL 주소 반환
+
+        return amazonS3.getUrl(bucketName, fileName).toString();   // 업로드된 파일의 S3 URL 주소 반환
     }
 
     private File convert(MultipartFile file) throws IOException {
@@ -46,14 +48,6 @@ public class FileUploader {
         return convertFile;
     }
 
-    private String putS3(File uploadFile, String fileName, ObjectMetadata metadata) {
-        amazonS3.putObject(
-                new PutObjectRequest(bucketName, fileName, uploadFile)
-                        .withMetadata(metadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)  // PublicRead 권한으로 업로드
-        );
-        return amazonS3.getUrl(bucketName, fileName).toString();
-    }
 
     public void deleteFile(String fileName) {   // S3 파일 삭제
         // URI 제거 -> 키값만 담기
