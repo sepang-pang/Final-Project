@@ -24,6 +24,7 @@ public class ClubController {
     public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.createClub(clubRequestDto, userDetails.getUser());
     }
+
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.deleteClub(clubId, userDetails.getUser());

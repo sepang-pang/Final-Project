@@ -3,13 +3,16 @@ package com.team6.finalproject.post.entity;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.post.dto.PostRequestDto;
+import com.team6.finalproject.post.enums.PostTypeEnum;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "posts")
 @Entity
+@Builder
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends Timestamped {
     @Id
@@ -45,21 +48,9 @@ public class Post extends Timestamped {
     private Club club;
 
 
-
-    public Post(PostRequestDto postRequestDto, User user, Club club, String media) {
-        this.title = postRequestDto.getTitle();
-        this.content = postRequestDto.getContent();
-        this.postType = postRequestDto.getPostType();
-        this.user = user;
-        this.club = club;
-        this.media = media;
-    }
-
-
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
-        this.postType = postRequestDto.getPostType();
     }
 
     public void deletePost() {

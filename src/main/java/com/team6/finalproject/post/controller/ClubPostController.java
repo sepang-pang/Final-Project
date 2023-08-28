@@ -3,7 +3,7 @@ package com.team6.finalproject.post.controller;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.post.dto.PostRequestDto;
 import com.team6.finalproject.post.dto.PostResponseDto;
-import com.team6.finalproject.post.service.ClubPostServiceImpl;
+import com.team6.finalproject.post.service.ClubPostService;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,29 +19,29 @@ import java.io.IOException;
 @RequestMapping("/api/clubs")
 public class ClubPostController {
 
-    private final ClubPostServiceImpl clubPostService;
+    private final ClubPostService clubPostService;
 
     // 모집글 선택조회
-    @GetMapping("/{clubId}/posts/{postId}")
-    public PostResponseDto getPostById(@PathVariable Long clubId, @PathVariable Long postId) {
+    @GetMapping("/posts/{postId}")
+    public PostResponseDto getPostById(@PathVariable Long postId) {
         return clubPostService.getPostById(postId);
     }
 
     // 모집글 생성
-    @PostMapping("/{clubId}/posts")
-    public PostResponseDto createdPost(@PathVariable Long clubId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
-       return clubPostService.createdPost(postRequestDto, postRequestDto.getClubId(), userDetails.getUser(),file);
+    @PostMapping("/posts")
+    public PostResponseDto createdPost(@RequestPart PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
+        return clubPostService.createdPost(postRequestDto, userDetails.getUser(), file);
     }
 
     // 모집글 수정
-    @PutMapping("/{clubId}/posts/{postId}")
-    public PostResponseDto update(@PathVariable Long clubId, @PathVariable Long postId, @RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-       return clubPostService.updatePost(postId, postRequestDto, userDetails.getUser());
+    @PutMapping("/posts/{postId}")
+    public PostResponseDto update(@PathVariable Long postId, @RequestPart PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
+        return clubPostService.updatePost(postId, postRequestDto, userDetails.getUser(), file);
     }
 
     // 모집글 삭제
-    @DeleteMapping("/{clubId}/posts/{postId}")
-    public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long clubId, @PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         clubPostService.deletePost(postId, userDetails.getUser());
         return ResponseEntity.ok(new ApiResponseDto("모집글 삭제 완료", HttpStatus.OK.value()));
     }
