@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder // 테스트에서 사용
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileRequestDto {
-    private String nickname;
-    private String introduction;
-    private String locate;
+public class LikeClubRequestDto {
+    private Long clubId;
 }

@@ -1,14 +1,9 @@
 package com.team6.finalproject.profile.service;
 
-import com.team6.finalproject.club.interest.entity.InterestMinor;
-import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.common.file.FileUploader;
-import com.team6.finalproject.profile.dto.InterestRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
-import com.team6.finalproject.profile.profileinterest.entity.ProfileInterest;
-import com.team6.finalproject.profile.profileinterest.service.ProfileInterestService;
 import com.team6.finalproject.profile.repository.ProfileRepository;
 import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.entity.User;
@@ -23,27 +18,20 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static com.team6.finalproject.user.entity.UserRoleEnum.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceImplTest {
-    @Mock
-    private ProfileRepository profileRepository;
     @InjectMocks
     private ProfileServiceImpl profileService;
     @Mock
+    private ProfileRepository profileRepository;
+    @Mock
     private FileUploader fileUploader;
-    @Mock
-    private InterestMinorService interestMinorService;
-    @Mock
-    private ProfileInterestService profileInterestService;
 
     private User user;
     private UserDetailsImpl userDetails;
@@ -51,12 +39,17 @@ class ProfileServiceImplTest {
 
     @BeforeEach
     void setup() {
-        // 유저 생성
+        // 유저 생성(Setter 지우고 builder 사용 시 변경)
         user = new User("유저네임", "비밀번호", "이메일", "2020-02-02", USER);
         user.setId(1L);
         userDetails = new UserDetailsImpl(user);
         //프로필 생성
-        profile = new Profile("닉네임", "소개글", "서울시", user);
+        profile = Profile.builder()
+                .nickname("닉네임")
+                .introduction("소개글")
+                .locate("서울시")
+                .user(user)
+                .build();
     }
 
     @Test
@@ -99,8 +92,9 @@ class ProfileServiceImplTest {
         when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
 
         // 수정할 닉네임 주입
-        ProfileRequestDto requestDto = new ProfileRequestDto();
-        requestDto.setNickname("닉네임 수정");
+        ProfileRequestDto requestDto = ProfileRequestDto.builder()
+                .nickname("닉네임 수정")
+                .build();
 
         // when
         profileService.updateProfile(requestDto, userDetails.getUser());
@@ -135,36 +129,5 @@ class ProfileServiceImplTest {
         // then
         // 주입한 파일명과 응답 파일명 비교
         assertEquals(response.getProfileImage(), profileImage);
-    }
-
-    @Test
-    @DisplayName("프로필 관심사 등록 테스트")
-    void addInterestsTest() {
-        // given
-        InterestMinor interestMinor1 = InterestMinor.builder()
-                .id(1L)
-                .minorName("축구")
-                .build();
-        InterestMinor interestMinor2 = InterestMinor.builder()
-                .id(2L)
-                .minorName("농구")
-                .build();
-
-        List<Long> minorIds = Arrays.asList(1L, 2L);
-        InterestRequestDto requestDto = InterestRequestDto.builder()
-                .minorId(minorIds)
-                .build();
-        Long request1 = requestDto.getMinorId().get(0);
-        Long request2 = requestDto.getMinorId().get(1);
-
-        when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
-        when(interestMinorService.existsInterestMinor(request1)).thenReturn(interestMinor1);
-        when(interestMinorService.existsInterestMinor(request2)).thenReturn(interestMinor2);
-
-        // when
-        ProfileResponseDto response = profileService.addInterests(requestDto, user);
-
-        // then
-        verify(profileInterestService, times(2)).save(any(ProfileInterest.class));
     }
 }
