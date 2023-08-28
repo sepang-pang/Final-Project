@@ -108,17 +108,16 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional
     public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) {
-        //  본인 동호회인지 확인 및 동호회 존재 여부 확인
+        //  동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
-        Club targetClub = clubRepository.findByActiveIdAndUsername(clubId, user.getUsername())
+        Club targetClub = clubRepository.findByActiveId(clubId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
-        // 동호회 회장이 아니면 삭제 불가
+        // 동호회 개설자가 아니면 삭제 불가
         // 동호회 멤버도 delete 하기
-        Member member = memberService.findMember(user.getId(), targetClub.getId());
-        if(member.getClubRoleEnum() != ClubRoleEnum.PRESIDENT){
-            throw new IllegalArgumentException("권한이 없습니다.");
+        if(!targetClub.getUsername().equals(user.getUsername())) {
+            throw new IllegalArgumentException("권한이 없습니다");
         }
 
         targetClub.deleteClub();

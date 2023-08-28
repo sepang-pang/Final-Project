@@ -3,12 +3,14 @@ package com.team6.finalproject.club.controller;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
+import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,7 @@ public class ClubController {
     public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.createClub(clubRequestDto, userDetails.getUser());
     }
+
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.deleteClub(clubId, userDetails.getUser());
@@ -34,12 +37,14 @@ public class ClubController {
         return clubService.joinClub(clubId, userDetails.getUser());
     }
 
-    @PutMapping("/clubs/{applyId}/approve") // 동호회 가입 승인
+    @PutMapping("/clubs/applies/{applyId}/approve") // 동호회 가입 승인
+    @Secured(ClubRoleEnum.ClubRole.PRESIDENT)
     public ResponseEntity<ApiResponseDto> approveJoinRequest(@PathVariable Long applyId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.processClubApproval(applyId, userDetails.getUser(), ApprovalStateEnum.APPROVE);
     }
 
-    @PutMapping("/clubs/{applyId}/refuse") // 동호회 가입 거절
+    @PutMapping("/clubs/applies/{applyId}/refuse") // 동호회 가입 거절
+    @Secured(ClubRoleEnum.ClubRole.PRESIDENT)
     public ResponseEntity<ApiResponseDto> refuseJoinRequest(@PathVariable Long applyId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.processClubApproval(applyId, userDetails.getUser(), ApprovalStateEnum.REFUSE);
     }
