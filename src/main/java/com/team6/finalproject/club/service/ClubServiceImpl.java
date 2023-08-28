@@ -9,6 +9,7 @@ import com.team6.finalproject.club.dto.InterestMinorDto;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
+import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
@@ -85,6 +86,15 @@ public class ClubServiceImpl implements ClubService {
         log.info("DB 저장");
         clubRepository.save(club);
 
+        // 동호회 멤버 테이블에 추가 -> 동호회 회장 권한 획득
+        log.info("멤버 저장");
+        Member member = Member.builder()
+                .user(user)
+                .club(club)
+                .clubRoleEnum(ClubRoleEnum.PRESIDENT)
+                .build();
+        memberService.saveMember(member);
+
         // response 반환
         log.info("response 반환");
         return new ClubResponseDto(
@@ -98,14 +108,18 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional
     public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) {
-
-        //  본인 동호회인지 확인 및 동호회 존재 여부 확인
+        //  동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
-        Club targetClub = clubRepository.findByActiveIdAndUsername(clubId, user.getUsername())
+        Club targetClub = clubRepository.findByActiveId(clubId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
+        // 동호회 개설자가 아니면 삭제 불가
         // 동호회 멤버도 delete 하기
+        if(!targetClub.getUsername().equals(user.getUsername())) {
+            throw new IllegalArgumentException("권한이 없습니다");
+        }
+
         targetClub.deleteClub();
 
         // 반환
@@ -141,6 +155,11 @@ public class ClubServiceImpl implements ClubService {
 
 
         // ======== 가입 승인 동호회 ======== //
+        // 가입여부 확인
+        if (memberService.existJoinClub(user.getId(), targetClub.getId())) {
+            throw new IllegalArgumentException("이미 소속된 동호회입니다.");
+        }
+
         // 신청여부 확인
         if (applyJoinClubService.hasPendingApplication(user.getId(), clubId)) {
             throw new IllegalArgumentException("이미 가입 신청한 상태입니다.");
