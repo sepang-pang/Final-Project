@@ -38,4 +38,7 @@ public class Member extends Timestamped {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    public void grantRole(ClubRoleEnum role) {
+        this.clubRoleEnum = role;
+    }
 }
