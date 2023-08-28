@@ -38,18 +38,5 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom{
                                 .fetchOne()
                 );
     }
-
-    @Override
-    public Optional<Club> findByActiveIdAndUsername(Long id, String username) {
-        return
-                Optional.ofNullable(
-                        jpaQueryFactory
-                                .selectFrom(club)
-                                .where(club.id.eq(id)
-                                        .and(club.username.eq(username))
-                                        .and(club.isDeleted.eq(false))) // 삭제되지 않은 동호회만 조회
-                                .fetchOne()
-                );
-    }
 }
 
