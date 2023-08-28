@@ -4,6 +4,8 @@ import com.team6.finalproject.profile.dto.InterestRequestDto;
 import com.team6.finalproject.profile.dto.LikeClubRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
+import com.team6.finalproject.profile.likeclub.service.LikeClubService;
+import com.team6.finalproject.profile.profileinterest.service.ProfileInterestService;
 import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ import java.io.IOException;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final ProfileInterestService profileInterestService;
+    private final LikeClubService likeClubService;
 
     @PostMapping("/profile") // 프로필 등록
     public ProfileResponseDto createProfile(@RequestBody ProfileRequestDto requestDto,
@@ -46,13 +50,12 @@ public class ProfileController {
     @PostMapping("/profile/interests") // 관심사 등록
     public ProfileResponseDto addInterests(@RequestBody InterestRequestDto requestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return profileService.addInterests(requestDto, userDetails.getUser());
+        return profileInterestService.addInterests(requestDto, userDetails.getUser());
     }
 
     @PostMapping("/profile/like-clubs") // 관심 동호회 등록
     public ProfileResponseDto addLikeClub(@RequestBody LikeClubRequestDto requestDto,
-                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return profileService.addLikeClub(requestDto, userDetails.getUser());
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return likeClubService.addLikeClub(requestDto, userDetails.getUser());
     }
 }
-

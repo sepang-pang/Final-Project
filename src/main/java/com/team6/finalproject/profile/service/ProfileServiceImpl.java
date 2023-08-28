@@ -1,19 +1,9 @@
 package com.team6.finalproject.profile.service;
 
-import com.team6.finalproject.club.entity.Club;
-import com.team6.finalproject.club.interest.entity.InterestMinor;
-import com.team6.finalproject.club.interest.service.InterestMinorService;
-import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.file.FileUploader;
-import com.team6.finalproject.profile.dto.InterestRequestDto;
-import com.team6.finalproject.profile.dto.LikeClubRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
-import com.team6.finalproject.profile.likeclub.entity.LikeClub;
-import com.team6.finalproject.profile.likeclub.service.LikeClubService;
-import com.team6.finalproject.profile.profileinterest.entity.ProfileInterest;
-import com.team6.finalproject.profile.profileinterest.service.ProfileInterestService;
 import com.team6.finalproject.profile.repository.ProfileRepository;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +19,6 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
     private final FileUploader fileUploader;
-    private final InterestMinorService interestMinorService;
-    private final ProfileInterestService profileInterestService;
-    private final ClubService clubService;
-    private final LikeClubService likeClubService;
 
     // 프로필 생성
     @Override
@@ -83,40 +68,6 @@ public class ProfileServiceImpl implements ProfileService {
 
         String profileImage = fileUploader.upload(file);
         profile.updateImage(profileImage);
-        return new ProfileResponseDto(profile);
-    }
-
-    // 관심사 등록
-    @Override
-    @Transactional
-    public ProfileResponseDto addInterests(InterestRequestDto requestDto, User user) {
-        Profile profile = findProfileByUserId(user.getId());
-
-        List<Long> minorIds = requestDto.getMinorId();
-        for (Long minorId : minorIds) {
-            InterestMinor interestMinor = interestMinorService.existsInterestMinor(minorId); // 소주제 가져오기
-            ProfileInterest profileInterest = ProfileInterest.builder() // 프로필 관심사 생성
-                    .interestMinor(interestMinor)
-                    .profile(profile)
-                    .build();
-            profileInterestService.save(profileInterest); // 프로필 관심사 저장
-        }
-
-        return new ProfileResponseDto(profile);
-    }
-
-    // 관심 동호회 등록
-    @Override
-    @Transactional
-    public ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) {
-        Profile profile = findProfileByUserId(user.getId());
-        Club club = clubService.findClub(requestDto.getClubId()); // 요청 클럽 담기
-
-        LikeClub likeClub = LikeClub.builder()
-                .profile(profile)
-                .club(club)
-                .build();
-        likeClubService.save(likeClub);
         return new ProfileResponseDto(profile);
     }
 
