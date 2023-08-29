@@ -4,8 +4,12 @@ import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.common.entity.Timestamped;
+import com.team6.finalproject.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -53,7 +57,12 @@ public class Club extends Timestamped {
     @JoinColumn(name = "interest_minor_id")
     private InterestMinor minor;
 
+
+    @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Post> postList = new ArrayList<>();
+
     public void deleteClub() {
         this.isDeleted = true;
     }
+
 }
