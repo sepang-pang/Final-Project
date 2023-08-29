@@ -6,6 +6,7 @@ import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.repository.ProfileRepository;
 import com.team6.finalproject.user.entity.User;
+import com.team6.finalproject.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.io.IOException;
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
+    private final UserService userService;
     private final FileUploader fileUploader;
 
     // 프로필 생성
@@ -31,6 +33,10 @@ public class ProfileServiceImpl implements ProfileService {
                 .user(user)
                 .build();
         profileRepository.save(profile);
+
+        user.setProfile(profile);
+        userService.saveUser(user);
+
         return new ProfileResponseDto(profile);
     }
 

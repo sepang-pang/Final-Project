@@ -6,6 +6,8 @@ import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 
 public interface MemberService {
     // 멤버 권한 부여
@@ -16,4 +18,10 @@ public interface MemberService {
 
     // 동호회 가입 여부
     public Boolean existJoinClub(Long userId, Long clubId);
+
+    // 멤버(복수) 조회
+    public List<Member> findMembers(Long clubId);
+
+    // 특정 멤버(단일) 조회
+    public Member findMember(Long clubId, Long userId);
 }

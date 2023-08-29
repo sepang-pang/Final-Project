@@ -13,6 +13,7 @@ import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
+import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.club.member.entity.Member;
 import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.repository.ClubRepository;
@@ -27,6 +28,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j(topic = "club service 로직")
@@ -37,6 +40,39 @@ public class ClubServiceImpl implements ClubService {
     private final ProfileService profileService;
     private final MemberService memberService;
     private final ApplyJoinClubService applyJoinClubService;
+
+    // 동호회 멤버 전체 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<MemberInquiryDto> getClubMembers(Long clubId) {
+        // 클럽에 속한 멤버 조회
+        List<Member> members = memberService.findMembers(clubId);
+
+        // 반환
+        // 성별 및 이미지도 함께 반환 예정
+        return members.stream()
+                .map(member -> MemberInquiryDto.builder()
+                        .nickName(member.getUser().getProfile().getNickname())
+                        .birth(member.getUser().getBirth())
+                        .introduction(member.getUser().getProfile().getIntroduction())
+                        .build())
+                .toList();
+    }
+
+    // 동호회 멤버 선택 조회
+    @Override
+    @Transactional(readOnly = true)
+    public MemberInquiryDto readClubMember(Long clubId, Long userId) {
+        // 선택한 동호회와 특정 유저가 존재하는지 확인
+        Member member = memberService.findMember(clubId, userId);
+
+        // 반환
+        return  MemberInquiryDto.builder()
+                .nickName(member.getUser().getProfile().getNickname())
+                .birth(member.getUser().getBirth())
+                .introduction(member.getUser().getProfile().getIntroduction())
+                .build();
+    }
 
     // 동호회 개설
     @Override
@@ -116,7 +152,7 @@ public class ClubServiceImpl implements ClubService {
         // Soft - Delete 메서드
         // 동호회 개설자가 아니면 삭제 불가
         // 동호회 멤버도 delete 하기
-        if(!targetClub.getUsername().equals(user.getUsername())) {
+        if (!targetClub.getUsername().equals(user.getUsername())) {
             throw new IllegalArgumentException("권한이 없습니다");
         }
 

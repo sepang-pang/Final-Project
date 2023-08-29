@@ -5,13 +5,14 @@ import com.team6.finalproject.club.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.team6.finalproject.club.member.entity.QMember.member;
 
 @Repository
 @RequiredArgsConstructor
-public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
+public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
@@ -25,8 +26,9 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
                                 .fetchOne()
                 );
     }
+
     @Override
-    public Optional<Member> findActiveUserAndClub(Long userId, Long clubId){
+    public Optional<Member> findActiveUserAndClub(Long clubId, Long userId) {
         return
                 Optional.ofNullable(
                         jpaQueryFactory
@@ -37,5 +39,15 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
                                         .and(member.club.isDeleted.eq(false)))
                                 .fetchOne()
                 );
+    }
+
+    @Override
+    public List<Member> findActiveMembers(Long clubId) {
+        return
+                jpaQueryFactory
+                        .selectFrom(member)
+                        .where(member.club.id.eq(clubId)
+                                .and(member.isDeleted.eq(false)))
+                        .fetch();
     }
 }
