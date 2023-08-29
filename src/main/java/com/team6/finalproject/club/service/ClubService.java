@@ -28,6 +28,9 @@ public interface ClubService {
     public ResponseEntity<ApiResponseDto> processClubApproval(Long applyId, User user, ApprovalStateEnum approvalState);
 
     // 동호회 멤버 전체 조회
-    public List<MemberInquiryDto> getClubMember(Long clubId);
+    public List<MemberInquiryDto> getClubMembers(Long clubId);
+
+    // 특정 멤버 조회
+    public MemberInquiryDto readClubMember(Long clubId, Long userId);
 }
 

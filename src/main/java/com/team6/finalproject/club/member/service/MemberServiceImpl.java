@@ -46,9 +46,17 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findActiveUserAndClub(userId, clubId).isPresent();
     }
 
+    // 멤버(복수) 조회
     @Override
     public List<Member> findMembers(Long clubId) {
         return memberRepository.findActiveMembers(clubId);
+    }
+
+    // 특정 멤버(단일) 조회
+    @Override
+    public Member findMember(Long clubId, Long userId) {
+        return memberRepository.findActiveUserAndClub(clubId, userId)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
     }
 
     // 멤버 조회

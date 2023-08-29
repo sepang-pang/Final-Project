@@ -19,5 +19,9 @@ public interface MemberService {
     // 동호회 가입 여부
     public Boolean existJoinClub(Long userId, Long clubId);
 
+    // 멤버(복수) 조회
     public List<Member> findMembers(Long clubId);
+
+    // 특정 멤버(단일) 조회
+    public Member findMember(Long clubId, Long userId);
 }

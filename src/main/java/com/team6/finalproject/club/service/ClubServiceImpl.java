@@ -41,11 +41,10 @@ public class ClubServiceImpl implements ClubService {
     private final MemberService memberService;
     private final ApplyJoinClubService applyJoinClubService;
 
-    // 동호회 멤버 조회
-    // 멤버 전체 조회
+    // 동호회 멤버 전체 조회
     @Override
     @Transactional(readOnly = true)
-    public List<MemberInquiryDto> getClubMember(Long clubId) {
+    public List<MemberInquiryDto> getClubMembers(Long clubId) {
         // 클럽에 속한 멤버 조회
         List<Member> members = memberService.findMembers(clubId);
 
@@ -58,6 +57,21 @@ public class ClubServiceImpl implements ClubService {
                         .introduction(member.getUser().getProfile().getIntroduction())
                         .build())
                 .toList();
+    }
+
+    // 동호회 멤버 선택 조회
+    @Override
+    @Transactional(readOnly = true)
+    public MemberInquiryDto readClubMember(Long clubId, Long userId) {
+        // 선택한 동호회와 특정 유저가 존재하는지 확인
+        Member member = memberService.findMember(clubId, userId);
+
+        // 반환
+        return  MemberInquiryDto.builder()
+                .nickName(member.getUser().getProfile().getNickname())
+                .birth(member.getUser().getBirth())
+                .introduction(member.getUser().getProfile().getIntroduction())
+                .build();
     }
 
     // 동호회 개설
