@@ -28,7 +28,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public Optional<Member> findActiveUserAndClub(Long userId, Long clubId) {
+    public Optional<Member> findActiveUserAndClub(Long clubId, Long userId) {
         return
                 Optional.ofNullable(
                         jpaQueryFactory
