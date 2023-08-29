@@ -57,7 +57,7 @@ public class ClubController {
         return clubService.getClubMembers(clubId);
     }
 
-    @GetMapping("clubs/{clubId}/user/{userId}")
+    @GetMapping("clubs/{clubId}/user/{userId}") // 특정 멤버 조회
     public MemberInquiryDto readClubMember(@PathVariable Long clubId, @PathVariable Long userId) {
         return clubService.readClubMember(clubId, userId);
     }
