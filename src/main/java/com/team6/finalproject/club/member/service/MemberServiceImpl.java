@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -42,6 +44,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Boolean existJoinClub(Long userId, Long clubId) {
         return memberRepository.findActiveUserAndClub(userId, clubId).isPresent();
+    }
+
+    @Override
+    public List<Member> findMembers(Long clubId) {
+        return memberRepository.findActiveMembers(clubId);
     }
 
     // 멤버 조회
