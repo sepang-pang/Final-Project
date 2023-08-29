@@ -8,6 +8,8 @@ import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
+
 public interface ClubService {
 
     //동호회 개설
@@ -23,5 +25,6 @@ public interface ClubService {
 
     // 동호회 가입 신청 승인 및 거절
     public ResponseEntity<ApiResponseDto> processClubApproval(Long applyId, User user, ApprovalStateEnum approvalState);
+
 }
 
