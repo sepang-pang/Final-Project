@@ -33,7 +33,11 @@ public class FileUploader {
         metadata.setContentType(file.getContentType()); // 요청받은 파일의 ContentType 메타데이터에 주입
 
         String fileName = file.getOriginalFilename();
-        amazonS3.putObject(bucketName, fileName, file.getInputStream(), metadata);
+        amazonS3.putObject(
+                new PutObjectRequest(bucketName,fileName,file.getInputStream(),metadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+
+
 
 
         return amazonS3.getUrl(bucketName, fileName).toString();   // 업로드된 파일의 S3 URL 주소 반환
