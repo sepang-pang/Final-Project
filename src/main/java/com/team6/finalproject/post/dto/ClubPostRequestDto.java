@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PostRequestDto {
+public class ClubPostRequestDto {
     private String title;
     private String content;
     private Long clubId;
