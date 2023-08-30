@@ -2,6 +2,7 @@ package com.team6.finalproject.club.service;
 
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
+import com.team6.finalproject.club.dto.ReadInterestMajorDto;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -29,9 +30,12 @@ public interface ClubService {
     public ResponseEntity<ApiResponseDto> processClubApproval(Long applyId, User user, ApprovalStateEnum approvalState);
 
     // 동호회 멤버 전체 조회
-    public List<MemberInquiryDto> getClubMembers(Long clubId);
+    public List<MemberInquiryDto> readClubMembers(Long clubId);
 
     // 특정 멤버 조회
     public MemberInquiryDto readClubMember(Long clubId, Long userId);
+
+    // 동호회 대주제 별 조회
+    public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId);
 }
 

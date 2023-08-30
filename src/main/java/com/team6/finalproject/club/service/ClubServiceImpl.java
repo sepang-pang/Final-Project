@@ -2,10 +2,7 @@ package com.team6.finalproject.club.service;
 
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
-import com.team6.finalproject.club.dto.ClubRequestDto;
-import com.team6.finalproject.club.dto.ClubResponseDto;
-import com.team6.finalproject.club.dto.InterestMajorDto;
-import com.team6.finalproject.club.dto.InterestMinorDto;
+import com.team6.finalproject.club.dto.*;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
@@ -44,7 +41,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 멤버 전체 조회
     @Override
     @Transactional(readOnly = true)
-    public List<MemberInquiryDto> getClubMembers(Long clubId) {
+    public List<MemberInquiryDto> readClubMembers(Long clubId) {
         // 클럽에 속한 멤버 조회
         List<Member> members = memberService.findMembers(clubId);
 
@@ -74,7 +71,33 @@ public class ClubServiceImpl implements ClubService {
                 .build();
     }
 
-    // 동호회 개설
+    // 동호회 대주제 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) {
+        // 대주제별로 최신순 정렬 조회
+        List<Club> clubs = clubRepository.findByActiveInterestMajor(majorId);
+
+        // 해당 대주제 동호회가 존재하지 않을 경우 예외 처리
+        if(clubs.isEmpty()) {
+            throw new IllegalArgumentException("동호회가 존재하지 않습니다.");
+        }
+
+        // 반환
+        return clubs.stream()
+                .map(club -> ReadInterestMajorDto.builder()
+                        .nickName(club.getNickName())
+                        .name(club.getName())
+                        .description(club.getDescription())
+                        .trialAvailable(club.isTrialAvailable())
+                        .activityType(club.getActivityType().getActivity())
+                        .joinType(club.getJoinType().getJoin())
+                        .maxMember(club.getMaxMember())
+                        .build())
+                .toList();
+    }
+
+    // 동호회 개설렬
     @Override
     @Transactional
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) {
