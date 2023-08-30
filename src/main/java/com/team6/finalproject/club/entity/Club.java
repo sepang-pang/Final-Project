@@ -57,7 +57,6 @@ public class Club extends Timestamped {
     @JoinColumn(name = "interest_minor_id")
     private InterestMinor minor;
 
-
     @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
 

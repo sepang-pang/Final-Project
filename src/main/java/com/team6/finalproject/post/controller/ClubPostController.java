@@ -24,25 +24,25 @@ public class ClubPostController {
 
     // 모집글 전체조회
     @GetMapping("/posts")
-    public List<ClubPostResponseDto> getAllPosts() {
-        return clubPostService.getAllPosts();
+    public List<ClubPostResponseDto> readAllPosts() {
+        return clubPostService.readAllPosts();
     }
 
     // 모집글 선택조회
     @GetMapping("/posts/{postId}")
     public ClubPostResponseDto getPostById(@PathVariable Long postId) {
-        return clubPostService.getPostById(postId);
+        return clubPostService.readPostById(postId);
     }
 
     // 모집글 생성
     @PostMapping("/posts")
-    public ClubPostResponseDto createdPost(@RequestPart ClubPostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
-        return clubPostService.createdPost(postRequestDto, userDetails.getUser(), file);
+    public ClubPostResponseDto createPost(@RequestPart ClubPostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
+        return clubPostService.createPost(postRequestDto, userDetails.getUser(), file);
     }
 
     // 모집글 수정
     @PutMapping("/posts/{postId}")
-    public ClubPostResponseDto update(@PathVariable Long postId, @RequestPart ClubPostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
+    public ClubPostResponseDto updatePost(@PathVariable Long postId, @RequestPart ClubPostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
         return clubPostService.updatePost(postId, postRequestDto, userDetails.getUser(), file);
     }
 

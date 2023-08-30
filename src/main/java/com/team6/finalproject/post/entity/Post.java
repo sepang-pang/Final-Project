@@ -1,11 +1,15 @@
 package com.team6.finalproject.post.entity;
 
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.comment.entity.Comment;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.post.dto.ClubPostRequestDto;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "posts")
 @Entity
@@ -17,6 +21,9 @@ public class Post extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
+
+    @Column(name = "clubname")
+    private String clubname;
 
     @Column(name = "title")
     private String title;
@@ -30,6 +37,9 @@ public class Post extends Timestamped {
     @Column(name = "media")
     private String media;
 
+    @Column(name = "nickname")
+    private String nickname;
+
     // soft-delete 상태값
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
@@ -42,6 +52,8 @@ public class Post extends Timestamped {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     public void update(ClubPostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
