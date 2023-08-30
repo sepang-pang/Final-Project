@@ -78,9 +78,8 @@ class LikeClubServiceImplTest {
                 .club(club)
                 .build();
         // 관심 동호회 요청
-        LikeClubRequestDto requestDto = LikeClubRequestDto.builder()
-                .clubId(1L)
-                .build();
+        LikeClubRequestDto requestDto = new LikeClubRequestDto();
+        requestDto.setClubId(1L);
 
         when(profileService.findProfileByUserId(user.getId())).thenReturn(profile);
         when(clubService.findClub(requestDto.getClubId())).thenReturn(club);

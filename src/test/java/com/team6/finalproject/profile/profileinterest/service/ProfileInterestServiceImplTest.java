@@ -68,9 +68,9 @@ class ProfileInterestServiceImplTest {
                 .build();
 
         List<Long> minorIds = Arrays.asList(1L, 2L);
-        InterestRequestDto requestDto = InterestRequestDto.builder()
-                .minorId(minorIds)
-                .build();
+        InterestRequestDto requestDto = new InterestRequestDto();
+        requestDto.setMinorId(minorIds);
+
         Long request1 = requestDto.getMinorId().get(0);
         Long request2 = requestDto.getMinorId().get(1);
 
