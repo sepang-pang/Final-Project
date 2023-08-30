@@ -33,15 +33,10 @@ public class ProfileServiceImpl implements ProfileService {
                 .user(user)
                 .build();
 
-        if (profileRepository.findByNickname(requestDto.getNickname()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용중인 닉네임입니다.");
-        }
-
         profileRepository.save(profile);
 
-        user.setProfile(profile);
+        user.setProfile(profile); // Setter 제거 시 변경
         userService.saveUser(user);
-
         return new ProfileResponseDto(profile);
     }
 
