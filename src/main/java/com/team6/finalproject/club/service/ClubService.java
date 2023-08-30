@@ -37,5 +37,8 @@ public interface ClubService {
 
     // 동호회 대주제 별 조회
     public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId);
+
+    // 동호회 소주제 별 조회
+    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId);
 }
 

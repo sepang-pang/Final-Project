@@ -15,6 +15,7 @@ public class DataInitializer implements CommandLineRunner {
     private final InterestMinorRepository interestMinorRepository;
     @Override
     public void run(String[] args) throws Exception {
+        // 스포츠
         InterestMajor sportsCategory = InterestMajor.builder()
                 .majorName("스포츠")
                 .build();
@@ -29,9 +30,28 @@ public class DataInitializer implements CommandLineRunner {
                 .interestMajor(sportsCategory)
                 .build();
 
+        // 아웃도어
+        InterestMajor outdoorCategory = InterestMajor.builder()
+                .majorName("아웃도어")
+                .build();
+
+        InterestMinor campingSubcategory = InterestMinor.builder()
+                .minorName("캠핑")
+                .interestMajor(outdoorCategory)
+                .build();
+
+        InterestMinor fishingBallSubcategory = InterestMinor.builder()
+                .minorName("낚시")
+                .interestMajor(outdoorCategory)
+                .build();
+
+
         interestMajorRepository.save(sportsCategory);
+        interestMajorRepository.save(outdoorCategory);
         interestMinorRepository.save(soccerSubcategory);
         interestMinorRepository.save(baseBallSubcategory);
+        interestMinorRepository.save(campingSubcategory);
+        interestMinorRepository.save(fishingBallSubcategory);
 
-        }
     }
+}

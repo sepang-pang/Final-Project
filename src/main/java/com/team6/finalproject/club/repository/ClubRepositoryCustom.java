@@ -9,4 +9,5 @@ public interface ClubRepositoryCustom {
     public Optional<Club> findByActiveId(Long id);
     public Optional<Club> findByActiveClubName(String name);
     public List<Club> findByActiveInterestMajor(Long majorId); // 관심사 대주제 별로 조회 - 최신순 정렬
+    public List<Club> findByActiveInterestMinor(Long minorId); // 관심사 소주제 별로 조회 - 최신순 정렬
 }

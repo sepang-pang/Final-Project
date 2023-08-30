@@ -67,4 +67,9 @@ public class ClubController {
     public List<ReadInterestMajorDto> readSelectInterestMajor(@PathVariable Long majorId) {
         return clubService.readSelectInterestMajor(majorId);
     }
+
+    @GetMapping("clubs/interest-minor/{minorId}") // 동호회 대주제 별 조회
+    public List<ReadInterestMajorDto> readSelectInterestMinor(@PathVariable Long minorId) {
+        return clubService.readSelectInterestMinor(minorId);
+    }
 }

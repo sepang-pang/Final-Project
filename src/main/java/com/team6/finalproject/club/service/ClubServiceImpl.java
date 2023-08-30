@@ -71,33 +71,23 @@ public class ClubServiceImpl implements ClubService {
                 .build();
     }
 
-    // 동호회 대주제 조회
+    // 대주제 별 조회
     @Override
     @Transactional(readOnly = true)
     public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) {
-        // 대주제별로 최신순 정렬 조회
         List<Club> clubs = clubRepository.findByActiveInterestMajor(majorId);
-
-        // 해당 대주제 동호회가 존재하지 않을 경우 예외 처리
-        if(clubs.isEmpty()) {
-            throw new IllegalArgumentException("동호회가 존재하지 않습니다.");
-        }
-
-        // 반환
-        return clubs.stream()
-                .map(club -> ReadInterestMajorDto.builder()
-                        .nickName(club.getNickName())
-                        .name(club.getName())
-                        .description(club.getDescription())
-                        .trialAvailable(club.isTrialAvailable())
-                        .activityType(club.getActivityType().getActivity())
-                        .joinType(club.getJoinType().getJoin())
-                        .maxMember(club.getMaxMember())
-                        .build())
-                .toList();
+        return readInterestClubs(clubs);
     }
 
-    // 동호회 개설렬
+    // 소주제 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) {
+        List<Club> clubs = clubRepository.findByActiveInterestMinor(minorId);
+        return readInterestClubs(clubs);
+    }
+
+    // 동호회 개설
     @Override
     @Transactional
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) {
@@ -268,5 +258,24 @@ public class ClubServiceImpl implements ClubService {
     public Club findClub(Long id) {
         return clubRepository.findByActiveId(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
+    }
+
+    // 대주제 및 소주제 유형별 조회 -> 예외 및 반환 메서드
+    public List<ReadInterestMajorDto> readInterestClubs(List<Club> clubs) {
+        if (clubs.isEmpty()) {
+            throw new IllegalArgumentException("동호회가 존재하지 않습니다.");
+        }
+
+        return clubs.stream()
+                .map(club -> ReadInterestMajorDto.builder()
+                        .nickName(club.getNickName())
+                        .name(club.getName())
+                        .description(club.getDescription())
+                        .trialAvailable(club.isTrialAvailable())
+                        .activityType(club.getActivityType().getActivity())
+                        .joinType(club.getJoinType().getJoin())
+                        .maxMember(club.getMaxMember())
+                        .build())
+                .toList();
     }
 }
