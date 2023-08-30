@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "profile_interest")
+@Table(name = "profile_interest", uniqueConstraints = @UniqueConstraint(columnNames = {"interest_minor_id", "profile_id"}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProfileInterest {
 
