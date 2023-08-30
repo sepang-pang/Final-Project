@@ -2,7 +2,7 @@ package com.team6.finalproject.post.entity;
 
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.common.entity.Timestamped;
-import com.team6.finalproject.post.dto.PostRequestDto;
+import com.team6.finalproject.post.dto.ClubPostRequestDto;
 import com.team6.finalproject.post.enums.PostTypeEnum;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
@@ -35,6 +35,9 @@ public class Post extends Timestamped {
     @Column(name = "media")
     private String media;
 
+    @Column(name = "nickname")
+    private String nickname;
+
     // soft-delete 상태값
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
@@ -47,8 +50,7 @@ public class Post extends Timestamped {
     @JoinColumn(name = "club_id")
     private Club club;
 
-
-    public void update(PostRequestDto postRequestDto) {
+    public void update(ClubPostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
     }

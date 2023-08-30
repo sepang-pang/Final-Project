@@ -1,8 +1,8 @@
 package com.team6.finalproject.post.controller;
 
 import com.team6.finalproject.common.dto.ApiResponseDto;
-import com.team6.finalproject.post.dto.PostRequestDto;
-import com.team6.finalproject.post.dto.PostResponseDto;
+import com.team6.finalproject.post.dto.ClubPostRequestDto;
+import com.team6.finalproject.post.dto.ClubPostResponseDto;
 import com.team6.finalproject.post.service.ClubPostService;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +23,19 @@ public class ClubPostController {
 
     // 모집글 선택조회
     @GetMapping("/posts/{postId}")
-    public PostResponseDto getPostById(@PathVariable Long postId) {
+    public ClubPostResponseDto getPostById(@PathVariable Long postId) {
         return clubPostService.getPostById(postId);
     }
 
     // 모집글 생성
     @PostMapping("/posts")
-    public PostResponseDto createdPost(@RequestPart PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
+    public ClubPostResponseDto createdPost(@RequestPart ClubPostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
         return clubPostService.createdPost(postRequestDto, userDetails.getUser(), file);
     }
 
     // 모집글 수정
     @PutMapping("/posts/{postId}")
-    public PostResponseDto update(@PathVariable Long postId, @RequestPart PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
+    public ClubPostResponseDto update(@PathVariable Long postId, @RequestPart ClubPostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws IOException {
         return clubPostService.updatePost(postId, postRequestDto, userDetails.getUser(), file);
     }
 
