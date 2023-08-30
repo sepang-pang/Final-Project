@@ -38,7 +38,6 @@ public class ProfileInterestServiceImpl implements ProfileInterestService {
                     .build();
             profileInterestRepository.save(profileInterest); // 프로필 관심사 저장
         }
-
         return new ProfileResponseDto(profile);
     }
 }
