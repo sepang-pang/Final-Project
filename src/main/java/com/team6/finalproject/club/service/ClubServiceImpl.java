@@ -182,6 +182,10 @@ public class ClubServiceImpl implements ClubService {
         // 가입 대상 동호회 조회
         Club targetClub = findClub(clubId);
 
+        if(targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
+            throw new IllegalArgumentException("정원이 가득찼습니다");
+        }
+
 //        // 거주지 입력 여부 판단
 //        if(profileService.existValidLocate(user.getId())){
 //            throw new IllegalArgumentException("거주지를 입력해주세요");
