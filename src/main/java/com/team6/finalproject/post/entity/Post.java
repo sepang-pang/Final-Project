@@ -2,8 +2,7 @@ package com.team6.finalproject.post.entity;
 
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.common.entity.Timestamped;
-import com.team6.finalproject.post.dto.PostRequestDto;
-import com.team6.finalproject.post.enums.PostTypeEnum;
+import com.team6.finalproject.post.dto.ClubPostRequestDto;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,10 +27,6 @@ public class Post extends Timestamped {
     @Column(name = "view")
     private int view; //조회수
 
-    @Column(name = "post_type")
-    @Enumerated(value = EnumType.STRING)
-    private PostTypeEnum postType;
-
     @Column(name = "media")
     private String media;
 
@@ -48,7 +43,7 @@ public class Post extends Timestamped {
     private Club club;
 
 
-    public void update(PostRequestDto postRequestDto) {
+    public void update(ClubPostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
     }

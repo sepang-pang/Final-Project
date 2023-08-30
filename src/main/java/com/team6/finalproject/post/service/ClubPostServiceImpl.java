@@ -1,23 +1,22 @@
 package com.team6.finalproject.post.service;
 
 import com.team6.finalproject.club.entity.Club;
-import com.team6.finalproject.club.repository.ClubRepository;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.common.file.FileUploader;
-import com.team6.finalproject.post.dto.PostRequestDto;
-import com.team6.finalproject.post.dto.PostResponseDto;
+import com.team6.finalproject.post.dto.ClubPostRequestDto;
+import com.team6.finalproject.post.dto.ClubPostResponseDto;
 import com.team6.finalproject.post.entity.Post;
 import com.team6.finalproject.post.repository.PostRepository;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,18 +26,27 @@ public class ClubPostServiceImpl implements ClubPostService {
     private final ClubService clubService;
     private final FileUploader fileUploader;
 
+    // 모집글 전체 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClubPostResponseDto> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+
+        return posts.stream().map(ClubPostResponseDto::new).toList();
+    }
+
     // 모집글 선택 조회
     @Override
     @Transactional(readOnly = true)
-    public PostResponseDto getPostById(Long postId) {
+    public ClubPostResponseDto getPostById(Long postId) {
         Post post = findPost(postId);
-        return new PostResponseDto(post);
+        return new ClubPostResponseDto(post);
     }
 
     // 모집글 생성
     @Override
     @Transactional
-    public PostResponseDto createdPost(PostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
+    public ClubPostResponseDto createdPost(ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
         Club club = clubService.findClub(postRequestDto.getClubId());
         String media = uploadMedia(multipartFile);
 
@@ -52,20 +60,20 @@ public class ClubPostServiceImpl implements ClubPostService {
 
         postRepository.save(post);
 
-        return new PostResponseDto(post);
+        return new ClubPostResponseDto(post);
     }
 
     // 모집글 수정
     @Override
     @Transactional
-    public PostResponseDto updatePost(Long postId, PostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
+    public ClubPostResponseDto updatePost(Long postId, ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
         Post post = updateMedia(multipartFile, postId);
 
         checkedAuthor(post, user);
 
         post.update(postRequestDto);
 
-        return new PostResponseDto(post);
+        return new ClubPostResponseDto(post);
     }
 
     // 모집글 삭제
