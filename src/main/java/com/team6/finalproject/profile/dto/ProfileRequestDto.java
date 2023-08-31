@@ -8,6 +8,8 @@ import lombok.Setter;
 public class ProfileRequestDto {
     private String nickname;
     private String introduction;
+    private String latitude;
+    private String longitude;
     private String zoneCode;
     private String locate;
 }

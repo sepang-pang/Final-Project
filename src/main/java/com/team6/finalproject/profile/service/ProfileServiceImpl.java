@@ -29,6 +29,8 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = Profile.builder()
                 .nickname(requestDto.getNickname())
                 .introduction(requestDto.getIntroduction())
+                .latitude(requestDto.getLatitude())
+                .longitude(requestDto.getLongitude())
                 .zoneCode(requestDto.getZoneCode())
                 .locate(requestDto.getLocate())
                 .user(user)
@@ -57,10 +59,12 @@ public class ProfileServiceImpl implements ProfileService {
 
         String nickname = requestDto.getNickname();
         String introduction = requestDto.getIntroduction();
+        String latitude = requestDto.getLatitude();
+        String longitude = requestDto.getLongitude();
         String zoneCode = requestDto.getZoneCode();
         String locate = requestDto.getLocate();
 
-        profile.update(nickname, introduction, zoneCode, locate);
+        profile.update(nickname, introduction, latitude, longitude, zoneCode, locate);
         return new ProfileResponseDto(profile);
     }
 
