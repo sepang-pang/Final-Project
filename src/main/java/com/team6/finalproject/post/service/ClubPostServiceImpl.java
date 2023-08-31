@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +28,19 @@ public class ClubPostServiceImpl implements ClubPostService {
     private final ProfileService profileService;
     private final FileUploader fileUploader;
 
+    // 모집글 전체 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClubPostResponseDto> readAllPosts() {
+        List<Post> posts = postRepository.findAll();
+
+        return posts.stream().map(ClubPostResponseDto::new).toList();
+    }
+
     // 모집글 선택 조회
     @Override
     @Transactional(readOnly = true)
-    public ClubPostResponseDto getPostById(Long postId) {
+    public ClubPostResponseDto readPostById(Long postId) {
         Post post = findPost(postId);
         return new ClubPostResponseDto(post);
     }
@@ -38,12 +48,15 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글 생성
     @Override
     @Transactional
-    public ClubPostResponseDto createdPost(ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
+
+    public ClubPostResponseDto createPost(ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
         Club club = clubService.findClub(postRequestDto.getClubId());
+        String clubname = clubService.findClub(postRequestDto.getClubId()).getName();
         String media = uploadMedia(multipartFile);
         String nickname = profileService.getProfile(user).getNickname();
 
         Post post = Post.builder()
+                .clubname(clubname)
                 .title(postRequestDto.getTitle())
                 .content(postRequestDto.getContent())
                 .user(user)
@@ -79,8 +92,7 @@ public class ClubPostServiceImpl implements ClubPostService {
         checkedAuthor(post, user);
 
         post.deletePost();
-
-        return ResponseEntity.ok().body(new ApiResponseDto("모집글 삭제 완료!", 200));
+       return ResponseEntity.ok().body(new ApiResponseDto("모집글 삭제 완료!", 200));
     }
 
 

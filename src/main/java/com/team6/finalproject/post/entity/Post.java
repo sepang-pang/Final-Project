@@ -1,12 +1,15 @@
 package com.team6.finalproject.post.entity;
 
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.comment.entity.Comment;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.post.dto.ClubPostRequestDto;
-import com.team6.finalproject.post.enums.PostTypeEnum;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "posts")
 @Entity
@@ -19,6 +22,9 @@ public class Post extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
+    @Column(name = "clubname")
+    private String clubname;
+
     @Column(name = "title")
     private String title;
 
@@ -27,10 +33,6 @@ public class Post extends Timestamped {
 
     @Column(name = "view")
     private int view; //조회수
-
-    @Column(name = "post_type")
-    @Enumerated(value = EnumType.STRING)
-    private PostTypeEnum postType;
 
     @Column(name = "media")
     private String media;
@@ -49,6 +51,9 @@ public class Post extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     public void update(ClubPostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
