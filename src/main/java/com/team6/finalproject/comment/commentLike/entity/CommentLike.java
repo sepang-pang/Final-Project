@@ -37,7 +37,7 @@ public class CommentLike extends Timestamped {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    public void deleteLike() {
+    public void dislike() {
         this.isDeleted = true;
     }
 

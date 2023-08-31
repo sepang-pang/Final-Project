@@ -40,14 +40,14 @@ public class PostLikeServiceImpl implements PostLikeService{
     // 게시물 좋아요 취소
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> deletePostLike(Long postId, User user) {
+    public ResponseEntity<ApiResponseDto> PostDislike(Long postId, User user) {
 
         PostLike like = postLikeRepository.findByActivePostId(postId).orElseThrow(() ->
                 new IllegalArgumentException("좋아요를 누르지 않았습니다."));
 
         checkedUser(like, user);
 
-        like.deleteLike();
+        like.dislike();
         return ResponseEntity.ok().body(new ApiResponseDto("좋아요 취소 완료", 200));
 
     }

@@ -37,7 +37,7 @@ public class PostLike extends Timestamped {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public void deleteLike() {
+    public void dislike() {
         this.isDeleted = true;
     }
 

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 public interface CommentLikeService {
     ResponseEntity<ApiResponseDto> commentLike(Long postId, User user);
 
-    ResponseEntity<ApiResponseDto> deleteCommentLike(Long commentId, User user);
+    ResponseEntity<ApiResponseDto> CommentDislike(Long commentId, User user);
 
 
 }

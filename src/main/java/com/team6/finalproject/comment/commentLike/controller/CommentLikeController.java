@@ -19,14 +19,12 @@ public class CommentLikeController {
     // 좋아요
     @PostMapping("/{commentId}/like")
     public ResponseEntity<ApiResponseDto> commentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentLikeService.commentLike(commentId,userDetails.getUser());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ApiResponseDto("댓글 좋아요 성공", HttpStatus.ACCEPTED.value()));
+        return commentLikeService.commentLike(commentId,userDetails.getUser());
     }
 
     // 좋아요 취소
-    @DeleteMapping("{commentId}/like")
-    public ResponseEntity<ApiResponseDto> deleteCommentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentLikeService.deleteCommentLike(commentId, userDetails.getUser());
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ApiResponseDto("댓글 좋아요 취소 성공", HttpStatus.ACCEPTED.value()));
+    @DeleteMapping("{commentId}/dislike")
+    public ResponseEntity<ApiResponseDto> CommentDislike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+       return commentLikeService.CommentDislike(commentId, userDetails.getUser());
     }
 }

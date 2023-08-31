@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 public interface PostLikeService {
     ResponseEntity<ApiResponseDto> postLike(Long postId, User user);
 
-    ResponseEntity<ApiResponseDto> deletePostLike(Long postId, User user);
+    ResponseEntity<ApiResponseDto> PostDislike(Long postId, User user);
 
 
 }

@@ -40,14 +40,14 @@ public class CommentLikeServiceImpl implements CommentLikeService {
     // 댓글 좋아요 취소
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> deleteCommentLike(Long commentId, User user) {
+    public ResponseEntity<ApiResponseDto> CommentDislike(Long commentId, User user) {
 
         CommentLike like = commentLikeRepository.findByActiveCommentId(commentId).orElseThrow(()->
                 new IllegalArgumentException("좋아요를 누르지 않았습니다"));
 
         checkedUser(like, user);
 
-        like.deleteLike();
+        like.dislike();
         return ResponseEntity.ok().body(new ApiResponseDto("좋아요 취소 완료", 200));
 
     }
