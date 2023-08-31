@@ -30,7 +30,6 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user) {
         Post post = clubPostService.findPost(commentRequestDto.getPostId());
         String nickname = profileService.getProfile(user).getNickname();
-
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
                 .user(user)
