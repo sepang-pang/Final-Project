@@ -1,6 +1,5 @@
 package com.team6.finalproject.user.service;
 
-import com.team6.finalproject.common.config.PasswordConfig;
 import com.team6.finalproject.user.dto.SignupRequestDto;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
@@ -10,8 +9,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    public void signup(SignupRequestDto signupRequestDto) {
+        if(userRepository.findByUsername(signupRequestDto.getUserName()).isPresent()){
+            throw new IllegalArgumentException("중복된 이름입니다.");
+        }
+        String loginId = signupRequestDto.getUserName();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+        String email = signupRequestDto.getEmail();
+        String birth = signupRequestDto.getBirth();
+        UserRoleEnum role = signupRequestDto.getRole();
 
-public interface UserService{
-    //회원가입
-    public void signup(SignupRequestDto signupRequestDto);
+        userRepository.save(new User(loginId,password,email,birth,role));
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 }

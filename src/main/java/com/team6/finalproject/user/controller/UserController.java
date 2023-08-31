@@ -1,19 +1,18 @@
 package com.team6.finalproject.user.controller;
 
 import com.team6.finalproject.security.UserDetailsImpl;
+import com.team6.finalproject.user.dto.InquiryRequestDto;
+import com.team6.finalproject.user.dto.InquiryResponseDto;
 import com.team6.finalproject.user.dto.SignupRequestDto;
-import com.team6.finalproject.user.entity.User;
+import com.team6.finalproject.user.inquiry.service.InquiryService;
 import com.team6.finalproject.user.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
 
     private final UserService userService;
+    private final InquiryService inquiryService;
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequestDto signupRequestDto) {
@@ -29,8 +29,35 @@ public class UserController {
     }
 
     @GetMapping("/aa")
-    public String  aa(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public String aa(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info(userDetails.getUsername());
         return "main";
+    }
+
+    @PostMapping("/api/users/inquiry") // 문의 생성
+    @ResponseBody
+    public InquiryResponseDto createInquiry(@RequestBody InquiryRequestDto requestDto,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return inquiryService.createInquiry(requestDto, userDetails.getUser());
+    }
+
+    @GetMapping("/api/users/inquiry/{id}") // 문의 단건 조회
+    @ResponseBody
+    public InquiryResponseDto getInquiry(@PathVariable Long id,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return inquiryService.getInquiry(id, userDetails.getUser());
+    }
+
+    @GetMapping("/api/users/all-inquiry") // 문의 전체 조회
+    @ResponseBody
+    public List<InquiryResponseDto> getAllInquiry(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return inquiryService.getAllInquiry(userDetails.getUser());
+    }
+
+    @PatchMapping("/api/users/inquiry") // 문의 수정
+    @ResponseBody
+    public InquiryResponseDto updateInquiry(@RequestBody InquiryRequestDto requestDto,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return inquiryService.updateInquiry(requestDto, userDetails.getUser());
     }
 }
