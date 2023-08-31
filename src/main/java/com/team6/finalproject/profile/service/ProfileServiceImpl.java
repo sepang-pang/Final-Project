@@ -29,6 +29,7 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = Profile.builder()
                 .nickname(requestDto.getNickname())
                 .introduction(requestDto.getIntroduction())
+                .zoneCode(requestDto.getZoneCode())
                 .locate(requestDto.getLocate())
                 .user(user)
                 .build();
@@ -48,7 +49,7 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileResponseDto(profile);
     }
 
-    // 프로필 nickname, introduction, locate 수정
+    // 프로필 nickname, introduction, zoneCode, locate 수정
     @Override
     @Transactional
     public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
@@ -56,9 +57,10 @@ public class ProfileServiceImpl implements ProfileService {
 
         String nickname = requestDto.getNickname();
         String introduction = requestDto.getIntroduction();
+        String zoneCode = requestDto.getZoneCode();
         String locate = requestDto.getLocate();
 
-        profile.update(nickname, introduction, locate);
+        profile.update(nickname, introduction, zoneCode, locate);
         return new ProfileResponseDto(profile);
     }
 
