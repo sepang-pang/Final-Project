@@ -45,6 +45,11 @@ public class ClubServiceImpl implements ClubService {
         // 클럽에 속한 멤버 조회
         List<Member> members = memberService.findMembers(clubId);
 
+        // 존재하지 않을 경우 예외 발생
+        if(members.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
+
         // 반환
         // 성별 및 이미지도 함께 반환 예정
         return members.stream()

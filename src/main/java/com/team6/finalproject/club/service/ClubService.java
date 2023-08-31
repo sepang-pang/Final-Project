@@ -9,8 +9,8 @@ import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
+
 import java.util.List;
-import java.util.Optional;
 
 
 public interface ClubService {
