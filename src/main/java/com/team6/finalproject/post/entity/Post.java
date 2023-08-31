@@ -4,6 +4,7 @@ import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.comment.entity.Comment;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.post.dto.ClubPostRequestDto;
+import com.team6.finalproject.post.postLike.entity.PostLike;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,6 +55,9 @@ public class Post extends Timestamped {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikes;
 
     public void update(ClubPostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();

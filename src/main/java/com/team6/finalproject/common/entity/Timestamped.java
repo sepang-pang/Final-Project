@@ -1,5 +1,6 @@
 package com.team6.finalproject.common.entity;
 
+import com.team6.finalproject.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,4 +23,6 @@ public abstract class Timestamped {
     @Column(name = "modify_time")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime modifiedAt;
+
+
 }

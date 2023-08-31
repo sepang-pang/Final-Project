@@ -1,11 +1,14 @@
 package com.team6.finalproject.comment.entity;
 
+import com.team6.finalproject.comment.commentLike.entity.CommentLike;
 import com.team6.finalproject.comment.dto.CommentRequestDto;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.post.entity.Post;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Entity
@@ -33,6 +36,9 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
+    @OneToMany(mappedBy = "comment")
+    private List<CommentLike> commentLikes;
 
     public void deleteComment() {
         this.isDeleted = true;
