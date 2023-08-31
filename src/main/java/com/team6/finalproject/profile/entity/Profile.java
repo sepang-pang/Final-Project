@@ -32,6 +32,9 @@ public class Profile extends Timestamped {
     private String profileImage;
 
     @Column
+    private String zoneCode;
+
+    @Column
     private String locate;
 
     @Column(nullable = false)
@@ -45,17 +48,19 @@ public class Profile extends Timestamped {
     private List<ProfileInterest> profileInterests = new ArrayList<>();
 
     @Builder
-    public Profile(String nickname, String introduction, String locate, User user) {
+    public Profile(String nickname, String introduction, String zoneCode, String locate, User user) {
         this.nickname = nickname;
         this.introduction = introduction;
+        this.zoneCode = zoneCode;
         this.locate = locate;
         this.user = user;
         this.userScore = 0L;
     }
 
-    public void update(String nickname, String introduction, String locate) {
+    public void update(String nickname, String introduction, String zoneCode, String locate) {
         this.nickname = nickname;
         this.introduction = introduction;
+        this.zoneCode = zoneCode;
         this.locate = locate;
     }
 
