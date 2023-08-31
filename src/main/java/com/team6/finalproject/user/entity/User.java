@@ -2,15 +2,14 @@ package com.team6.finalproject.user.entity;
 
 import com.team6.finalproject.user.dto.SignupRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Table(name = "users")
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

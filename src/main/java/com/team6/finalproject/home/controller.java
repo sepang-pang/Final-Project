@@ -27,9 +27,15 @@ public class controller {
         return "login";
     }
 
+
     @GetMapping("/main")
     public String main() {
 
         return "main";
+    }
+
+    @GetMapping("/api/oauthsignup")
+    public String osignup() {
+        return "oAuthSignup";
     }
 }

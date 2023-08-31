@@ -46,6 +46,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
+        if (request.getRequestURI().equals("/oauthsignup")) {
+            log.info(request.getRequestURI());
+            log.info("로그인 시도입니다");
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (user==null) {
             log.info("인증 정보가 없습니다. 로그인페이지로 이동합니다.");
             log.info(request.getRequestURI());
@@ -55,7 +63,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/signup", "/login", "/user/reissue","/aa","/kakao/callback"};
+        String[] excludePath = {"/signup", "/login", "/user/reissue","/kakao/callback","/withdrawal","/api/oauthsignup","/favicon.ico"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
