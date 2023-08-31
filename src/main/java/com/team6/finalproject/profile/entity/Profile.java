@@ -21,22 +21,20 @@ public class Profile extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
     private String nickname;
-
     @Column
     private String introduction;
-
     @Column
     private String profileImage;
-
+    @Column
+    private String latitude;
+    @Column
+    private String longitude;
     @Column
     private String zoneCode;
-
     @Column
     private String locate;
-
     @Column(nullable = false)
     private Long userScore;
 
@@ -48,18 +46,24 @@ public class Profile extends Timestamped {
     private List<ProfileInterest> profileInterests = new ArrayList<>();
 
     @Builder
-    public Profile(String nickname, String introduction, String zoneCode, String locate, User user) {
+    public Profile(String nickname, String introduction,
+                   String latitude, String longitude, String zoneCode, String locate, User user) {
         this.nickname = nickname;
         this.introduction = introduction;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.zoneCode = zoneCode;
         this.locate = locate;
         this.user = user;
         this.userScore = 0L;
     }
 
-    public void update(String nickname, String introduction, String zoneCode, String locate) {
+    public void update(String nickname, String introduction,
+                       String latitude, String longitude, String zoneCode, String locate) {
         this.nickname = nickname;
         this.introduction = introduction;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.zoneCode = zoneCode;
         this.locate = locate;
     }
