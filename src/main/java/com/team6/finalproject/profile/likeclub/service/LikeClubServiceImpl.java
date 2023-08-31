@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class LikeClubServiceImpl implements LikeClubService {
@@ -28,11 +26,6 @@ public class LikeClubServiceImpl implements LikeClubService {
     public ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) {
         Profile profile = profileService.findProfileByUserId(user.getId());
         Club club = clubService.findClub(requestDto.getClubId()); // 요청 클럽 담기
-
-        Optional<LikeClub> checkClub = likeClubRepository.findById(club.getId());
-        if (club.equals(checkClub)) { // 중복 등록 제한
-            throw new IllegalArgumentException("이미 등록된 동호회입니다.");
-        }
 
         LikeClub likeClub = LikeClub.builder()
                 .profile(profile)

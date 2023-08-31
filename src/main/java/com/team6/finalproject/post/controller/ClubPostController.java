@@ -49,8 +49,7 @@ public class ClubPostController {
     // 모집글 삭제
     @DeleteMapping("/posts/{postId}")
     public ResponseEntity<ApiResponseDto> deletePost(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        clubPostService.deletePost(postId, userDetails.getUser());
-        return ResponseEntity.ok(new ApiResponseDto("모집글 삭제 완료", HttpStatus.OK.value()));
+        return clubPostService.deletePost(postId, userDetails.getUser());
     }
 
 

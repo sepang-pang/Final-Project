@@ -92,9 +92,8 @@ class ProfileServiceImplTest {
         when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
 
         // 수정할 닉네임 주입
-        ProfileRequestDto requestDto = ProfileRequestDto.builder()
-                .nickname("닉네임 수정")
-                .build();
+        ProfileRequestDto requestDto = new ProfileRequestDto();
+        requestDto.setNickname("닉네임 수정");
 
         // when
         profileService.updateProfile(requestDto, userDetails.getUser());

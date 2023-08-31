@@ -2,6 +2,7 @@ package com.team6.finalproject.club.controller;
 
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
+import com.team6.finalproject.club.dto.ReadInterestMajorDto;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -54,11 +55,21 @@ public class ClubController {
 
     @GetMapping("/clubs/{clubId}/members") // 동호회 멤버 전체 조회
     public List<MemberInquiryDto> readClubMembers(@PathVariable Long clubId) {
-        return clubService.getClubMembers(clubId);
+        return clubService.readClubMembers(clubId);
     }
 
     @GetMapping("clubs/{clubId}/user/{userId}") // 특정 멤버 조회
     public MemberInquiryDto readClubMember(@PathVariable Long clubId, @PathVariable Long userId) {
         return clubService.readClubMember(clubId, userId);
+    }
+
+    @GetMapping("clubs/interest-major/{majorId}") // 동호회 대주제 별 조회
+    public List<ReadInterestMajorDto> readSelectInterestMajor(@PathVariable Long majorId) {
+        return clubService.readSelectInterestMajor(majorId);
+    }
+
+    @GetMapping("clubs/interest-minor/{minorId}") // 동호회 대주제 별 조회
+    public List<ReadInterestMajorDto> readSelectInterestMinor(@PathVariable Long minorId) {
+        return clubService.readSelectInterestMinor(minorId);
     }
 }

@@ -21,6 +21,4 @@ public interface ClubPostService {
     ResponseEntity<ApiResponseDto> deletePost(Long postId, User user);
 
     Post findPost(Long postId);
-
-
 }

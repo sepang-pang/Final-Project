@@ -2,10 +2,7 @@ package com.team6.finalproject.club.service;
 
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
-import com.team6.finalproject.club.dto.ClubRequestDto;
-import com.team6.finalproject.club.dto.ClubResponseDto;
-import com.team6.finalproject.club.dto.InterestMajorDto;
-import com.team6.finalproject.club.dto.InterestMinorDto;
+import com.team6.finalproject.club.dto.*;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
@@ -44,9 +41,14 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 멤버 전체 조회
     @Override
     @Transactional(readOnly = true)
-    public List<MemberInquiryDto> getClubMembers(Long clubId) {
+    public List<MemberInquiryDto> readClubMembers(Long clubId) {
         // 클럽에 속한 멤버 조회
         List<Member> members = memberService.findMembers(clubId);
+
+        // 존재하지 않을 경우 예외 발생
+        if(members.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+        }
 
         // 반환
         // 성별 및 이미지도 함께 반환 예정
@@ -72,6 +74,22 @@ public class ClubServiceImpl implements ClubService {
                 .birth(member.getUser().getBirth())
                 .introduction(member.getUser().getProfile().getIntroduction())
                 .build();
+    }
+
+    // 대주제 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) {
+        List<Club> clubs = clubRepository.findByActiveInterestMajor(majorId);
+        return readInterestClubs(clubs);
+    }
+
+    // 소주제 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) {
+        List<Club> clubs = clubRepository.findByActiveInterestMinor(minorId);
+        return readInterestClubs(clubs);
     }
 
     // 동호회 개설
@@ -169,6 +187,10 @@ public class ClubServiceImpl implements ClubService {
         // 가입 대상 동호회 조회
         Club targetClub = findClub(clubId);
 
+        if(targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
+            throw new IllegalArgumentException("정원이 가득찼습니다");
+        }
+
 //        // 거주지 입력 여부 판단
 //        if(profileService.existValidLocate(user.getId())){
 //            throw new IllegalArgumentException("거주지를 입력해주세요");
@@ -245,5 +267,24 @@ public class ClubServiceImpl implements ClubService {
     public Club findClub(Long id) {
         return clubRepository.findByActiveId(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
+    }
+
+    // 대주제 및 소주제 유형별 조회 -> 예외 및 반환 메서드
+    public List<ReadInterestMajorDto> readInterestClubs(List<Club> clubs) {
+        if (clubs.isEmpty()) {
+            throw new IllegalArgumentException("동호회가 존재하지 않습니다.");
+        }
+
+        return clubs.stream()
+                .map(club -> ReadInterestMajorDto.builder()
+                        .nickName(club.getNickName())
+                        .name(club.getName())
+                        .description(club.getDescription())
+                        .trialAvailable(club.isTrialAvailable())
+                        .activityType(club.getActivityType().getActivity())
+                        .joinType(club.getJoinType().getJoin())
+                        .maxMember(club.getMaxMember())
+                        .build())
+                .toList();
     }
 }

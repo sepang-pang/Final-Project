@@ -48,6 +48,7 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글 생성
     @Override
     @Transactional
+
     public ClubPostResponseDto createPost(ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
         Club club = clubService.findClub(postRequestDto.getClubId());
         String clubname = clubService.findClub(postRequestDto.getClubId()).getName();
@@ -125,9 +126,8 @@ public class ClubPostServiceImpl implements ClubPostService {
 
     // 글 작성자가 본인인지 확인
     public void checkedAuthor(Post post, User user) {
-        if (!post.getUser().getUsername().equals(user.getUsername())) {
+        if (!post.getUser().getUsername().equals(user.getUsername()) || post.getClub().getUsername().equals(user.getUsername())) {
             throw new IllegalArgumentException("본인이 작성한 글이 아닙니다.");
         }
     }
-
 }

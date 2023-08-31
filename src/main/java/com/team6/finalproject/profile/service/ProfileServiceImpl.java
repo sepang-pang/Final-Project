@@ -32,11 +32,11 @@ public class ProfileServiceImpl implements ProfileService {
                 .locate(requestDto.getLocate())
                 .user(user)
                 .build();
+
         profileRepository.save(profile);
 
-        user.setProfile(profile);
+        user.setProfile(profile); // Setter 제거 시 변경
         userService.saveUser(user);
-
         return new ProfileResponseDto(profile);
     }
 
@@ -78,7 +78,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile findProfileByUserId(Long id) { // 다른 곳에서 호출 필요 시 public으로 열어주세요
+    public Profile findProfileByUserId(Long id) {
         return profileRepository.findByUserId(id).orElseThrow(
                 () -> new IllegalArgumentException("프로필을 찾을 수 없습니다."));
     }
