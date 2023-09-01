@@ -9,24 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    public void signup(SignupRequestDto signupRequestDto) {
-        if(userRepository.findByUsername(signupRequestDto.getUserName()).isPresent()){
-            throw new IllegalArgumentException("중복된 이름입니다.");
-        }
-        String loginId = signupRequestDto.getUserName();
-        String password = passwordEncoder.encode(signupRequestDto.getPassword());
-        String email = signupRequestDto.getEmail();
-        String birth = signupRequestDto.getBirth();
-        UserRoleEnum role = signupRequestDto.getRole();
+public interface UserService {
 
-        userRepository.save(new User(loginId,password,email,birth,role));
-    }
-
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
+    //회원가입
+    void signup(SignupRequestDto signupRequestDto);
+    void saveUser(User user);
 }
