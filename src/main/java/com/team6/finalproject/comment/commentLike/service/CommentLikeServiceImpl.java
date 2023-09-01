@@ -1,5 +1,9 @@
 package com.team6.finalproject.comment.commentLike.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotLikedYetException;
+import com.team6.finalproject.advice.custom.NotOwnedByUserException;
+import com.team6.finalproject.advice.custom.SelfLikeNotAllowedException;
 import com.team6.finalproject.comment.commentLike.entity.CommentLike;
 import com.team6.finalproject.comment.commentLike.repository.CommentLikeRepository;
 import com.team6.finalproject.comment.entity.Comment;
@@ -20,7 +24,7 @@ public class CommentLikeServiceImpl implements CommentLikeService {
     // 댓글 좋아요
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> commentLike(Long commentId, User user) {
+    public ResponseEntity<ApiResponseDto> commentLike(Long commentId, User user) throws SelfLikeNotAllowedException, NotExistResourceException {
         Comment comment = commentService.findComment(commentId);
 
         CommentLike like = CommentLike.builder()
@@ -29,7 +33,7 @@ public class CommentLikeServiceImpl implements CommentLikeService {
                 .build();
 
         if (user.getId().equals(comment.getUser().getId())) {
-            throw new IllegalArgumentException("본인 댓글엔 좋아요를 할 수 없습니다.");
+            throw new SelfLikeNotAllowedException("본인 댓글엔 좋아요를 할 수 없습니다.");
         }
 
         commentLikeRepository.save(like);
@@ -40,10 +44,10 @@ public class CommentLikeServiceImpl implements CommentLikeService {
     // 댓글 좋아요 취소
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> CommentDislike(Long commentId, User user) {
+    public ResponseEntity<ApiResponseDto> CommentDislike(Long commentId, User user) throws NotLikedYetException, NotOwnedByUserException {
 
         CommentLike like = commentLikeRepository.findByActiveCommentId(commentId).orElseThrow(()->
-                new IllegalArgumentException("좋아요를 누르지 않았습니다"));
+                new NotLikedYetException("좋아요를 누르지 않았습니다"));
 
         checkedUser(like, user);
 
@@ -52,9 +56,9 @@ public class CommentLikeServiceImpl implements CommentLikeService {
 
     }
 
-    private void checkedUser (CommentLike commentLike, User user) {
+    private void checkedUser (CommentLike commentLike, User user) throws NotOwnedByUserException {
         if (!commentLike.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("본인이 누른 좋아요가 아닙니다.");
+            throw new NotOwnedByUserException("본인이 누른 좋아요가 아닙니다.");
         }
     }
 

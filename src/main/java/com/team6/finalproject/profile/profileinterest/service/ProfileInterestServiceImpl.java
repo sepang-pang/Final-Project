@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.profileinterest.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.profile.dto.InterestRequestDto;
@@ -26,7 +27,7 @@ public class ProfileInterestServiceImpl implements ProfileInterestService {
     // 관심사 등록
     @Override
     @Transactional
-    public ProfileResponseDto addInterests(InterestRequestDto requestDto, User user) {
+    public ProfileResponseDto addInterests(InterestRequestDto requestDto, User user) throws NotExistResourceException {
         Profile profile = profileService.findProfileByUserId(user.getId());
 
         List<Long> minorIds = requestDto.getMinorId();

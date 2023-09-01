@@ -1,5 +1,9 @@
 package com.team6.finalproject.club.service;
 
+import com.team6.finalproject.advice.custom.CapacityFullException;
+import com.team6.finalproject.advice.custom.DuplicateActionException;
+import com.team6.finalproject.advice.custom.DuplicateNameException;
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.dto.*;
@@ -25,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -41,13 +46,13 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 멤버 전체 조회
     @Override
     @Transactional(readOnly = true)
-    public List<MemberInquiryDto> readClubMembers(Long clubId) {
+    public List<MemberInquiryDto> readClubMembers(Long clubId) throws NotExistResourceException {
         // 클럽에 속한 멤버 조회
         List<Member> members = memberService.findMembers(clubId);
 
         // 존재하지 않을 경우 예외 발생
         if(members.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+            throw new NotExistResourceException("존재하지 않는 회원입니다.");
         }
 
         // 반환
@@ -64,7 +69,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 멤버 선택 조회
     @Override
     @Transactional(readOnly = true)
-    public MemberInquiryDto readClubMember(Long clubId, Long userId) {
+    public MemberInquiryDto readClubMember(Long clubId, Long userId) throws NotExistResourceException {
         // 선택한 동호회와 특정 유저가 존재하는지 확인
         Member member = memberService.findMember(clubId, userId);
 
@@ -79,7 +84,7 @@ public class ClubServiceImpl implements ClubService {
     // 대주제 별 조회
     @Override
     @Transactional(readOnly = true)
-    public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) {
+    public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) throws NotExistResourceException {
         List<Club> clubs = clubRepository.findByActiveInterestMajor(majorId);
         return readInterestClubs(clubs);
     }
@@ -87,7 +92,7 @@ public class ClubServiceImpl implements ClubService {
     // 소주제 별 조회
     @Override
     @Transactional(readOnly = true)
-    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) {
+    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException {
         List<Club> clubs = clubRepository.findByActiveInterestMinor(minorId);
         return readInterestClubs(clubs);
     }
@@ -95,7 +100,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 개설
     @Override
     @Transactional
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException {
 
         // 유저 프로필 조회
         Profile profile = profileService.findProfileByUserId(user.getId());
@@ -105,7 +110,7 @@ public class ClubServiceImpl implements ClubService {
 
         // 동호회 이름 존재 확인
         if (clubRepository.findByActiveClubName(clubRequestDto.getName()).isPresent()) { // isPresent(): 존재하면 true, 존재하지 않으면 false
-            throw new IllegalArgumentException("동호회 이름이 이미 존재합니다.");
+            throw new DuplicateNameException("동호회 이름이 이미 존재합니다.");
         }
 
         // 가입 방식 설정
@@ -161,17 +166,17 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 폐쇄
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) {
+    public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) throws NotExistResourceException, AccessDeniedException {
         //  동호회 존재 여부 확인
         // QueryDsl 로 삭제된 동호회는 조회 x
         Club targetClub = clubRepository.findByActiveId(clubId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 동호회입니다."));
 
         // Soft - Delete 메서드
         // 동호회 개설자가 아니면 삭제 불가
         // 동호회 멤버도 delete 하기
         if (!targetClub.getUsername().equals(user.getUsername())) {
-            throw new IllegalArgumentException("권한이 없습니다");
+            throw new AccessDeniedException("권한이 없습니다");
         }
 
         targetClub.deleteClub();
@@ -183,12 +188,12 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 가입 신청
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> joinClub(Long clubId, User user) {
+    public ResponseEntity<ApiResponseDto> joinClub(Long clubId, User user) throws DuplicateActionException, CapacityFullException, NotExistResourceException {
         // 가입 대상 동호회 조회
         Club targetClub = findClub(clubId);
 
         if(targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
-            throw new IllegalArgumentException("정원이 가득찼습니다");
+            throw new CapacityFullException("정원이 가득찼습니다");
         }
 
 //        // 거주지 입력 여부 판단
@@ -215,12 +220,12 @@ public class ClubServiceImpl implements ClubService {
         // ======== 가입 승인 동호회 ======== //
         // 가입여부 확인
         if (memberService.existJoinClub(user.getId(), targetClub.getId())) {
-            throw new IllegalArgumentException("이미 소속된 동호회입니다.");
+            throw new DuplicateActionException("이미 소속된 동호회입니다.");
         }
 
         // 신청여부 확인
         if (applyJoinClubService.hasPendingApplication(user.getId(), clubId)) {
-            throw new IllegalArgumentException("이미 가입 신청한 상태입니다.");
+            throw new DuplicateActionException("이미 가입 신청한 상태입니다.");
         }
 
         // 가입 신청서 제출
@@ -236,12 +241,12 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 가입 승인
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> processClubApproval(Long applyId, User user, ApprovalStateEnum approvalState) {
+    public ResponseEntity<ApiResponseDto> processClubApproval(Long applyId, User user, ApprovalStateEnum approvalState) throws AccessDeniedException, NotExistResourceException {
         ApplyJoinClub applyJoinClub = applyJoinClubService.findApplication(applyId); // 신청서 조회
         Club club = findClub(applyJoinClub.getClub().getId()); // 신청한 동호회 조회
 
         if (!applyJoinClub.getClub().getUsername().equals(user.getUsername())) { // 신청한 동호회의 개설자 이름과 현재 인가된 유저의 이름 비교
-            throw new IllegalArgumentException("접근 권한이 없습니다.");
+            throw new AccessDeniedException("접근 권한이 없습니다.");
         }
 
         applyJoinClub.updateApprovalState(approvalState); // 신청서의 상태 설정
@@ -264,15 +269,15 @@ public class ClubServiceImpl implements ClubService {
 
     // 동호회 조회 메서드
     @Override
-    public Club findClub(Long id) {
+    public Club findClub(Long id) throws NotExistResourceException {
         return clubRepository.findByActiveId(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 동호회입니다."));
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 동호회입니다."));
     }
 
     // 대주제 및 소주제 유형별 조회 -> 예외 및 반환 메서드
-    public List<ReadInterestMajorDto> readInterestClubs(List<Club> clubs) {
+    public List<ReadInterestMajorDto> readInterestClubs(List<Club> clubs) throws NotExistResourceException {
         if (clubs.isEmpty()) {
-            throw new IllegalArgumentException("동호회가 존재하지 않습니다.");
+            throw new NotExistResourceException("동호회가 존재하지 않습니다.");
         }
 
         return clubs.stream()

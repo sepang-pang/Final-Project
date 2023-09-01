@@ -1,5 +1,7 @@
 package com.team6.finalproject.comment.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotOwnedByUserException;
 import com.team6.finalproject.comment.dto.CommentRequestDto;
 import com.team6.finalproject.comment.dto.CommentResponseDto;
 import com.team6.finalproject.comment.entity.Comment;
@@ -27,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     // 댓글 작성
     @Override
     @Transactional
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user) {
+    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user) throws NotExistResourceException {
         Post post = clubPostService.findPost(commentRequestDto.getPostId());
         String nickname = profileService.getProfile(user).getNickname();
         Comment comment = Comment.builder()
@@ -54,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
     // 댓글 수정
     @Override
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, User user) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, User user) throws NotExistResourceException, NotOwnedByUserException {
         Comment comment = findComment(commentId);
 
         checkedAuthor(comment, user);
@@ -66,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
     // 댓글 삭제
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> deleteComment(Long commentId, User user) {
+    public ResponseEntity<ApiResponseDto> deleteComment(Long commentId, User user) throws NotExistResourceException, NotOwnedByUserException {
         Comment comment = findComment(commentId);
 
         checkedAuthor(comment, user);
@@ -78,16 +80,16 @@ public class CommentServiceImpl implements CommentService {
     // 댓글 존재 여부 확인
     @Override
     @Transactional(readOnly = true)
-    public Comment findComment(Long commentId) {
+    public Comment findComment(Long commentId) throws NotExistResourceException {
         return commentRepository.findByActiveId(commentId).orElseThrow(() ->
-                new IllegalArgumentException("댓글이 존재하지 않습니다.")
+                new NotExistResourceException("댓글이 존재하지 않습니다.")
         );
     }
 
     // 본인 댓글인지 확인
-    public void checkedAuthor(Comment comment, User user) {
+    public void checkedAuthor(Comment comment, User user) throws NotOwnedByUserException {
         if (!comment.getUser().getUsername().equals(user.getUsername())) {
-            throw new IllegalArgumentException("본인이 작성한 댓글이 아닙니다.");
+            throw new NotOwnedByUserException("본인이 작성한 댓글이 아닙니다.");
         }
     }
 }

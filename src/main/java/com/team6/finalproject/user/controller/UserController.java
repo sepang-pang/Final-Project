@@ -1,5 +1,7 @@
 package com.team6.finalproject.user.controller;
 
+import com.team6.finalproject.advice.custom.DuplicateNameException;
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.dto.InquiryRequestDto;
 import com.team6.finalproject.user.dto.InquiryResponseDto;
@@ -23,7 +25,7 @@ public class UserController {
     private final InquiryService inquiryService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public String signup(@RequestBody SignupRequestDto signupRequestDto) throws DuplicateNameException {
         userService.signup(signupRequestDto);
         return "redirect:/login";
     }
@@ -44,7 +46,7 @@ public class UserController {
     @GetMapping("/api/users/inquiry/{id}") // 문의 단건 조회
     @ResponseBody
     public InquiryResponseDto getInquiry(@PathVariable Long id,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return inquiryService.getInquiry(id, userDetails.getUser());
     }
 
@@ -57,7 +59,7 @@ public class UserController {
     @PatchMapping("/api/users/inquiry") // 문의 수정
     @ResponseBody
     public InquiryResponseDto updateInquiry(@RequestBody InquiryRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return inquiryService.updateInquiry(requestDto, userDetails.getUser());
     }
 }

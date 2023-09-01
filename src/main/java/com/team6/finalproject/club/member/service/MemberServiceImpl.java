@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.member.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.entity.Member;
 import com.team6.finalproject.club.member.repository.MemberRepository;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -19,13 +21,13 @@ public class MemberServiceImpl implements MemberService {
 
     // 멤버 권한 부여
     @Override
-    public ResponseEntity<ApiResponseDto> grantRole(Long memberId, User user, ClubRoleEnum role) {
+    public ResponseEntity<ApiResponseDto> grantRole(Long memberId, User user, ClubRoleEnum role) throws AccessDeniedException, NotExistResourceException {
         // 동호회에서 권한을 부여하고자 하는 회원이 존재하는지 확인
         Member member = findMember(memberId);
 
         // 조회된 동호회 개설자와 현재 인가된 유저의 이름이 같은지 확인함으로써 권한 확인
         if (member.getUser().getUsername().equals(user.getUsername())) {
-            throw new IllegalArgumentException("권한이 없습니다");
+            throw new AccessDeniedException("권한이 없습니다");
         }
 
         // 권한 부여
@@ -54,14 +56,14 @@ public class MemberServiceImpl implements MemberService {
 
     // 특정 멤버(단일) 조회
     @Override
-    public Member findMember(Long clubId, Long userId) {
+    public Member findMember(Long clubId, Long userId) throws NotExistResourceException {
         return memberRepository.findActiveUserAndClub(clubId, userId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(()-> new NotExistResourceException("존재하지 않는 회원입니다."));
     }
 
     // 멤버 조회
-    public Member findMember(Long userId) {
+    public Member findMember(Long userId) throws NotExistResourceException {
         return memberRepository.findActiveUser(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 회원입니다."));
     }
 }

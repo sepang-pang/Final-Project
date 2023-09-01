@@ -1,5 +1,9 @@
 package com.team6.finalproject.post.postLike.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotLikedYetException;
+import com.team6.finalproject.advice.custom.NotOwnedByUserException;
+import com.team6.finalproject.advice.custom.SelfLikeNotAllowedException;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.post.entity.Post;
 import com.team6.finalproject.post.postLike.entity.PostLike;
@@ -20,7 +24,7 @@ public class PostLikeServiceImpl implements PostLikeService{
     // 게시물 좋아요
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> postLike(Long postId, User user) {
+    public ResponseEntity<ApiResponseDto> postLike(Long postId, User user) throws SelfLikeNotAllowedException, NotExistResourceException {
         Post post = clubPostService.findPost(postId);
 
         PostLike like = PostLike.builder()
@@ -29,7 +33,7 @@ public class PostLikeServiceImpl implements PostLikeService{
                 .build();
 
         if (user.getId().equals(post.getUser().getId())) {
-            throw new IllegalArgumentException("본인 게시글엔 좋아요를 할 수 없습니다.");
+            throw new SelfLikeNotAllowedException("본인 게시글엔 좋아요를 할 수 없습니다.");
         }
 
         postLikeRepository.save(like);
@@ -40,10 +44,10 @@ public class PostLikeServiceImpl implements PostLikeService{
     // 게시물 좋아요 취소
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> PostDislike(Long postId, User user) {
+    public ResponseEntity<ApiResponseDto> PostDislike(Long postId, User user) throws NotLikedYetException, NotOwnedByUserException {
 
         PostLike like = postLikeRepository.findByActivePostId(postId).orElseThrow(() ->
-                new IllegalArgumentException("좋아요를 누르지 않았습니다."));
+                new NotLikedYetException("좋아요를 누르지 않았습니다."));
 
         checkedUser(like, user);
 
@@ -54,9 +58,9 @@ public class PostLikeServiceImpl implements PostLikeService{
 
 
 
-    private void checkedUser (PostLike postLike, User user) {
+    private void checkedUser (PostLike postLike, User user) throws NotOwnedByUserException {
         if (!postLike.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("본인이 누른 좋아요가 아닙니다.");
+            throw new NotOwnedByUserException("본인이 누른 좋아요가 아닙니다.");
         }
     }
 
