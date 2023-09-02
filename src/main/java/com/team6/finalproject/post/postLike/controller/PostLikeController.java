@@ -1,5 +1,9 @@
 package com.team6.finalproject.post.postLike.controller;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotLikedYetException;
+import com.team6.finalproject.advice.custom.NotOwnedByUserException;
+import com.team6.finalproject.advice.custom.SelfLikeNotAllowedException;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.post.postLike.service.PostLikeService;
 import com.team6.finalproject.security.UserDetailsImpl;
@@ -18,14 +22,14 @@ public class PostLikeController {
 
     // 좋아요
     @PostMapping("/{postId}/like")
-    public ResponseEntity<ApiResponseDto> postLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ApiResponseDto> postLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws SelfLikeNotAllowedException, NotExistResourceException {
         return postLikeService.postLike(postId,userDetails.getUser());
 
     }
 
     // 좋아요 취소
     @DeleteMapping("{postId}/dislike")
-    public ResponseEntity<ApiResponseDto> PostDislike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ApiResponseDto> PostDislike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotOwnedByUserException, NotLikedYetException {
        return postLikeService.PostDislike(postId,userDetails.getUser());
 
     }

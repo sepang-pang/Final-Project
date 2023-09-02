@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.likeclub.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.profile.dto.LikeClubRequestDto;
@@ -23,7 +24,7 @@ public class LikeClubServiceImpl implements LikeClubService {
 
     @Override
     @Transactional
-    public ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) {
+    public ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) throws NotExistResourceException {
         Profile profile = profileService.findProfileByUserId(user.getId());
         Club club = clubService.findClub(requestDto.getClubId()); // 요청 클럽 담기
 

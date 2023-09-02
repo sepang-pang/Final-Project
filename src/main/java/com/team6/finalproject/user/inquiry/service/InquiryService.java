@@ -1,5 +1,6 @@
 package com.team6.finalproject.user.inquiry.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.user.dto.InquiryRequestDto;
 import com.team6.finalproject.user.dto.InquiryResponseDto;
 import com.team6.finalproject.user.entity.User;
@@ -11,11 +12,11 @@ public interface InquiryService {
     // 문의 생성
     InquiryResponseDto createInquiry(InquiryRequestDto requestDto, User user);
     // 문의 단건 조회
-    InquiryResponseDto getInquiry(Long id, User user);
+    InquiryResponseDto getInquiry(Long id, User user) throws NotExistResourceException;
     // 문의 전체 조회
     List<InquiryResponseDto> getAllInquiry(User user);
     // 문의 수정
-    InquiryResponseDto updateInquiry(InquiryRequestDto requestDto, User user);
+    InquiryResponseDto updateInquiry(InquiryRequestDto requestDto, User user) throws NotExistResourceException;
     // 로그인 유저의 문의 찾기
-    Inquiry findByIdAndUserId(Long id, Long userId);
+    Inquiry findByIdAndUserId(Long id, Long userId) throws NotExistResourceException;
 }

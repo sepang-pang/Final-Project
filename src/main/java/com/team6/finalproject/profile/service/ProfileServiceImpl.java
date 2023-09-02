@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.file.FileUploader;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
@@ -46,7 +47,7 @@ public class ProfileServiceImpl implements ProfileService {
     // 자신의 프로필 조회
     @Override
     @Transactional(readOnly = true)
-    public ProfileResponseDto getProfile(User user) {
+    public ProfileResponseDto getProfile(User user) throws NotExistResourceException {
         Profile profile = findProfileByUserId(user.getId());
         return new ProfileResponseDto(profile);
     }
@@ -54,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
     // 프로필 nickname, introduction, zoneCode, locate 수정
     @Override
     @Transactional
-    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) {
+    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) throws NotExistResourceException {
         Profile profile = findProfileByUserId(user.getId());
 
         String nickname = requestDto.getNickname();
@@ -71,7 +72,7 @@ public class ProfileServiceImpl implements ProfileService {
     // 프로필 이미지 등록/수정
     @Override
     @Transactional
-    public ProfileResponseDto updateImage(MultipartFile file, User user) throws IOException {
+    public ProfileResponseDto updateImage(MultipartFile file, User user) throws IOException, NotExistResourceException {
         Profile profile = findProfileByUserId(user.getId());
         // 수정 시 기존 객체 버킷에서 삭제
         if (profile.getProfileImage() != null) {
@@ -84,9 +85,9 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile findProfileByUserId(Long id) {
+    public Profile findProfileByUserId(Long id) throws NotExistResourceException {
         return profileRepository.findByUserId(id).orElseThrow(
-                () -> new IllegalArgumentException("프로필을 찾을 수 없습니다."));
+                () -> new NotExistResourceException("프로필을 찾을 수 없습니다."));
     }
 
     @Override // 위치 기입 했는지 확인

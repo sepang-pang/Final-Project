@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.file.FileUploader;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
 import com.team6.finalproject.profile.dto.ProfileResponseDto;
@@ -72,7 +73,7 @@ class ProfileServiceImplTest {
 
     @Test
     @DisplayName("프로필 조회 테스트")
-    void getProfileTest() {
+    void getProfileTest() throws NotExistResourceException {
         // given
         // findByUserId() 호출 시 profile 반환
         when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
@@ -86,7 +87,7 @@ class ProfileServiceImplTest {
 
     @Test
     @DisplayName("프로필 수정 테스트")
-    void updateProfileTest() {
+    void updateProfileTest() throws NotExistResourceException {
         // given
         // findByUserId() 호출 시 profile 반환
         when(profileRepository.findByUserId(user.getId())).thenReturn(Optional.of(profile));
@@ -105,7 +106,7 @@ class ProfileServiceImplTest {
 
     @Test
     @DisplayName("프로필 이미지 수정 테스트")
-    void updateImageTest() throws IOException {
+    void updateImageTest() throws IOException, NotExistResourceException {
         // given
         // 모의 파일 생성
         MockMultipartFile file

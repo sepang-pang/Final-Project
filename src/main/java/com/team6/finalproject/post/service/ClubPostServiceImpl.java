@@ -1,5 +1,7 @@
 package com.team6.finalproject.post.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotOwnedByUserException;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
@@ -40,7 +42,7 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글 선택 조회
     @Override
     @Transactional(readOnly = true)
-    public ClubPostResponseDto readPostById(Long postId) {
+    public ClubPostResponseDto readPostById(Long postId) throws NotExistResourceException {
         Post post = findPost(postId);
         return new ClubPostResponseDto(post);
     }
@@ -48,8 +50,7 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글 생성
     @Override
     @Transactional
-
-    public ClubPostResponseDto createPost(ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
+    public ClubPostResponseDto createPost(ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException, NotExistResourceException {
         Club club = clubService.findClub(postRequestDto.getClubId());
         String clubname = clubService.findClub(postRequestDto.getClubId()).getName();
         String media = uploadMedia(multipartFile);
@@ -73,7 +74,7 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글 수정
     @Override
     @Transactional
-    public ClubPostResponseDto updatePost(Long postId, ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException {
+    public ClubPostResponseDto updatePost(Long postId, ClubPostRequestDto postRequestDto, User user, MultipartFile multipartFile) throws IOException, NotOwnedByUserException, NotExistResourceException {
         Post post = updateMedia(multipartFile, postId);
 
         checkedAuthor(post, user);
@@ -86,13 +87,13 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 모집글 삭제
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> deletePost(Long postId, User user) {
+    public ResponseEntity<ApiResponseDto> deletePost(Long postId, User user) throws NotExistResourceException, NotOwnedByUserException {
         Post post = findPost(postId);
 
         checkedAuthor(post, user);
 
         post.deletePost();
-       return ResponseEntity.ok().body(new ApiResponseDto("모집글 삭제 완료!", 200));
+        return ResponseEntity.ok().body(new ApiResponseDto("모집글 삭제 완료!", 200));
     }
 
 
@@ -104,7 +105,7 @@ public class ClubPostServiceImpl implements ClubPostService {
 
     // 모집글에 미디어 수정
     @Transactional
-    public Post updateMedia(MultipartFile file, Long postId) throws IOException {
+    public Post updateMedia(MultipartFile file, Long postId) throws IOException, NotExistResourceException {
         Post post = findPost(postId);
         if (post.getMedia() != null) {
             fileUploader.deleteFile(post.getMedia());
@@ -118,16 +119,16 @@ public class ClubPostServiceImpl implements ClubPostService {
     // 게시글 존재 여부 확인
     @Override
     @Transactional(readOnly = true)
-    public Post findPost(Long postId) {
+    public Post findPost(Long postId) throws NotExistResourceException {
         return postRepository.findByActiveId(postId).orElseThrow(() ->
-                new IllegalArgumentException("선택한 글은 존재하지 않습니다.")
+                new NotExistResourceException("선택한 글은 존재하지 않습니다.")
         );
     }
 
     // 글 작성자가 본인인지 확인
-    public void checkedAuthor(Post post, User user) {
+    public void checkedAuthor(Post post, User user) throws NotOwnedByUserException {
         if (!post.getUser().getUsername().equals(user.getUsername()) || post.getClub().getUsername().equals(user.getUsername())) {
-            throw new IllegalArgumentException("본인이 작성한 글이 아닙니다.");
+            throw new NotOwnedByUserException("본인이 작성한 글이 아닙니다.");
         }
     }
 }

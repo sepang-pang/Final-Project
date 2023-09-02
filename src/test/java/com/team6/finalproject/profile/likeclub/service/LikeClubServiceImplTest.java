@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.likeclub.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
@@ -55,7 +56,7 @@ class LikeClubServiceImplTest {
 
     @Test
     @DisplayName("관심 동호회 등록 테스트")
-    void addLikeClubTest() {
+    void addLikeClubTest() throws NotExistResourceException {
         // given
         // 소주제 생성
         InterestMinor interestMinor = InterestMinor.builder()

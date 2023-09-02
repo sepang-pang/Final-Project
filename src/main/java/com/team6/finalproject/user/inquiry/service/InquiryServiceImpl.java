@@ -1,5 +1,6 @@
 package com.team6.finalproject.user.inquiry.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.user.dto.InquiryRequestDto;
 import com.team6.finalproject.user.dto.InquiryResponseDto;
 import com.team6.finalproject.user.entity.User;
@@ -33,7 +34,7 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     @Transactional(readOnly = true) // 문의 단건 조회
-    public InquiryResponseDto getInquiry(Long id, User user) {
+    public InquiryResponseDto getInquiry(Long id, User user) throws NotExistResourceException {
         Inquiry inquiry = findByIdAndUserId(id, user.getId());
         return new InquiryResponseDto(inquiry);
     }
@@ -48,7 +49,7 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     @Transactional // 문의 수정
-    public InquiryResponseDto updateInquiry(InquiryRequestDto requestDto, User user) {
+    public InquiryResponseDto updateInquiry(InquiryRequestDto requestDto, User user) throws NotExistResourceException {
         Inquiry inquiry = findByIdAndUserId(requestDto.getInquiryId(), user.getId());
 
         String description = requestDto.getDescription();
@@ -59,8 +60,8 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public Inquiry findByIdAndUserId(Long id, Long userId) {
+    public Inquiry findByIdAndUserId(Long id, Long userId) throws NotExistResourceException {
         return inquiryRepository.findByIdAndUserId(id, userId).orElseThrow(
-                () -> new IllegalArgumentException("문의 내역을 찾을 수 없습니다."));
+                () -> new NotExistResourceException("문의 내역을 찾을 수 없습니다."));
     }
 }
