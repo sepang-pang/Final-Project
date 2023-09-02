@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.profileinterest.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.profile.dto.InterestRequestDto;
@@ -56,7 +57,7 @@ class ProfileInterestServiceImplTest {
 
     @Test
     @DisplayName("프로필 관심사 등록 테스트")
-    void addInterestsTest() {
+    void addInterestsTest() throws NotExistResourceException {
         // given
         InterestMinor interestMinor1 = InterestMinor.builder()
                 .id(1L)

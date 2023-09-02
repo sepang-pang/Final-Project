@@ -1,5 +1,6 @@
 package com.team6.finalproject.user.inquiry.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.user.dto.InquiryRequestDto;
 import com.team6.finalproject.user.dto.InquiryResponseDto;
 import com.team6.finalproject.user.entity.User;
@@ -64,7 +65,7 @@ class InquiryServiceImplTest {
 
     @Test
     @DisplayName("문의 단건 조회 테스트")
-    void getInquiryTest() {
+    void getInquiryTest() throws NotExistResourceException {
         //given
         Long id = 1L;
 
@@ -95,7 +96,7 @@ class InquiryServiceImplTest {
 
     @Test
     @DisplayName("문의 수정 테스트")
-    void updateInquiryTest() {
+    void updateInquiryTest() throws NotExistResourceException {
         //given
         when(inquiryRepository.findByIdAndUserId(requestDto.getInquiryId(), user.getId())).thenReturn(Optional.of(inquiry));
 

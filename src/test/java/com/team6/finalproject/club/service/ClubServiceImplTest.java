@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -77,7 +78,7 @@ class ClubServiceImplTest {
 
         @Test
         @DisplayName("멤버 조회 성공 테스트 : 구문 3")
-        public void test3() {
+        public void test3() throws NotExistResourceException {
             // given
             Long givenClubId = 1L;
 
