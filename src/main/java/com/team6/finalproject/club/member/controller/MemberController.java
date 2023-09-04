@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.member.controller;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.file.AccessDeniedException;
+
 @RestController
 @RequiredArgsConstructor
 @Secured(ClubRoleEnum.ClubRole.PRESIDENT)
@@ -21,12 +24,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PutMapping("/members/{memberId}/staff") // 스태프 권한 부여
-    public ResponseEntity<ApiResponseDto> grantRoleSTAFF(@PathVariable Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ApiResponseDto> grantRoleSTAFF(@PathVariable Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {
         return memberService.grantRole(memberId, userDetails.getUser(), ClubRoleEnum.STAFF);
     }
 
     @PutMapping("/members/{memberId}/normal") // 일반회원 권한 부여
-    public ResponseEntity<ApiResponseDto> grantRoleNORMAL(@PathVariable Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ApiResponseDto> grantRoleNORMAL(@PathVariable Long memberId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {
         return memberService.grantRole(memberId, userDetails.getUser(), ClubRoleEnum.NORMAL);
     }
 }

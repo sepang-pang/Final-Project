@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.apply.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.repository.ApplyJoinClubRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class ApplyJoinClubServiceImpl implements ApplyJoinClubService{
     }
     @Override
     @Transactional(readOnly = true)
-    public ApplyJoinClub findApplication(Long applyId) { // 신청서 조회
+    public ApplyJoinClub findApplication(Long applyId) throws NotExistResourceException { // 신청서 조회
         return applyJoinClubRepository.findByActiveId(applyId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 신청입니다."));
+                .orElseThrow(()-> new NotExistResourceException("존재하지 않는 신청입니다."));
     }
 }

@@ -1,5 +1,6 @@
 package com.team6.finalproject.profile.controller;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.profile.dto.InterestRequestDto;
 import com.team6.finalproject.profile.dto.LikeClubRequestDto;
 import com.team6.finalproject.profile.dto.ProfileRequestDto;
@@ -39,35 +40,35 @@ public class ProfileController {
 
     @GetMapping("/profile") // 프로필 조회
     @ResponseBody
-    public ProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return profileService.getProfile(userDetails.getUser());
     }
 
     @PatchMapping("/profile") // 프로필 수정
     @ResponseBody
     public ProfileResponseDto updateProfile(@RequestBody ProfileRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return profileService.updateProfile(requestDto, userDetails.getUser());
     }
 
     @PatchMapping("/profile/image") // 프로필 이미지 수정
     @ResponseBody
     public ProfileResponseDto updateImage(@RequestPart MultipartFile file,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, NotExistResourceException {
         return profileService.updateImage(file, userDetails.getUser());
     }
 
     @PostMapping("/profile/interests") // 관심사 등록
     @ResponseBody
     public ProfileResponseDto addInterests(@RequestBody InterestRequestDto requestDto,
-                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return profileInterestService.addInterests(requestDto, userDetails.getUser());
     }
 
     @PostMapping("/profile/like-clubs") // 관심 동호회 등록
     @ResponseBody
     public ProfileResponseDto addLikeClub(@RequestBody LikeClubRequestDto requestDto,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return likeClubService.addLikeClub(requestDto, userDetails.getUser());
     }
 }

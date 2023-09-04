@@ -1,5 +1,7 @@
 package com.team6.finalproject.comment.controller;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotOwnedByUserException;
 import com.team6.finalproject.comment.dto.CommentRequestDto;
 import com.team6.finalproject.comment.dto.CommentResponseDto;
 import com.team6.finalproject.comment.service.CommentService;
@@ -28,19 +30,19 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping
-    public CommentResponseDto createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommentResponseDto createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return commentService.createComment(commentRequestDto, userDetails.getUser());
     }
 
     // 댓글 수정
     @PutMapping("/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CommentResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, NotOwnedByUserException {
         return commentService.updateComment(commentId, commentRequestDto, userDetails.getUser());
     }
 
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<ApiResponseDto> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ApiResponseDto> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, NotOwnedByUserException {
         commentService.deleteComment(commentId, userDetails.getUser());
         return ResponseEntity.ok(new ApiResponseDto("댓글 삭제 완료", HttpStatus.OK.value()));
     }

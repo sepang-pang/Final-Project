@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -65,19 +66,19 @@ class ClubServiceImplTest {
         @Test
         @DisplayName("멤버 조회 실패 테스트 : 구문 2")
         public void test2() {
-            // given성
+            // given
             Long givenClubId = 1L;
             when(memberService.findMembers(givenClubId)).thenReturn(Collections.emptyList()); // 빈 리스트 반환
 
             // when ~ then
-            assertThrows(IllegalArgumentException.class, () -> {
+            assertThrows(NotExistResourceException.class, () -> {
                 clubService.readClubMembers(givenClubId);
             }, "존재하지 않는 회원입니다.");
         }
 
         @Test
         @DisplayName("멤버 조회 성공 테스트 : 구문 3")
-        public void test3() {
+        public void test3() throws NotExistResourceException {
             // given
             Long givenClubId = 1L;
 

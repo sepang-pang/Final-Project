@@ -13,6 +13,7 @@ public class ClubPostResponseDto {
     private String title;
     private String content;
     private int view;
+    private int likePost;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
     
@@ -22,6 +23,7 @@ public class ClubPostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.view = post.getView();
+
         this.createAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.nickname = post.getNickname();
