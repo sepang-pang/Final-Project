@@ -3,7 +3,6 @@ package com.team6.finalproject.meeting_user.controller;
 import com.team6.finalproject.meeting_user.dto.MeetingUsersResponseDto;
 import com.team6.finalproject.meeting_user.service.MeetingUserService;
 import com.team6.finalproject.security.UserDetailsImpl;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

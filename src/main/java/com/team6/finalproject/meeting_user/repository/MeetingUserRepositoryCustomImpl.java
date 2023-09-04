@@ -2,14 +2,11 @@ package com.team6.finalproject.meeting_user.repository;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.meeting_user.entity.MeetingUser;
-import com.team6.finalproject.meeting_user.entity.QMeetingUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.team6.finalproject.meeting_user.entity.QMeetingUser.meetingUser;
 

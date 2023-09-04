@@ -1,7 +1,6 @@
 package com.team6.finalproject.meeting_user.service;
 
 import com.team6.finalproject.meeting.entity.Meeting;
-import com.team6.finalproject.meeting.repository.MeetingRepository;
 import com.team6.finalproject.meeting.service.MeetingService;
 import com.team6.finalproject.meeting_user.dto.MeetingUsersResponseDto;
 import com.team6.finalproject.meeting_user.entity.MeetingUser;
@@ -29,6 +28,14 @@ public class MeetingUserService {
     // 모임 참석.
     public void meetingAttend(Long meetingId, User user) {
         Meeting meeting = meetingService.findMeeting(meetingId);
+
+        // 참여자 수 조회
+        int participants = meetingUserRepository.findAll().size();
+
+        // Meeting의 MaxMember수 보다 참여자 수가 높을때 예외처리.
+        if (meeting.getMaxMember()<participants) {
+            throw new IllegalArgumentException("참여자 수가 다 찼습니다.");
+        }
 
         MeetingUser meetingUser = MeetingUser.builder()
                 .meeting(meeting)
