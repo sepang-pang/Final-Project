@@ -39,8 +39,6 @@ public class MeetingController {
         meetingService.deleteMeeting(meetingId,userDetails.getUser());
     }
 
-
-
     // 모임 일정 수정.
     @PutMapping("/{meetingId}/schedule")
     public void updateSchedule(@PathVariable Long meetingId,@RequestBody MeetingScheduleRequestDto meetingScheduleRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {

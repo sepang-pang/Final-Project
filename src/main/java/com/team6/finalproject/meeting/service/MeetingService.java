@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
@@ -53,10 +54,10 @@ public class MeetingService {
     @Transactional(readOnly = true)
     public MeetingResponseDto getMeeting(Long meetingId, User user) {
 
-        Meeting meeting = findMeeting(meetingId);
+        Optional<Meeting> meeting = meetingRepository.findByMeeting(meetingId);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(meeting.get().getClub().getId(),user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
