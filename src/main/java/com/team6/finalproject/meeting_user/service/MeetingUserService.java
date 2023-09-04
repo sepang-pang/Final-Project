@@ -32,7 +32,7 @@ public class MeetingUserService {
         // 참여자 수 조회
         int participants = meetingUserRepository.findAll().size();
 
-        // Meeting의 MaxMember수 보다 참여자 수가 높을때 예외처리.
+        // 정원에 도달 했을 경우 모임 참여 불가
         if (meeting.getMaxMember()<participants) {
             throw new IllegalArgumentException("참여자 수가 다 찼습니다.");
         }
