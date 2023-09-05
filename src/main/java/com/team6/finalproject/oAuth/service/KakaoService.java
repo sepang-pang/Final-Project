@@ -33,9 +33,6 @@ public class KakaoService {
     @Value("${kakao.client.id}")
     private String KAKAO_CLIENT_ID;
 
-    @Value("${kakao.client.secret}")
-    private String KAKAO_CLIENT_SECRET;
-
     @Value("${kakao.redirect.url}")
     private String KAKAO_REDIRECT_URL;
 
