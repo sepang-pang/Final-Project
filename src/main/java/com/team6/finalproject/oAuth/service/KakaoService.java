@@ -39,7 +39,6 @@ public class KakaoService {
     public boolean check(String code,HttpServletResponse httpServletResponse) {
         String apiUrl = "https://kauth.kakao.com/oauth/token";
         String grantType = "authorization_code";
-        String redirectUri = "http://localhost:8080/kakao/callback";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/x-www-form-urlencoded");
