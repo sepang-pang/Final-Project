@@ -27,7 +27,6 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, port);
     }
 
-
     @Bean //Redis에서 pub/sub 메시지를 주고받을 때 사용되는 채널
     public ChannelTopic topic() {
         return new ChannelTopic("chat");
@@ -36,11 +35,14 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String, Object> chatRedisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> chatRedisTemplate = new RedisTemplate<>();
-        chatRedisTemplate.setConnectionFactory(connectionFactory);
-        chatRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        chatRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
-        return chatRedisTemplate;
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+
+        // redis pub/sub 메세지를 JSON 형식으로 처리하기 위한 설정
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+
+        return redisTemplate;
     }
 
     // redis pub/sub 메세지를 처리하는 listener 설정

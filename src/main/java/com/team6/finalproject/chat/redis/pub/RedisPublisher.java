@@ -13,7 +13,7 @@ public class RedisPublisher { // 메시지를 발행하는 기능
     private final RedisTemplate<String, Object> redisTemplate;
     private final ChannelTopic topic;
 
-    public void publish(ChatMessage message) {
-        redisTemplate.convertAndSend(topic.getTopic(), message);
+    public void publish(Long chatRoomId, String message) {
+        redisTemplate.convertAndSend(topic.getTopic(), new ChatMessage(chatRoomId, message));
     }
 }

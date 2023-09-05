@@ -34,4 +34,8 @@ public class ChatMessage extends Timestamped {
     @JoinColumn(name = "room_id")
     private ChatRoom chatRoom;
 
+    public ChatMessage(Long chatRoomId, String message) {
+        this.chatRoom = ChatRoom.builder().roomId(chatRoomId).build();
+        this.content = message;
+    }
 }

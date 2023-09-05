@@ -40,7 +40,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         chatMessageRepository.save(message);
 
         log.info("4");
-        redisPublisher.publish(message); // "chat" 이라는 채널 토픽으로 Redis에 발행 - 다른 서버 인스턴스에서 이 메시지를 받을 수 있게 됨.
+        redisPublisher.publish(chatRoom.getRoomId(), messageDto.getContent());
+
 
         log.info("5");
         return new ChatMessageResponseDto(message);
