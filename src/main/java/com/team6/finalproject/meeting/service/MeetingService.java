@@ -1,5 +1,6 @@
 package com.team6.finalproject.meeting.service;
 
+import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.member.repository.MemberRepository;
 import com.team6.finalproject.club.service.ClubService;
@@ -24,7 +25,7 @@ public class MeetingService {
 
     // 모임 생성.
     @Transactional
-    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) {
+    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) throws NotExistResourceException {
 
         Club club = clubService.findClub(clubId);
 

@@ -4,15 +4,11 @@ import com.team6.finalproject.oAuth.dto.Access_tokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +31,7 @@ public class KakaoService {
         String apiUrl = "https://kauth.kakao.com/oauth/token";
         String grantType = "authorization_code";
         String clientId = "4284645c387b0d5bb7d529cf9658e8bc";
-        String redirectUri = "${REDIRECT_URI}";
+        String redirectUri = KAKAO_REDIRECT_URL;
 //            String authorizeCode = "${AUTHORIZE_CODE}";
 
         HttpHeaders headers = new HttpHeaders();

@@ -1,7 +1,6 @@
 package com.team6.finalproject.user.entity;
 
 import com.team6.finalproject.profile.entity.Profile;
-import com.team6.finalproject.user.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,5 +34,9 @@ public class User {
         this.email = email;
         this.role = role;
         this.birth = birth;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 }
