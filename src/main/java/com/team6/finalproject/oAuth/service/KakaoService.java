@@ -30,18 +30,26 @@ public class KakaoService {
     private final UserRepository userRepository;
 
 
+    @Value("${kakao.client.id}")
+    private String KAKAO_CLIENT_ID;
+
+    @Value("${kakao.client.secret}")
+    private String KAKAO_CLIENT_SECRET;
+
+    @Value("${kakao.redirect.url}")
+    private String KAKAO_REDIRECT_URL;
+
     public boolean check(String code,HttpServletResponse httpServletResponse) {
         String apiUrl = "https://kauth.kakao.com/oauth/token";
         String grantType = "authorization_code";
-        String clientId = "4284645c387b0d5bb7d529cf9658e8bc";
         String redirectUri = "http://localhost:8080/kakao/callback";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/x-www-form-urlencoded");
 
         String requestBody = "grant_type=" + grantType +
-                "&client_id=" + clientId +
-                "&redirect_uri=" + redirectUri +
+                "&client_id=" + KAKAO_CLIENT_ID +
+                "&redirect_uri=" + KAKAO_REDIRECT_URL +
                 "&code=" + code;
         log.info(requestBody);
 
@@ -63,12 +71,12 @@ public class KakaoService {
 
         HttpEntity<String> requestEntity1 = new HttpEntity<>(requestBody1, headers1);
 
-        Map<String,Object> reponseUserinfo = restTemplate.postForObject(
+        Map<String,Object> responseUserinfo = restTemplate.postForObject(
                 "https://kapi.kakao.com/v2/user/me",
                 requestEntity1,
                 Map.class
         );
-        String email =(String) ((Map<String,Object>) reponseUserinfo.get("kakao_account")).get("email");
+        String email =(String) ((Map<String,Object>) responseUserinfo.get("kakao_account")).get("email");
 
         if (userRepository.findByEmail(email).isEmpty()) {
             httpServletResponse.addHeader("email",email);
