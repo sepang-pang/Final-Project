@@ -19,7 +19,7 @@ public class KakaoController {
 
     @GetMapping("/kakao/callback")
     public String kakaoCallback(@RequestParam String code, HttpServletResponse httpServletResponse, Model model){
-        if (kakaoService.tlscjd(code,httpServletResponse)) {
+        if (kakaoService.check(code,httpServletResponse)) {
             model.addAttribute("email",httpServletResponse.getHeader("email"));
             return "main";
         }else {
@@ -29,9 +29,8 @@ public class KakaoController {
     }
 
     @PostMapping("/oauthsignup")
-    public String oAuthSignup(@RequestBody OAuthSignupRequestDto oAuthSignupRequestDto,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
-        kakaoService.oAuthSignup(oAuthSignupRequestDto,httpServletRequest,httpServletResponse);
-        log.info("34번째줄");
+    public String oAuthSignup(@RequestBody OAuthSignupRequestDto oAuthSignupRequestDto,HttpServletResponse httpServletResponse) {
+        kakaoService.oAuthSignup(oAuthSignupRequestDto,httpServletResponse);
         return "main";
     }
 }

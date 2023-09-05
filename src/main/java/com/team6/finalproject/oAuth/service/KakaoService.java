@@ -30,28 +30,18 @@ public class KakaoService {
     private final UserRepository userRepository;
 
 
-    @Value("${kakao.client.id}")
-    private String KAKAO_CLIENT_ID;
-
-    @Value("${kakao.client.secret}")
-    private String KAKAO_CLIENT_SECRET;
-
-    @Value("${kakao.redirect.url}")
-    private String KAKAO_REDIRECT_URL;
-
-    public boolean tlscjd(String code,HttpServletResponse httpServletResponse) {
+    public boolean check(String code,HttpServletResponse httpServletResponse) {
         String apiUrl = "https://kauth.kakao.com/oauth/token";
         String grantType = "authorization_code";
         String clientId = "4284645c387b0d5bb7d529cf9658e8bc";
-        String redirectUri = "${REDIRECT_URI}";
-//            String authorizeCode = "${AUTHORIZE_CODE}";
+        String redirectUri = "http://localhost:8080/kakao/callback";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/x-www-form-urlencoded");
 
         String requestBody = "grant_type=" + grantType +
                 "&client_id=" + clientId +
-                "&redirect_uri=" + "http://localhost:8080/kakao/callback" +
+                "&redirect_uri=" + redirectUri +
                 "&code=" + code;
         log.info(requestBody);
 
@@ -87,7 +77,7 @@ public class KakaoService {
         return true;
     }
 
-    public void oAuthSignup(OAuthSignupRequestDto oAuthSignupRequestDto, HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) {
+    public void oAuthSignup(OAuthSignupRequestDto oAuthSignupRequestDto,HttpServletResponse httpServletResponse) {
 
         String email = oAuthSignupRequestDto.getEmail();
         log.info(email);
