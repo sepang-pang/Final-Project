@@ -18,6 +18,10 @@ public class User {
     private String username;
     private String password;
     private String email;
+
+    @Column(nullable = false, unique = true)
+    private String phone; // 휴대폰 번호
+
     private boolean isDeleted;
     private boolean isBlock;
     @Enumerated(value = EnumType.STRING)
@@ -28,9 +32,10 @@ public class User {
     @OneToOne
     private Profile profile;
 
-    public User(String userName, String password, String email, String birth, UserRoleEnum role) {
+    public User(String userName, String password, String phoneNumber, String email, String birth, UserRoleEnum role) {
         this.username = userName;
         this.password = password;
+        this.phone = phoneNumber;
         this.email = email;
         this.role = role;
         this.birth = birth;
