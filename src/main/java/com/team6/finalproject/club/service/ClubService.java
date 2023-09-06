@@ -1,9 +1,6 @@
 package com.team6.finalproject.club.service;
 
-import com.team6.finalproject.advice.custom.CapacityFullException;
-import com.team6.finalproject.advice.custom.DuplicateActionException;
-import com.team6.finalproject.advice.custom.DuplicateNameException;
-import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
@@ -21,7 +18,7 @@ import java.util.List;
 public interface ClubService {
 
     //동호회 개설
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException;
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException;
 
     // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) throws NotExistResourceException, AccessDeniedException;

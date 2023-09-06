@@ -17,6 +17,8 @@ public class ClubResponseDto {
     private int maxMember;
     private String major;
     private String minor;
+    private int minAge;
+    private int maxAge;
 
 
     public ClubResponseDto(User user, Club club, InterestMajorDto interestMajorDto, InterestMinorDto interestMinorDto) {
@@ -28,6 +30,8 @@ public class ClubResponseDto {
         this.activityType = club.getActivityType().getActivity();
         this.joinType = club.getJoinType().getJoin();
         this.maxMember = club.getMaxMember();
+        this.minAge = club.getMinAge();
+        this.maxAge = club.getMaxAge();
         this.major = interestMajorDto.getName();
         this.minor = interestMinorDto.getName();
     }

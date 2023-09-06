@@ -1,9 +1,6 @@
 package com.team6.finalproject.club.controller;
 
-import com.team6.finalproject.advice.custom.CapacityFullException;
-import com.team6.finalproject.advice.custom.DuplicateActionException;
-import com.team6.finalproject.advice.custom.DuplicateNameException;
-import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
@@ -32,7 +29,7 @@ public class ClubController {
     private final ClubService clubService;
 
     @PostMapping("/clubs") // 동호회 개설
-    public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException {
+    public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException {
         return clubService.createClub(clubRequestDto, userDetails.getUser());
     }
 

@@ -17,4 +17,6 @@ public class ClubRequestDto {
     private boolean isOnline;
     private boolean openJoinType;
     private int maxMember;
+    private int minAge;
+    private int maxAge;
 }
