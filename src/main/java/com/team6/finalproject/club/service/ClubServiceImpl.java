@@ -94,6 +94,14 @@ public class ClubServiceImpl implements ClubService {
         return readInterestClubs(clubs);
     }
 
+    // 연령대 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> findClubsByUserAge(User user) throws NotExistResourceException {
+        List<Club> clubs = clubRepository.findClubsByUserAge(user.getAge());
+        return readInterestClubs(clubs);
+    }
+
     // 동호회 개설
     @Override
     @Transactional

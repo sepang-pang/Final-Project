@@ -27,6 +27,7 @@ public class User {
     private UserRoleEnum role;
     private Long oAuth_id;
     private String birth;
+    private int age;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Profile profile;

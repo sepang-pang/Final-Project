@@ -133,14 +133,6 @@
         let birth = document.getElementById("birth").value;
         let role = document.getElementById("role").value;
 
-        let userData = {
-            userName: userName,
-            password: password,
-            email: email,
-            birth: birth,
-            role: role
-        };
-
         if (password !== password_confirm) {
             alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
             return;
@@ -159,6 +151,15 @@
         if (currentDate.getMonth() < birthDate.getMonth() || (currentDate.getMonth() === birthDate.getMonth() && currentDate.getDate() < birthDate.getDate())) {
             ageDiff--;
         }
+
+        let userData = {
+            username: userName,
+            password: password,
+            email: email,
+            birth: birth,
+            age:ageDiff,
+            role: role
+        };
 
         // 만 19세 미만의 경우 회원 가입을 막습니다.
         if (ageDiff >= 19) {

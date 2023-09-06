@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.repository;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.entity.Club;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,18 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                         .where(club.minor.interestMajor.id.eq(minorId)
                                 .and(club.isDeleted.eq(false)))
                         .orderBy(club.createdAt.desc()) // 최신순 정렬
+                        .fetch();
+    }
+
+    @Override
+    public List<Club> findClubsByUserAge(int userAge) {
+        Predicate predicate = club.minAge.loe(userAge)
+                .and(club.maxAge.goe(userAge))
+                .and(club.isDeleted.eq(false));
+        return
+                jpaQueryFactory
+                        .selectFrom(club)
+                        .where(predicate)
                         .fetch();
     }
 }
