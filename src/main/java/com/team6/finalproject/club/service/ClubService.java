@@ -43,7 +43,10 @@ public interface ClubService {
     // 동호회 소주제 별 조회
     public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException;
 
+    // 유저 관심사 별 동호회 조회
+    List<ReadInterestMajorDto> clubsByUserInterest(User user) throws NotExistResourceException;
+
     // 유저 나이대별 동호회 조회
-    List<ReadInterestMajorDto> findClubsByUserAge(User user) throws NotExistResourceException;
+    List<ReadInterestMajorDto> clubsByUserAge(User user) throws NotExistResourceException;
 }
 

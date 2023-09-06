@@ -38,11 +38,11 @@ public class Profile extends Timestamped {
     @Column(nullable = false)
     private Long userScore;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "profile", orphanRemoval = true)
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ProfileInterest> profileInterests = new ArrayList<>();
 
     @Builder

@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class ClubServiceImpl implements ClubService {
         List<Member> members = memberService.findMembers(clubId);
 
         // 존재하지 않을 경우 예외 발생
-        if(members.isEmpty()) {
+        if (members.isEmpty()) {
             throw new NotExistResourceException("존재하지 않는 회원입니다.");
         }
 
@@ -71,7 +72,7 @@ public class ClubServiceImpl implements ClubService {
         Member member = memberService.findMember(clubId, userId);
 
         // 반환
-        return  MemberInquiryDto.builder()
+        return MemberInquiryDto.builder()
                 .nickName(member.getUser().getProfile().getNickname())
                 .birth(member.getUser().getBirth())
                 .introduction(member.getUser().getProfile().getIntroduction())
@@ -94,10 +95,22 @@ public class ClubServiceImpl implements ClubService {
         return readInterestClubs(clubs);
     }
 
+    // 관심사 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> clubsByUserInterest(User user) throws NotExistResourceException {
+        List<Long> userInterestIds = user.getProfile().getProfileInterests().stream()
+                .map(profileInterest -> profileInterest.getInterestMinor().getId())
+                .collect(Collectors.toList());
+
+        List<Club> clubs = clubRepository.findClubsByUserInterestMinor(userInterestIds);
+        return readInterestClubs(clubs);
+    }
+
     // 연령대 별 조회
     @Override
     @Transactional(readOnly = true)
-    public List<ReadInterestMajorDto> findClubsByUserAge(User user) throws NotExistResourceException {
+    public List<ReadInterestMajorDto> clubsByUserAge(User user) throws NotExistResourceException {
         List<Club> clubs = clubRepository.findClubsByUserAge(user.getAge());
         return readInterestClubs(clubs);
     }
@@ -118,7 +131,7 @@ public class ClubServiceImpl implements ClubService {
             throw new DuplicateNameException("동호회 이름이 이미 존재합니다.");
         }
 
-        if(clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
+        if (clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
             throw new InvalidAgeRangeException("최소 연령대가 최대 연령대보다 클 수 없습니다.");
         }
 
@@ -207,7 +220,7 @@ public class ClubServiceImpl implements ClubService {
         // 가입 대상 동호회 조회
         Club targetClub = findClub(clubId);
 
-        if(targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
+        if (targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
             throw new CapacityFullException("정원이 가득찼습니다");
         }
 

@@ -75,8 +75,13 @@ public class ClubController {
         return clubService.readSelectInterestMinor(minorId);
     }
 
-    @GetMapping("clubs/user-age") // 동호회 별 조회
-    public List<ReadInterestMajorDto> findClubsByUserAge(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return clubService.findClubsByUserAge(userDetails.getUser());
+    @GetMapping("/clubs/user-interest") // 동호회 관심사 별 조회
+    public List<ReadInterestMajorDto> clubsByUserInterest(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.clubsByUserInterest(userDetails.getUser());
+    }
+
+    @GetMapping("/clubs/user-age") // 동호회 연령대 별 조회
+    public List<ReadInterestMajorDto> clubsByUserAge(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.clubsByUserAge(userDetails.getUser());
     }
 }
