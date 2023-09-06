@@ -141,4 +141,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
     }
+
+    @Override
+    public User findByUser(Long id) throws NotExistResourceException {
+        return userRepository.findByActiveId(id).orElseThrow(
+                () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
+    }
 }
