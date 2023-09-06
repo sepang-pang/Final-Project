@@ -24,20 +24,40 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         log.info("Authentication 필터입니다.");
 
-        try {
-            UserRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), UserRequestDto.class);
 
-            return getAuthenticationManager().authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            requestDto.getUsername(),
-                            requestDto.getPassword(),
-                            null
-                    )
-            );
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e.getMessage());
+        if (request.getRequestURI().equals("/api/login")) {
+            try {
+                UserRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(), UserRequestDto.class);
+
+                return getAuthenticationManager().authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                requestDto.getUsername(),
+                                requestDto.getPassword(),
+                                null
+                        )
+                );
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                throw new RuntimeException(e.getMessage());
+            }
+
+        }else {
+            try {
+                String username = request.getHeader("username");
+
+                return getAuthenticationManager().authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                null
+                        )
+                );
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                throw new RuntimeException(e.getMessage());
+            }
         }
+
     }
 
     @Override
