@@ -2,21 +2,16 @@ package com.team6.finalproject.user.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.user.dto.*;
-import com.team6.finalproject.user.dto.SignupRequestDto;
 import com.team6.finalproject.user.entity.User;
 import jakarta.mail.MessagingException;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface UserService {
-    //회원가입
-    public void signup(SignupRequestDto signupRequestDto);
-    public boolean findPhoneNumber(String phoneNumber);
-    public void saveUser(User user);
     // 회원가입
-    void signup(SignupRequestDto signupRequestDto);
+    public void signup(SignupRequestDto signupRequestDto);
+    // 폰번호 찾기
+    public boolean findPhoneNumber(String phoneNumber);
     // 유저저장
-    void saveUser(User user);
+    public void saveUser(User user);
     // ID 찾기
     void idInquiry(EmailRequestDto requestDto) throws NotExistResourceException, MessagingException;
     // 인증코드 확인

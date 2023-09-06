@@ -1,8 +1,7 @@
-package com.team6.finalproject.sms.service.sms;
+package com.team6.finalproject.sms.service;
 
 import com.team6.finalproject.common.dto.ApiResponseDto;
-import com.team6.finalproject.sms.service.redis.RedisService;
-import com.team6.finalproject.sms.service.sms.SmsService;
+import com.team6.finalproject.common.redis.RedisUtil;
 import com.team6.finalproject.user.service.UserService;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -10,18 +9,20 @@ import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class SmsServiceImpl implements SmsService {
     private final DefaultMessageService messageService;
     private final UserService userService;
-    private final RedisService redisService;
+    private final RedisUtil redisUtil;
     private String SMS_API_KEY = "NCS6FVFQXPQRTSO5";
     private String SMS_SECRET_KEY = "WEMTKUIDHBOKOX3LLTI6CSOXDEWGMA0R";
     private String DOMAIN = "https://api.coolsms.co.kr";
 
-    public SmsServiceImpl(UserService userService, RedisService redisService) {
-        this.redisService = redisService;
+    public SmsServiceImpl(UserService userService, RedisUtil redisUtil) {
+        this.redisUtil = redisUtil;
         this.userService =  userService;
         this.messageService = NurigoApp.INSTANCE.initialize(SMS_API_KEY, SMS_SECRET_KEY, DOMAIN);
     }
@@ -45,11 +46,11 @@ public class SmsServiceImpl implements SmsService {
         // 메시지 보내기
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
 
-        if (redisService.hasKey(phoneNumber)) { // 이미 존재하면 삭제
-            redisService.removeSmsCertification(phoneNumber);
+        if (redisUtil.hasKey(phoneNumber)) { // 이미 존재하면 삭제
+            redisUtil.removeSmsCertification(phoneNumber);
         }
 
-        redisService.createSmsCertification(phoneNumber, key); // redis 에 저장
+        redisUtil.createSmsCertification(phoneNumber, key); // redis 에 저장
 
         return response;
     }
@@ -57,13 +58,13 @@ public class SmsServiceImpl implements SmsService {
     @Override
     @Transactional
     public ResponseEntity<ApiResponseDto> checkSmsCertification(String phoneNumber, String key) {
-        String redisKey = redisService.getSmsCertification(phoneNumber);
+        String redisKey = redisUtil.getSmsCertification(phoneNumber);
 
-        if (!redisService.hasKey(phoneNumber)) { // 인증번호 유효성 검사
+        if (!redisUtil.hasKey(phoneNumber)) { // 인증번호 유효성 검사
             throw new IllegalArgumentException("인증번호가 만료되었습니다.");
         }
 
-        if(redisService.isVerified(phoneNumber)) { // 중복 인증 예외
+        if(redisUtil.isVerified(phoneNumber)) { // 중복 인증 예외
             throw new IllegalArgumentException("이미 인증된 번호입니다.");
         }
 
@@ -71,7 +72,7 @@ public class SmsServiceImpl implements SmsService {
             throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
         }
 
-        redisService.markAsVerified(phoneNumber); // 인증 완료
+        redisUtil.markAsVerified(phoneNumber); // 인증 완료
 
         return ResponseEntity.ok().body(new ApiResponseDto("인증 완료", 200));
     }
