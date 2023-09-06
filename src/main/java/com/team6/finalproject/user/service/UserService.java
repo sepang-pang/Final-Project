@@ -1,6 +1,6 @@
 package com.team6.finalproject.user.service;
 
-import com.team6.finalproject.common.config.PasswordConfig;
+import com.team6.finalproject.advice.custom.DuplicateNameException;
 import com.team6.finalproject.user.dto.SignupRequestDto;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-
-public interface UserService{
+public interface UserService {
     //회원가입
-    public void signup(SignupRequestDto signupRequestDto);
+    void signup(SignupRequestDto signupRequestDto);
+    void saveUser(User user);
 }

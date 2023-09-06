@@ -1,5 +1,6 @@
 package com.team6.finalproject.user.entity;
 
+import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.user.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +24,9 @@ public class User {
     private UserRoleEnum role;
     private Long oAuth_id;
     private String birth;
+
+    @OneToOne
+    private Profile profile;
 
     public User(String userName, String password, String email, String birth, UserRoleEnum role) {
         this.username = userName;

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.5.3/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+    <title>프로필 생성</title>
+</head>
+
+<body>
+<div>
+    <div class="form-group">
+        <label for="nickname">이름</label>
+        <input class="form-control" id="nickname" placeholder="이름을 입력하세요" type="text">
+    </div>
+    <div class="form-group">
+        <label for="introduction">소개</label>
+        <input class="form-control" id="introduction" placeholder="소개글을 입력하세요" type="text">
+    </div>
+    <div class="form-group">
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <input type="text" id="zoneCode" placeholder="우편번호">
+        <input type="text" id="locate" placeholder="주소">
+        <input type="button" onclick="execDaumPostcode()" value="주소 검색"><br>
+        <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+    </div>
+</div>
+<button class="btn btn-primary" onclick="back()" type="button">취소</button>
+<button class="btn btn-primary" id="btn-save" onclick="submit()" type="button">확인</button>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9136e9354340a2231a4413678b99a13d&libraries=services"></script>
+<script>
+    let host = "http://localhost:8080/main"
+
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+            level: 5 // 지도의 확대 레벨
+        };
+
+    //지도를 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    //주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    //마커를 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+    });
+
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var zoneCode = data.zonecode;// 우편번호
+                var locate = data.address; // 최종 주소 변수
+
+                // 주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var result = results[0]; //첫번째 결과의 값을 활용
+
+                        // 해당 주소에 대한 좌표를 받아서
+                        var coords = new daum.maps.LatLng(result.y, result.x);
+                        // 지도를 보여준다.
+                        mapContainer.style.display = "block";
+                        map.relayout();
+                        // 지도 중심을 변경한다.
+                        map.setCenter(coords);
+                        // 마커를 결과값으로 받은 위치로 옮긴다.
+                        marker.setPosition(coords)
+
+                        var latitude = result.y;
+                        var longitude = result.x;
+
+                        // 주소 정보를 해당 필드에 넣는다.
+                        document.getElementById("latitude").value = latitude;
+                        document.getElementById("longitude").value = longitude;
+                        document.getElementById("zoneCode").value = zoneCode;
+                        document.getElementById("locate").value = locate;
+                    }
+                });
+            }
+        }).open();
+    }
+
+    function back() {
+        window.location.href = host
+    }
+
+    function submit() {
+        let nickname = $('#nickname').val();
+        let introduction = $('#introduction').val();
+        let latitude = $('#latitude').val();
+        let longitude = $('#longitude').val();
+        let zoneCode = $('#zoneCode').val();
+        let locate = $('#locate').val();
+
+        $.ajax({
+            type: "POST",
+            url: `/api/profile`,
+            contentType: "application/json",
+            data: JSON.stringify({nickname: nickname, introduction: introduction,
+                latitude: latitude, longitude: longitude, zoneCode: zoneCode, locate: locate}),
+        }).done(function () {
+            alert("프로필이 생성되었습니다.")
+            back()
+        }).fail(function (res) {
+            alert(res.responseText);
+        })
+    }
+</script>
+</html>
