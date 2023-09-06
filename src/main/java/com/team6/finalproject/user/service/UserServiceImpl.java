@@ -4,6 +4,8 @@ import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.redis.RedisUtil;
 import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.user.email.EmailAuth;
+import com.team6.finalproject.sms.service.redis.RedisService;
+import com.team6.finalproject.user.dto.SignupRequestDto;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
 import com.team6.finalproject.user.repository.UserRepository;
@@ -23,24 +25,38 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailAuth emailAuth;
     private final RedisUtil redisUtil;
+    private final RedisService redisService;
 
     // 회원가입
     public void signup(SignupRequestDto signupRequestDto) {
         if(userRepository.findByUsername(signupRequestDto.getUsername()).isPresent()){
             throw new IllegalArgumentException("중복된 이름입니다.");
         }
+
+
+        if(!redisService.isVerified(signupRequestDto.getPhoneNumber())){
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
+
         String loginId = signupRequestDto.getUsername();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
+        String phoneNumber = signupRequestDto.getPhoneNumber();
         String email = signupRequestDto.getEmail();
         String birth = signupRequestDto.getBirth();
         UserRoleEnum role = signupRequestDto.getRole();
 
-        userRepository.save(new User(loginId,password,email,birth,role));
+        userRepository.save(new User(loginId, password, phoneNumber, email, birth, role));
     }
 
     // 유저저장
+    @Override
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean findPhoneNumber(String phoneNumber) {
+        return userRepository.findByActivePhone(phoneNumber).isPresent();
     }
 
     // ID 찾기
