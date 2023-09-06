@@ -1,9 +1,6 @@
 package com.team6.finalproject.club.service;
 
-import com.team6.finalproject.advice.custom.CapacityFullException;
-import com.team6.finalproject.advice.custom.DuplicateActionException;
-import com.team6.finalproject.advice.custom.DuplicateNameException;
-import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.dto.*;
@@ -100,7 +97,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 개설
     @Override
     @Transactional
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException {
 
         // 유저 프로필 조회
         Profile profile = profileService.findProfileByUserId(user.getId());
@@ -111,6 +108,10 @@ public class ClubServiceImpl implements ClubService {
         // 동호회 이름 존재 확인
         if (clubRepository.findByActiveClubName(clubRequestDto.getName()).isPresent()) { // isPresent(): 존재하면 true, 존재하지 않으면 false
             throw new DuplicateNameException("동호회 이름이 이미 존재합니다.");
+        }
+
+        if(clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
+            throw new InvalidAgeRangeException("최소 연령대가 최대 연령대보다 클 수 없습니다.");
         }
 
         // 가입 방식 설정
@@ -127,6 +128,7 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
+
         // 동호회 개설
         log.info("동호회 개설");
         Club club = Club.builder()
@@ -135,6 +137,11 @@ public class ClubServiceImpl implements ClubService {
                 .name(clubRequestDto.getName())
                 .description(clubRequestDto.getDescription())
                 .maxMember(clubRequestDto.getMaxMember())
+                .minAge(clubRequestDto.getMinAge())
+                .maxAge(clubRequestDto.getMaxAge())
+                .latitude(clubRequestDto.getLatitude())
+                .longitude(clubRequestDto.getLongitude())
+                .locate(clubRequestDto.getLocate())
                 .activityType(activity)
                 .joinType(join)
                 .minor(interestMinor)
