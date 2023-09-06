@@ -35,4 +35,8 @@ public class User {
         this.role = role;
         this.birth = birth;
     }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
 }

@@ -30,11 +30,13 @@ public class KakaoService {
     private final UserRepository userRepository;
 
 
+
     @Value("${kakao.client.id}")
     private String KAKAO_CLIENT_ID;
 
     @Value("${kakao.redirect.url}")
     private String KAKAO_REDIRECT_URL;
+
 
     public boolean check(String code,HttpServletResponse httpServletResponse) {
         String apiUrl = "https://kauth.kakao.com/oauth/token";
