@@ -38,4 +38,8 @@ public class User {
     public void updatePassword(String password) {
         this.password = password;
     }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
 }
