@@ -2,29 +2,23 @@ package com.team6.finalproject.user.controller;
 
 import com.team6.finalproject.advice.custom.DuplicateNameException;
 import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.security.UserDetailsImpl;
-import com.team6.finalproject.user.dto.InquiryRequestDto;
-import com.team6.finalproject.user.dto.InquiryResponseDto;
-import com.team6.finalproject.user.dto.SignupRequestDto;
+import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.user.inquiry.service.InquiryService;
 import com.team6.finalproject.user.service.UserService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.server.Session;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,16 +40,64 @@ public class UserController {
         return "main";
     }
 
+    @PatchMapping("/api/users/password") // 비밀번호 재설정
+    @ResponseBody
+    public ResponseEntity<ApiResponseDto> updatePassword(@RequestBody UpdatePasswordDto passwordDto,
+                                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.updatePassword(passwordDto, userDetails.getUser());
+        return ResponseEntity.ok(new ApiResponseDto("비밀번호가 변경되었습니다.", HttpStatus.OK.value()));
+    }
+
+    @PostMapping("/api/users/id-inquiry") // ID 찾기
+    @ResponseBody
+    public ResponseEntity<ApiResponseDto> idInquiry(@RequestBody EmailRequestDto requestDto)
+            throws NotExistResourceException, MessagingException {
+        userService.idInquiry(requestDto);
+        return ResponseEntity.ok(new ApiResponseDto("인증 메일이 발송되었습니다.", HttpStatus.OK.value()));
+    }
+
+    @PostMapping("/api/users/id-auth") // ID 찾기 인증
+    @ResponseBody
+    public IdResponseDto returnId(@RequestBody AuthRequestDto requestDto) throws NotExistResourceException {
+        if (userService.verifyCode(requestDto)) { // 인증코드 검증
+
+            // 인증 성공 시 ID 반환 -> 비밀번호 재설정 페이지로 넘어가는 버튼 달기
+            return userService.returnId(requestDto.getEmail());
+        }
+        throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
+    }
+
+    @PostMapping("/api/users/pw-inquiry") // 비밀번호 찾기
+    @ResponseBody
+    public ResponseEntity<ApiResponseDto> passwordInquiry(@RequestBody PasswordInquiryDto inquiryDto)
+            throws NotExistResourceException, MessagingException {
+        userService.passwordInquiry(inquiryDto);
+        return ResponseEntity.ok(new ApiResponseDto("인증 메일이 발송되었습니다.", HttpStatus.OK.value()));
+    }
+
+    @PostMapping("/api/users/pw-auth") // 비밀번호 찾기 인증
+    @ResponseBody
+    public ResponseEntity<ApiResponseDto> returnPasswordAfterVerify(@RequestBody AuthRequestDto requestDto)
+            throws NotExistResourceException {
+        if (userService.verifyCode(requestDto)) { // 인증코드 검증
+
+            // 비밀번호 재설정 페이지 반환 예정
+            return ResponseEntity.ok(new ApiResponseDto("비밀번호 재설정 페이지 반환 예정", HttpStatus.OK.value()));
+        }
+        throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
+    }
+
     @PostMapping("/logout")
     public void logout(HttpServletRequest httpServletRequest) {
-        HttpSession session =httpServletRequest.getSession();
+        HttpSession session = httpServletRequest.getSession();
 
         session.invalidate();
     }
 
     @GetMapping("/withdrawal")
-    public String  withdrawal() {
+    public String withdrawal() {
         return "withdrawal";
+    }
 
     @PostMapping("/api/users/inquiry") // 문의 생성
     @ResponseBody

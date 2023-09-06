@@ -3,7 +3,7 @@ package com.team6.finalproject.sms.controller;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.sms.dto.PhoneNumberDto;
 import com.team6.finalproject.sms.dto.SmsCertificationDto;
-import com.team6.finalproject.sms.service.sms.SmsService;
+import com.team6.finalproject.sms.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import org.springframework.http.ResponseEntity;

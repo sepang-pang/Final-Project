@@ -1,7 +1,6 @@
 package com.team6.finalproject.user.entity;
 
 import com.team6.finalproject.profile.entity.Profile;
-import com.team6.finalproject.user.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +18,7 @@ public class User {
     private String password;
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String phone; // 휴대폰 번호
 
     private boolean isDeleted;
@@ -29,15 +28,14 @@ public class User {
     private Long oAuth_id;
     private String birth;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Profile profile;
 
-    public User(String userName, String password, String phoneNumber, String email, String birth, UserRoleEnum role) {
-        this.username = userName;
+    public void saveProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public void updatePassword(String password) {
         this.password = password;
-        this.phone = phoneNumber;
-        this.email = email;
-        this.role = role;
-        this.birth = birth;
     }
 }
