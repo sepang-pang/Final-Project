@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final EmailAuth emailAuth;
     private final RedisUtil redisUtil;
 
+    // 회원가입
     public void signup(SignupRequestDto signupRequestDto) {
         if(userRepository.findByUsername(signupRequestDto.getUsername()).isPresent()){
             throw new IllegalArgumentException("중복된 이름입니다.");
@@ -37,10 +38,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(new User(loginId,password,email,birth,role));
     }
 
+    // 유저저장
     public void saveUser(User user) {
         userRepository.save(user);
     }
 
+    // ID 찾기
     @Override
     @Transactional(readOnly = true)
     public void idInquiry(EmailRequestDto requestDto) throws NotExistResourceException, MessagingException {
@@ -55,6 +58,7 @@ public class UserServiceImpl implements UserService {
         emailAuth.sendCode(email); // 인증코드 메일 발송
     }
 
+    // 인증코드 확인
     @Override
     public boolean verifyCode(AuthRequestDto requestDto) throws NotExistResourceException {
         String email = requestDto.getEmail();
@@ -69,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return codeFindByEmail.equals(code);
     }
 
+    // 인증 후 ID 반환
     @Override
     @Transactional(readOnly = true)
     public IdResponseDto returnId(String email) throws NotExistResourceException {
@@ -78,6 +83,7 @@ public class UserServiceImpl implements UserService {
         return new IdResponseDto(username);
     }
 
+    // 비밀번호 찾기
     @Override
     @Transactional(readOnly = true)
     public void passwordInquiry(PasswordInquiryDto inquiryDto) throws NotExistResourceException, MessagingException {
@@ -92,18 +98,33 @@ public class UserServiceImpl implements UserService {
         emailAuth.sendCode(email); // 인증코드 메일 발송
     }
 
+    // 비밀번호 재설정
     @Override
     @Transactional
-    public void returnPassword(String email) throws MessagingException, NotExistResourceException {
-        String password = emailAuth.sendPassword(email); // 발송한 임시 비밀번호
-        String encodedPassword = passwordEncoder.encode(password);
+    public void updatePassword(UpdatePasswordDto passwordDto, User user) {
+        String newPassword = passwordDto.getNewPassword();
+        String checkNewPassword = passwordDto.getCheckNewPassword();
+        // 두번 입력한 비밀번호 비교
+        if (!newPassword.equals(checkNewPassword)) {
+            throw new IllegalArgumentException("입력한 비밀번호가 일치하지 않습니다");
+        }
+        // 비밀번호에 ID 포함 불가
+        if (newPassword.contains(user.getUsername())) {
+            throw new IllegalArgumentException("비밀번호에 ID를 포함할 수 없습니다.");
+        }
+        // 직전 비밀번호로 변경 불가
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new IllegalArgumentException("직전 비밀번호로 변경할 수 없습니다.");
+        }
 
-        User user = findByEmail(email);
-        user.updatePassword(encodedPassword); // 임시 비밀번호로 변경
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.updatePassword(encodedPassword);
+        userRepository.save(user);
     }
 
-    private User findByEmail(String email) throws NotExistResourceException {
+    @Override
+    public User findByEmail(String email) throws NotExistResourceException {
         return userRepository.findByEmail(email).orElseThrow(
-                () -> new NotExistResourceException("Email을 찾을 수 없습니다."));
+                () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
     }
 }

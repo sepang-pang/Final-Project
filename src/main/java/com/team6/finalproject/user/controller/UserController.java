@@ -38,6 +38,14 @@ public class UserController {
         return "main";
     }
 
+    @PatchMapping("/api/users/password") // 비밀번호 재설정
+    @ResponseBody
+    public ResponseEntity<ApiResponseDto> updatePassword(@RequestBody UpdatePasswordDto passwordDto,
+                                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.updatePassword(passwordDto, userDetails.getUser());
+        return ResponseEntity.ok(new ApiResponseDto("비밀번호가 변경되었습니다.", HttpStatus.OK.value()));
+    }
+
     @PostMapping("/api/users/id-inquiry") // ID 찾기
     @ResponseBody
     public ResponseEntity<ApiResponseDto> idInquiry(@RequestBody EmailRequestDto requestDto)
@@ -50,7 +58,8 @@ public class UserController {
     @ResponseBody
     public IdResponseDto returnId(@RequestBody AuthRequestDto requestDto) throws NotExistResourceException {
         if (userService.verifyCode(requestDto)) { // 인증코드 검증
-            // 인증 성공 시 ID 반환
+
+            // 인증 성공 시 ID 반환 -> 비밀번호 재설정 페이지로 넘어가는 버튼 달기
             return userService.returnId(requestDto.getEmail());
         }
         throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
@@ -67,11 +76,11 @@ public class UserController {
     @PostMapping("/api/users/pw-auth") // 비밀번호 찾기 인증
     @ResponseBody
     public ResponseEntity<ApiResponseDto> returnPasswordAfterVerify(@RequestBody AuthRequestDto requestDto)
-            throws NotExistResourceException, MessagingException {
+            throws NotExistResourceException {
         if (userService.verifyCode(requestDto)) { // 인증코드 검증
-            // 인증 성공 시 임시 비밀번호 반환
-            userService.returnPassword(requestDto.getEmail());
-            return ResponseEntity.ok(new ApiResponseDto("임시 비밀번호 메일이 발송되었습니다.", HttpStatus.OK.value()));
+
+            // 비밀번호 재설정 페이지 반환 예정
+            return ResponseEntity.ok(new ApiResponseDto("비밀번호 재설정 페이지 반환 예정", HttpStatus.OK.value()));
         }
         throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
     }

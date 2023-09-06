@@ -20,6 +20,8 @@ public interface UserService {
     IdResponseDto returnId(String email) throws NotExistResourceException;
     // 비밀번호 찾기
     void passwordInquiry(PasswordInquiryDto inquiryDto) throws NotExistResourceException, MessagingException;
-    // 인증 후 임시 비밀번호 발송
-    void returnPassword(String email) throws MessagingException, NotExistResourceException;
+    // 비밀번호 재설정
+    void updatePassword(UpdatePasswordDto passwordDto, User user);
+    // 이메일으로 유저 찾기
+    User findByEmail(String email) throws NotExistResourceException;
 }
