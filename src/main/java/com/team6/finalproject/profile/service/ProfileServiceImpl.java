@@ -36,10 +36,9 @@ public class ProfileServiceImpl implements ProfileService {
                 .locate(requestDto.getLocate())
                 .user(user)
                 .build();
-
         profileRepository.save(profile);
 
-        user.setProfile(profile); // Setter 제거 시 변경
+        user.saveProfile(profile);
         userService.saveUser(user);
         return new ProfileResponseDto(profile);
     }
