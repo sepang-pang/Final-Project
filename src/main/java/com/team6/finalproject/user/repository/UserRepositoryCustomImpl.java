@@ -27,4 +27,16 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                                 .fetchOne()
                 );
     }
+
+    @Override
+    public Optional<User> findByActiveId(Long id) {
+        return
+                Optional.ofNullable(
+                        jpaQueryFactory
+                                .selectFrom(user)
+                                .where(user.id.eq(id)
+                                        .and(user.isDeleted.eq(false)))
+                                .fetchOne()
+                );
+    }
 }

@@ -76,4 +76,8 @@ public class Meeting extends Timestamped {
     public void addMetingUser(MeetingUser meetingUser) {
         this.meetingUsers.add(meetingUser);
     }
+
+    public void completed() {
+        this.isCompleted = true;
+    }
 }

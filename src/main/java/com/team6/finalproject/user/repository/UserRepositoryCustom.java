@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface UserRepositoryCustom {
     public Optional<User> findByActivePhone(String phone);
+    public Optional<User> findByActiveId(Long id);
 }
