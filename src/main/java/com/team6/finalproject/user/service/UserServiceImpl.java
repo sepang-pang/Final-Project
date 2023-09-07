@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
                 .phone(signupRequestDto.getPhone())
                 .email(signupRequestDto.getEmail())
                 .birth(signupRequestDto.getBirth())
+                .age(signupRequestDto.getAge())
                 .role(signupRequestDto.getRole())
                 .build();
 
