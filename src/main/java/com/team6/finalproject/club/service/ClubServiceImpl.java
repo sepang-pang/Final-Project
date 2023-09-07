@@ -27,7 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,7 @@ public class ClubServiceImpl implements ClubService {
         List<Member> members = memberService.findMembers(clubId);
 
         // 존재하지 않을 경우 예외 발생
-        if(members.isEmpty()) {
+        if (members.isEmpty()) {
             throw new NotExistResourceException("존재하지 않는 회원입니다.");
         }
 
@@ -71,7 +73,7 @@ public class ClubServiceImpl implements ClubService {
         Member member = memberService.findMember(clubId, userId);
 
         // 반환
-        return  MemberInquiryDto.builder()
+        return MemberInquiryDto.builder()
                 .nickName(member.getUser().getProfile().getNickname())
                 .birth(member.getUser().getBirth())
                 .introduction(member.getUser().getProfile().getIntroduction())
@@ -94,6 +96,48 @@ public class ClubServiceImpl implements ClubService {
         return readInterestClubs(clubs);
     }
 
+    // 거리순 조회
+    @Override
+    public List<ReadInterestMajorDto> clubsByUserDistance(User user) throws NotExistResourceException {
+        List<Long> userInterestIds = user.getProfile().getProfileInterests().stream()
+                .map(profileInterest -> profileInterest.getInterestMinor().getId())
+                .collect(Collectors.toList());
+        List<Club> clubs = clubRepository.findClubsByUserInterestMinor(userInterestIds);
+
+        Double userLat = user.getProfile().getLatitude();
+        Double userLng = user.getProfile().getLongitude();
+
+        clubs.sort(Comparator.comparingDouble(club -> {
+            Double clubLat = club.getLatitude();
+            Double clubLng = club.getLongitude();
+            // Haversine 공식을 사용하여 거리 계산
+            Double distance = calculateDistance(userLat, userLng, clubLat, clubLng);
+            return distance;
+        }));
+
+        return readInterestClubs(clubs);
+    }
+
+    // 관심사 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> clubsByUserInterest(User user) throws NotExistResourceException {
+        List<Long> userInterestIds = user.getProfile().getProfileInterests().stream()
+                .map(profileInterest -> profileInterest.getInterestMinor().getId())
+                .collect(Collectors.toList());
+
+        List<Club> clubs = clubRepository.findClubsByUserInterestMinor(userInterestIds);
+        return readInterestClubs(clubs);
+    }
+
+    // 연령대 별 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReadInterestMajorDto> clubsByUserAge(User user) throws NotExistResourceException {
+        List<Club> clubs = clubRepository.findClubsByUserAge(user.getAge());
+        return readInterestClubs(clubs);
+    }
+
     // 동호회 개설
     @Override
     @Transactional
@@ -110,7 +154,7 @@ public class ClubServiceImpl implements ClubService {
             throw new DuplicateNameException("동호회 이름이 이미 존재합니다.");
         }
 
-        if(clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
+        if (clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
             throw new InvalidAgeRangeException("최소 연령대가 최대 연령대보다 클 수 없습니다.");
         }
 
@@ -199,7 +243,7 @@ public class ClubServiceImpl implements ClubService {
         // 가입 대상 동호회 조회
         Club targetClub = findClub(clubId);
 
-        if(targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
+        if (targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
             throw new CapacityFullException("정원이 가득찼습니다");
         }
 
@@ -296,7 +340,31 @@ public class ClubServiceImpl implements ClubService {
                         .activityType(club.getActivityType().getActivity())
                         .joinType(club.getJoinType().getJoin())
                         .maxMember(club.getMaxMember())
+                        .locate(club.getLocate())
                         .build())
                 .toList();
+    }
+
+    private Double calculateDistance(Double userLat, Double userLng, Double clubLat, Double clubLng) {
+        final int R = 6371; // 지구의 반지름 (단위: 킬로미터)
+
+        // 사용자와 동호회의 위도 및 경도를 라디안 단위로 변환
+        Double userLatRad = Math.toRadians(userLat);
+        Double userLngRad = Math.toRadians(userLng);
+        Double clubLatRad = Math.toRadians(clubLat);
+        Double clubLngRad = Math.toRadians(clubLng);
+
+        // 위도 및 경도의 차이 계산
+        Double latDiff = clubLatRad - userLatRad;
+        Double lngDiff = clubLngRad - userLngRad;
+
+        // Haversine 공식을 사용하여 거리 계산
+        Double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+                Math.cos(userLatRad) * Math.cos(clubLatRad) *
+                        Math.sin(lngDiff / 2) * Math.sin(lngDiff / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        Double distance = R * c;
+
+        return distance;
     }
 }

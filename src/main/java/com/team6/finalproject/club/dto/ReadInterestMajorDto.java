@@ -17,4 +17,5 @@ public class ReadInterestMajorDto {
     private String activityType;
     private String joinType;
     private int maxMember;
+    private String locate;
 }

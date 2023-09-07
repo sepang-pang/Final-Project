@@ -59,8 +59,8 @@ public class ProfileServiceImpl implements ProfileService {
 
         String nickname = requestDto.getNickname();
         String introduction = requestDto.getIntroduction();
-        String latitude = requestDto.getLatitude();
-        String longitude = requestDto.getLongitude();
+        Double latitude = requestDto.getLatitude();
+        Double longitude = requestDto.getLongitude();
         String zoneCode = requestDto.getZoneCode();
         String locate = requestDto.getLocate();
 

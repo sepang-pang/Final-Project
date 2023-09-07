@@ -29,7 +29,7 @@ public class User {
     private String birth;
     private int age;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Profile profile;
 
     public void saveProfile(Profile profile) {
@@ -38,9 +38,5 @@ public class User {
 
     public void updatePassword(String password) {
         this.password = password;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 }

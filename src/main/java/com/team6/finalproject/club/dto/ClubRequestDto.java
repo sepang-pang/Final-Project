@@ -19,7 +19,7 @@ public class ClubRequestDto {
     private int maxMember; // 동호회 최대 인원 수
     private int minAge; // 모집 연령대의 최소 값
     private int maxAge; // 모집 연령대의 최대 값
-    private String latitude; // 동호회 위도
-    private String longitude; // 동호회 경도
+    private Double latitude; // 동호회 위도
+    private Double longitude; // 동호회 경도
     private String locate; // 동호회 위치
 }

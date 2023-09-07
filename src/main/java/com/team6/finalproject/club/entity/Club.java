@@ -44,10 +44,10 @@ public class Club extends Timestamped {
     private int maxAge; // 모집 연령대의 최대 값
 
     @Column(name = "latitude")
-    private String latitude; // 동호회 위도
+    private Double latitude; // 동호회 위도
 
     @Column(name = "longitude")
-    private String longitude; // 동호회 경도
+    private Double longitude; // 동호회 경도
 
     @Column(name = "locate")
     private String locate; // 동호회 위치
