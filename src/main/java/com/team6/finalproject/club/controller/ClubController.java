@@ -75,6 +75,11 @@ public class ClubController {
         return clubService.readSelectInterestMinor(minorId);
     }
 
+    @GetMapping("/clubs/user-distance")
+    public List<ReadInterestMajorDto> clubsByUserDistance(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.clubsByUserDistance(userDetails.getUser());
+    }
+
     @GetMapping("/clubs/user-interest") // 동호회 관심사 별 조회
     public List<ReadInterestMajorDto> clubsByUserInterest(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return clubService.clubsByUserInterest(userDetails.getUser());

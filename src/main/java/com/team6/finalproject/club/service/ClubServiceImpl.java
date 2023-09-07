@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +93,28 @@ public class ClubServiceImpl implements ClubService {
     @Transactional(readOnly = true)
     public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException {
         List<Club> clubs = clubRepository.findByActiveInterestMinor(minorId);
+        return readInterestClubs(clubs);
+    }
+
+    // 거리순 조회
+    @Override
+    public List<ReadInterestMajorDto> clubsByUserDistance(User user) throws NotExistResourceException {
+        List<Long> userInterestIds = user.getProfile().getProfileInterests().stream()
+                .map(profileInterest -> profileInterest.getInterestMinor().getId())
+                .collect(Collectors.toList());
+        List<Club> clubs = clubRepository.findClubsByUserInterestMinor(userInterestIds);
+
+        Double userLat = user.getProfile().getLatitude();
+        Double userLng = user.getProfile().getLongitude();
+
+        clubs.sort(Comparator.comparingDouble(club -> {
+            Double clubLat = club.getLatitude();
+            Double clubLng = club.getLongitude();
+            // Haversine 공식을 사용하여 거리 계산
+            Double distance = calculateDistance(userLat, userLng, clubLat, clubLng);
+            return distance;
+        }));
+
         return readInterestClubs(clubs);
     }
 
@@ -317,7 +340,31 @@ public class ClubServiceImpl implements ClubService {
                         .activityType(club.getActivityType().getActivity())
                         .joinType(club.getJoinType().getJoin())
                         .maxMember(club.getMaxMember())
+                        .locate(club.getLocate())
                         .build())
                 .toList();
+    }
+
+    private Double calculateDistance(Double userLat, Double userLng, Double clubLat, Double clubLng) {
+        final int R = 6371; // 지구의 반지름 (단위: 킬로미터)
+
+        // 사용자와 동호회의 위도 및 경도를 라디안 단위로 변환
+        Double userLatRad = Math.toRadians(userLat);
+        Double userLngRad = Math.toRadians(userLng);
+        Double clubLatRad = Math.toRadians(clubLat);
+        Double clubLngRad = Math.toRadians(clubLng);
+
+        // 위도 및 경도의 차이 계산
+        Double latDiff = clubLatRad - userLatRad;
+        Double lngDiff = clubLngRad - userLngRad;
+
+        // Haversine 공식을 사용하여 거리 계산
+        Double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+                Math.cos(userLatRad) * Math.cos(clubLatRad) *
+                        Math.sin(lngDiff / 2) * Math.sin(lngDiff / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        Double distance = R * c;
+
+        return distance;
     }
 }
