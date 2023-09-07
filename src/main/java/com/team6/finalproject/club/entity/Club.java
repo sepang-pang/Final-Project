@@ -86,4 +86,8 @@ public class Club extends Timestamped {
     public void addMeeting(Meeting meeting) {
         this.meetings.add(meeting);
     }
+
+    public void updateActivityScore(int i) {
+        this.activityScore += i;
+    }
 }

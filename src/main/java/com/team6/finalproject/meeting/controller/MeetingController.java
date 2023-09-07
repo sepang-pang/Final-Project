@@ -1,10 +1,13 @@
 package com.team6.finalproject.meeting.controller;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.meeting.dto.*;
 import com.team6.finalproject.meeting.service.MeetingService;
 import com.team6.finalproject.security.UserDetailsImpl;
+import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,12 @@ public class MeetingController {
     @PostMapping("/{clubId}")
     public void createMeeting(@PathVariable Long clubId, @RequestBody MeetingRequestDto meetingRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         meetingService.createPost(clubId, meetingRequestDto,userDetails.getUser());
+    }
+
+    // 모임 완료
+    @PatchMapping("/{meetingId}/completed")
+    public ResponseEntity<ApiResponseDto> completedMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return meetingService.completedMeeting(meetingId, userDetails.getUser());
     }
 
     // 모임 조회.

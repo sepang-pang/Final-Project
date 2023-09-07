@@ -4,11 +4,13 @@ import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.member.repository.MemberRepository;
 import com.team6.finalproject.club.service.ClubService;
+import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.meeting.dto.*;
 import com.team6.finalproject.meeting.entity.Meeting;
 import com.team6.finalproject.meeting.repository.MeetingRepository;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +51,31 @@ public class MeetingService {
         club.addMeeting(meeting);
 
         meetingRepository.save(meeting);
+    }
+
+    // 모임 완료
+    @Transactional
+    public ResponseEntity<ApiResponseDto> completedMeeting(Long meetingId, User user) {
+
+        Meeting meeting = findMeeting(meetingId);
+
+        // 작성자만 수정 가능하게 예외처리.
+        if (!meeting.getUser().getId().equals(user.getId())) {
+            throw new RejectedExecutionException();
+        }
+
+        // 이미 완료된 모임인지 확인
+        if (meeting.getIsCompleted()) {
+            throw new RejectedExecutionException();
+        }
+
+        // 모임 완료 설정
+        meeting.completed();
+
+        // 활동 점수 증가
+        meeting.getClub().updateActivityScore(20);
+
+        return ResponseEntity.ok().body(new ApiResponseDto("모임이 완료되었습니다.", 200));
     }
 
     // 모임 조회.

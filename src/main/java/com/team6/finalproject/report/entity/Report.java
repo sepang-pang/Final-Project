@@ -1,6 +1,8 @@
-package com.team6.finalproject.club.report.entity;
+package com.team6.finalproject.report.entity;
 
+import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
+import com.team6.finalproject.report.enums.ReportTypeEnum;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
@@ -27,13 +29,23 @@ public class Report extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private ApprovalStateEnum approvalStateEnum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @Column(name = "apply_user_id", nullable = false)
-    private User applyUser;
+    @Column(name = "report_type", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private ReportTypeEnum reportTypeEnum;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinColumn(name = "report_user_id")
+    private User reportUser;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinColumn(name = "target_user_id")
+    private User targetUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @Column(name = "target_user_id", nullable = false)
-    private User targetUser;
+    @JoinColumn(name = "club_id")
+    private Club targetClub;
+
+    public void updateApprovalState(ApprovalStateEnum approvalState) {
+        this.approvalStateEnum = approvalState;
+    }
 }
