@@ -17,38 +17,39 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class InquiryController {
 
     private final InquiryService inquiryService;
 
-    @PostMapping("/api/inquiry") // 문의 생성
+    @PostMapping("/inquiry") // 문의 생성
     @ResponseBody
     public InquiryResponseDto createInquiry(@RequestBody InquiryRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return inquiryService.createInquiry(requestDto, userDetails.getUser());
     }
 
-    @GetMapping("/api/inquiry/{id}") // 문의 단건 조회
+    @GetMapping("/inquiry/{inquiryId}") // 문의 단건 조회
     @ResponseBody
-    public InquiryResponseDto getInquiry(@PathVariable Long id,
+    public InquiryResponseDto getInquiry(@PathVariable Long inquiryId,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return inquiryService.getInquiry(id, userDetails.getUser());
+        return inquiryService.getInquiry(inquiryId, userDetails.getUser());
     }
 
-    @GetMapping("/api/all-inquiry") // 문의 전체 조회
+    @GetMapping("/all-inquiry") // 문의 전체 조회
     @ResponseBody
     public List<InquiryResponseDto> getAllInquiry(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return inquiryService.getAllInquiry(userDetails.getUser());
     }
 
-    @PatchMapping("/api/inquiry") // 문의 수정
+    @PatchMapping("/inquiry") // 문의 수정
     @ResponseBody
     public InquiryResponseDto updateInquiry(@RequestBody InquiryRequestDto requestDto,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return inquiryService.updateInquiry(requestDto, userDetails.getUser());
     }
 
-    @DeleteMapping("/api/inquiry/{inquiryId}")
+    @DeleteMapping("/inquiry/{inquiryId}")
     public ResponseEntity<ApiResponseDto> deleteInquiry(@PathVariable Long inquiryId, @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws NotExistResourceException {
         inquiryService.deleteInquiry(inquiryId, userDetails.getUser());

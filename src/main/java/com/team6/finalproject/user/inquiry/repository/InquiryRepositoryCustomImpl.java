@@ -2,6 +2,7 @@ package com.team6.finalproject.user.inquiry.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.user.inquiry.entity.Inquiry;
+import com.team6.finalproject.user.inquiry.entity.InquiryTypeEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,6 +36,26 @@ public class InquiryRepositoryCustomImpl implements InquiryRepositoryCustom {
                 .selectFrom(inquiry)
                 .where(user.id.eq(userId)
                         .and(inquiry.isDeleted.eq(false)))
+                .orderBy(inquiry.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Inquiry> findAllOrderByCreatedAtDesc() {
+        return jpaQueryFactory
+                .selectFrom(inquiry)
+                .where(inquiry.isDeleted.eq(false))
+                .orderBy(inquiry.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Inquiry> findAllByType(String inquiryType) {
+        return jpaQueryFactory
+                .selectFrom(inquiry)
+                .where(inquiry.inquiryType.in(InquiryTypeEnum.valueOf(inquiryType))
+                        .and(inquiry.isDeleted.eq(false)))
+                .orderBy(inquiry.createdAt.desc())
                 .fetch();
     }
 }

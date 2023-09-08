@@ -34,8 +34,8 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     @Transactional(readOnly = true) // 문의 단건 조회
-    public InquiryResponseDto getInquiry(Long id, User user) throws NotExistResourceException {
-        Inquiry inquiry = findByIdAndUserId(id, user.getId());
+    public InquiryResponseDto getInquiry(Long inquiryId, User user) throws NotExistResourceException {
+        Inquiry inquiry = findByIdAndUserId(inquiryId, user.getId());
         return new InquiryResponseDto(inquiry);
     }
 
@@ -66,8 +66,8 @@ public class InquiryServiceImpl implements InquiryService {
         inquiry.deleteInquiry();
     }
 
-    @Override
-    public Inquiry findByIdAndUserId(Long id, Long userId) throws NotExistResourceException {
+    private Inquiry findByIdAndUserId(Long id, Long userId) throws NotExistResourceException {
+        // 로그인 유저 문의 찾기
         return inquiryRepository.findByIdAndUserId(id, userId).orElseThrow(
                 () -> new NotExistResourceException("문의 내역을 찾을 수 없습니다."));
     }
