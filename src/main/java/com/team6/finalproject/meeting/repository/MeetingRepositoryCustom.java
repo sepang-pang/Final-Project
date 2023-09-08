@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface MeetingRepositoryCustom {
     Optional<Meeting> findByMeeting(Long meetingId);
+    public List<Meeting> findByCompletedMeeting(Long clubId);
 }

@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("중복된 이름입니다.");
         }
 
-//        if(!redisUtil.isVerified(signupRequestDto.getPhone())){
-//            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
-//        }
+        if(!redisUtil.isVerified(signupRequestDto.getPhone())){
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
 
         User user = User.builder()
                 .username(signupRequestDto.getUsername())
