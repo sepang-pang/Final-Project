@@ -11,10 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/admin")
 public class InquiryAnswerController {
 
     private final InquiryAnswerService inquiryAnswerService;
@@ -24,5 +25,11 @@ public class InquiryAnswerController {
     public InquiryResponseDto inquiryAnswer(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody AnswerRequestDto requestDto,
                                             @PathVariable Long inquiryId) throws AccessDeniedException, NotExistResourceException {
         return inquiryAnswerService.inquiryAnswer(userDetails.getUser(), requestDto, inquiryId);
+    }
+
+    @GetMapping("/all-inquiry") // 문의 전체 조회
+    @ResponseBody
+    public List<InquiryResponseDto> getAllInquiry(@AuthenticationPrincipal UserDetailsImpl userDetails) throws AccessDeniedException {
+        return inquiryAnswerService.getAllInquiry(userDetails.getUser());
     }
 }

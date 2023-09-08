@@ -34,8 +34,8 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     @Transactional(readOnly = true) // 문의 단건 조회
-    public InquiryResponseDto getInquiry(Long id, User user) throws NotExistResourceException {
-        Inquiry inquiry = findByIdAndUserId(id, user.getId());
+    public InquiryResponseDto getInquiry(Long inquiryId, User user) throws NotExistResourceException {
+        Inquiry inquiry = findByIdAndUserId(inquiryId, user.getId());
         return new InquiryResponseDto(inquiry);
     }
 

@@ -12,7 +12,7 @@ public interface InquiryService {
     // 문의 생성
     InquiryResponseDto createInquiry(InquiryRequestDto requestDto, User user);
     // 문의 단건 조회
-    InquiryResponseDto getInquiry(Long id, User user) throws NotExistResourceException;
+    InquiryResponseDto getInquiry(Long inquiryId, User user) throws NotExistResourceException;
     // 문의 전체 조회
     List<InquiryResponseDto> getAllInquiry(User user);
     // 문의 수정

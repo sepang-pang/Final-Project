@@ -35,6 +35,16 @@ public class InquiryRepositoryCustomImpl implements InquiryRepositoryCustom {
                 .selectFrom(inquiry)
                 .where(user.id.eq(userId)
                         .and(inquiry.isDeleted.eq(false)))
+                .orderBy(inquiry.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Inquiry> findAllOrderByCreatedAtDesc() {
+        return jpaQueryFactory
+                .selectFrom(inquiry)
+                .where(inquiry.isDeleted.eq(false))
+                .orderBy(inquiry.createdAt.desc())
                 .fetch();
     }
 }
