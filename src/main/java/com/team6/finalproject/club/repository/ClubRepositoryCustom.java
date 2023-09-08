@@ -1,6 +1,7 @@
 package com.team6.finalproject.club.repository;
 
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.user.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,5 @@ public interface ClubRepositoryCustom {
     public List<Club> findClubsByUserAge(int userAge); // 유저 연령대 별 조회
     public List<Club> findClubsByRecent(); // 최근 개설된 동호회 조회
     public List<Club> findPopularClubs(); // 인기 동호회 조회
+    public List<Club> findRecommendedClubs(User user); // 연령대와 관심가 맞는 동호회 조회
 }

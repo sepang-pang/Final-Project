@@ -57,5 +57,8 @@ public interface ClubService {
 
     // 인기 급상승 동호회 조회
     public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException;
+
+    // 거리, 연령대, 관심사가 모두 부합하는 동호회 조회
+    public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user);
 }
 

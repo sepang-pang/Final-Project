@@ -100,4 +100,9 @@ public class ClubController {
     public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException {
         return clubService.clubsByPopularity();
     }
+
+    @GetMapping("/clubs/recommend") // 유저에게 최적합 동호회 추천
+    public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails)  {
+        return clubService.findRecommendedClubsForUser(radius, userDetails.getUser());
+    }
 }
