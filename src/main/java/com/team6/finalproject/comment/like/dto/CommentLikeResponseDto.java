@@ -1,4 +1,4 @@
-package com.team6.finalproject.comment.commentLike.dto;
+package com.team6.finalproject.comment.like.dto;
 
 import com.team6.finalproject.comment.dto.CommentResponseDto;
 import lombok.Getter;

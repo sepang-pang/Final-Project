@@ -1,4 +1,4 @@
-package com.team6.finalproject.comment.commentLike.service;
+package com.team6.finalproject.comment.like.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.advice.custom.NotLikedYetException;

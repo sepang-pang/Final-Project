@@ -1,13 +1,13 @@
-package com.team6.finalproject.comment.commentLike.repository;
+package com.team6.finalproject.comment.like.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.team6.finalproject.comment.commentLike.entity.CommentLike;
+import com.team6.finalproject.comment.like.entity.CommentLike;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static com.team6.finalproject.comment.commentLike.entity.QCommentLike.commentLike;
+import static com.team6.finalproject.comment.like.entity.QCommentLike.commentLike;
 
 @Repository
 @RequiredArgsConstructor

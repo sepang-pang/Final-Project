@@ -1,6 +1,6 @@
 package com.team6.finalproject.comment.entity;
 
-import com.team6.finalproject.comment.commentLike.entity.CommentLike;
+import com.team6.finalproject.comment.like.entity.CommentLike;
 import com.team6.finalproject.comment.dto.CommentRequestDto;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.post.entity.Post;

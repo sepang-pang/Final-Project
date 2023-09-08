@@ -1,4 +1,4 @@
-package com.team6.finalproject.comment.commentLike.entity;
+package com.team6.finalproject.comment.like.entity;
 
 import com.team6.finalproject.comment.entity.Comment;
 import com.team6.finalproject.common.entity.Timestamped;
