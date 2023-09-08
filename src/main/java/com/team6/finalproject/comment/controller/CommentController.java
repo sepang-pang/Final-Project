@@ -17,19 +17,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/clubs/posts/comments")
+@RequestMapping("/api")
 public class CommentController {
 
     private final CommentService commentService;
 
     // 댓글 조회
-    @GetMapping
-    public List<CommentResponseDto> readAllComments() {
-        return commentService.readAllComment();
+    @GetMapping("/meetings/{meetingId}/comments")
+    public List<CommentResponseDto> readAllMeetingComment(@PathVariable Long meetingId) throws NotExistResourceException {
+        return commentService.readAllMeetingComment(meetingId);
     }
 
     // 댓글 생성
-    @PostMapping
+    @PostMapping("comments")
     public CommentResponseDto createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return commentService.createComment(commentRequestDto, userDetails.getUser());
     }
