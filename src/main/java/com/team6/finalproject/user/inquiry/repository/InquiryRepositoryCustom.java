@@ -12,4 +12,6 @@ public interface InquiryRepositoryCustom {
     List<Inquiry> findAllByUserIdOrderByCreatedAtDesc(Long userId);
     // 문의 전체 조회
     List<Inquiry> findAllOrderByCreatedAtDesc();
+    // 문의유형 별 조회
+    List<Inquiry> findAllByType(String inquiryType);
 }

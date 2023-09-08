@@ -1,7 +1,7 @@
-package com.team6.finalproject.admin.answer.controller;
+package com.team6.finalproject.admin.inquiry.controller;
 
-import com.team6.finalproject.admin.answer.dto.AnswerRequestDto;
-import com.team6.finalproject.admin.answer.service.InquiryAnswerService;
+import com.team6.finalproject.admin.inquiry.dto.AnswerRequestDto;
+import com.team6.finalproject.admin.inquiry.service.InquiryAdminService;
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.inquiry.dto.InquiryResponseDto;
@@ -16,27 +16,34 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class InquiryAnswerController {
+public class InquiryAdminController {
 
-    private final InquiryAnswerService inquiryAnswerService;
+    private final InquiryAdminService inquiryAdminService;
 
     @PatchMapping("/inquiry/answer/{inquiryId}") // 문의 답변 작성/수정
     @ResponseBody
     public InquiryResponseDto inquiryAnswer(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody AnswerRequestDto requestDto,
                                             @PathVariable Long inquiryId) throws AccessDeniedException, NotExistResourceException {
-        return inquiryAnswerService.inquiryAnswer(userDetails.getUser(), requestDto, inquiryId);
+        return inquiryAdminService.inquiryAnswer(userDetails.getUser(), requestDto, inquiryId);
     }
 
     @GetMapping("/all-inquiry") // 문의 전체 조회
     @ResponseBody
     public List<InquiryResponseDto> getAllInquiry(@AuthenticationPrincipal UserDetailsImpl userDetails) throws AccessDeniedException {
-        return inquiryAnswerService.getAllInquiry(userDetails.getUser());
+        return inquiryAdminService.getAllInquiry(userDetails.getUser());
     }
 
     @GetMapping("/inquiry/{userId}") // 문의 유저 선택 조회
     @ResponseBody
     public List<InquiryResponseDto> getAllInquiryByUserId(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws AccessDeniedException {
-        return inquiryAnswerService.getAllInquiryByUserId(userId, userDetails.getUser());
+        return inquiryAdminService.getAllInquiryByUserId(userId, userDetails.getUser());
+    }
+
+    @GetMapping("/inquiry/type")
+    @ResponseBody
+    public List<InquiryResponseDto> getAllInquiryByType(@RequestParam String inquiryType, @AuthenticationPrincipal UserDetailsImpl userDetails)
+            throws AccessDeniedException {
+        return inquiryAdminService.getAllInquiryByType(inquiryType, userDetails.getUser());
     }
 }

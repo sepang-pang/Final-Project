@@ -1,6 +1,6 @@
-package com.team6.finalproject.admin.answer.service;
+package com.team6.finalproject.admin.inquiry.service;
 
-import com.team6.finalproject.admin.answer.dto.AnswerRequestDto;
+import com.team6.finalproject.admin.inquiry.dto.AnswerRequestDto;
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class InquiryAnswerServiceImpl implements InquiryAnswerService {
+public class InquiryAdminServiceImpl implements InquiryAdminService {
 
     private final InquiryRepository inquiryRepository;
 
@@ -51,6 +51,15 @@ public class InquiryAnswerServiceImpl implements InquiryAnswerService {
     public List<InquiryResponseDto> getAllInquiryByUserId(Long userId, User user) throws AccessDeniedException {
         checkRole(user); // 관리자 권한 확인
         return inquiryRepository.findAllByUserIdOrderByCreatedAtDesc(userId).stream()
+                .map(InquiryResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<InquiryResponseDto> getAllInquiryByType(String inquiryType, User user) throws AccessDeniedException {
+        checkRole(user); // 관리자 권한 확인
+        return inquiryRepository.findAllByType(inquiryType).stream()
                 .map(InquiryResponseDto::new)
                 .collect(Collectors.toList());
     }
