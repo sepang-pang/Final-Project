@@ -54,5 +54,8 @@ public interface ClubService {
 
     // 최근 개설된 동호회 조회
     public List<ClubResponseDto> clubsByRecent();
+
+    // 인기 급상승 동호회 조회
+    public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException;
 }
 

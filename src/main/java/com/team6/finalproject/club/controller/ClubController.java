@@ -95,4 +95,9 @@ public class ClubController {
     public List<ClubResponseDto> clubsByRecent() {
         return clubService.clubsByRecent();
     }
+
+    @GetMapping("/clubs/popularity") // 인기 급상승 동호회 추천
+    public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException {
+        return clubService.clubsByPopularity();
+    }
 }
