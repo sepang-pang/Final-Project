@@ -5,7 +5,6 @@ import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.dto.*;
-import com.team6.finalproject.user.inquiry.service.InquiryService;
 import com.team6.finalproject.user.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,15 +17,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
 @Slf4j(topic = "user 컨트롤러입니다.")
 public class UserController {
 
     private final UserService userService;
-    private final InquiryService inquiryService;
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupRequestDto signupRequestDto) throws DuplicateNameException {
@@ -97,32 +93,5 @@ public class UserController {
     @GetMapping("/withdrawal")
     public String withdrawal() {
         return "withdrawal";
-    }
-
-    @PostMapping("/api/users/inquiry") // 문의 생성
-    @ResponseBody
-    public InquiryResponseDto createInquiry(@RequestBody InquiryRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return inquiryService.createInquiry(requestDto, userDetails.getUser());
-    }
-
-    @GetMapping("/api/users/inquiry/{id}") // 문의 단건 조회
-    @ResponseBody
-    public InquiryResponseDto getInquiry(@PathVariable Long id,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return inquiryService.getInquiry(id, userDetails.getUser());
-    }
-
-    @GetMapping("/api/users/all-inquiry") // 문의 전체 조회
-    @ResponseBody
-    public List<InquiryResponseDto> getAllInquiry(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return inquiryService.getAllInquiry(userDetails.getUser());
-    }
-
-    @PatchMapping("/api/users/inquiry") // 문의 수정
-    @ResponseBody
-    public InquiryResponseDto updateInquiry(@RequestBody InquiryRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return inquiryService.updateInquiry(requestDto, userDetails.getUser());
     }
 }

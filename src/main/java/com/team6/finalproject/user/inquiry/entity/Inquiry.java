@@ -21,6 +21,12 @@ public class Inquiry extends Timestamped {
     private String description;
 
     @Column
+    private String answer;
+
+    @Column
+    private boolean isDeleted;
+
+    @Column
     @Enumerated(value = EnumType.STRING)
     private InquiryTypeEnum inquiryType;
 
@@ -38,5 +44,13 @@ public class Inquiry extends Timestamped {
     public void update(InquiryTypeEnum inquiryType, String description) {
         this.inquiryType = inquiryType;
         this.description = description;
+    }
+
+    public void saveAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void deleteInquiry() {
+        this.isDeleted = true;
     }
 }
