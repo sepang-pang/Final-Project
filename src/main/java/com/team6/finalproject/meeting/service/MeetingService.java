@@ -105,6 +105,18 @@ public class MeetingService {
         return meetings.stream().map(MeetingResponseDto::new).toList();
     }
 
+    // 미완료된 모임 조회
+    public List<MeetingResponseDto> getUncompletedMeeting(Long clubId) {
+        List<Meeting> meetings = meetingRepository.findByUncompletedMeeting(clubId);
+
+        // 존재 하지 않을시 예외 발생
+        if (meetings.isEmpty()) {
+            throw new RejectedExecutionException();
+        }
+
+        return meetings.stream().map(MeetingResponseDto::new).toList();
+    }
+
     // 모임 전체 업데이트.
     @Transactional
     public void updateMeeting(Long meetingId, MeetingRequestDto meetingRequestDto, User user) {
@@ -185,6 +197,4 @@ public class MeetingService {
         return meetingRepository.findById(meetingId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다."));
     }
-
-
 }

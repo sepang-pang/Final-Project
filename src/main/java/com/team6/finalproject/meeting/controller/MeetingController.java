@@ -46,6 +46,10 @@ public class MeetingController {
     }
 
     // 미완료된 모임 조회
+    @GetMapping("/{clubId}/uncompleted")
+    public List<MeetingResponseDto> getUncompletedMeeting(@PathVariable Long clubId) {
+        return meetingService.getUncompletedMeeting(clubId);
+    }
 
     // 모임 전체 업데이트.
     @PutMapping("/{meetingId}")

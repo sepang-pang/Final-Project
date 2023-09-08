@@ -38,4 +38,17 @@ public class MeetingRepositoryCustomImpl implements MeetingRepositoryCustom {
                                 .and(meeting.isDeleted.eq(false))) // 삭제되지 않은 미팅만 조회
                         .fetch();
     }
+
+    // 미완료된 모임 조회
+    @Override
+    public List<Meeting> findByUncompletedMeeting(Long clubId) {
+        return
+                jpaQueryFactory
+                        .selectFrom(meeting)
+                        .where(meeting.club.id.eq(clubId)
+                                .and(meeting.isCompleted.eq(false))
+                                .and(meeting.isDeleted.eq(false))) // 삭제되지 않은 미팅만 조회
+                        .orderBy(meeting.date.asc())
+                        .fetch();
+    }
 }
