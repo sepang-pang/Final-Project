@@ -40,7 +40,7 @@ public class InquiryAdminController {
         return inquiryAdminService.getAllInquiryByUserId(userId, userDetails.getUser());
     }
 
-    @GetMapping("/inquiry/type")
+    @GetMapping("/inquiry/type") // 문의유형 별 전체 조회
     @ResponseBody
     public List<InquiryResponseDto> getAllInquiryByType(@RequestParam String inquiryType, @AuthenticationPrincipal UserDetailsImpl userDetails)
             throws AccessDeniedException {

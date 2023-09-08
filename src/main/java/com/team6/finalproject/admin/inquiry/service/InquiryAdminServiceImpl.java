@@ -26,7 +26,7 @@ public class InquiryAdminServiceImpl implements InquiryAdminService {
     @Transactional
     public InquiryResponseDto inquiryAnswer(User user, AnswerRequestDto requestDto, Long inquiryId)
             throws AccessDeniedException, NotExistResourceException {
-        checkRole(user); // 관리자 권한 확인
+        checkRole(user);
         Inquiry inquiry = inquiryRepository.findById(inquiryId).orElseThrow(
                 () -> new NotExistResourceException("문의 내역을 찾을 수 없습니다.")
         );
@@ -39,7 +39,7 @@ public class InquiryAdminServiceImpl implements InquiryAdminService {
     @Override
     @Transactional(readOnly = true)
     public List<InquiryResponseDto> getAllInquiry(User user) throws AccessDeniedException {
-        checkRole(user); // 관리자 권한 확인
+        checkRole(user);
         return inquiryRepository.findAllOrderByCreatedAtDesc().stream()
                 .map(InquiryResponseDto::new)
                 .collect(Collectors.toList());
@@ -49,21 +49,23 @@ public class InquiryAdminServiceImpl implements InquiryAdminService {
     @Override
     @Transactional(readOnly = true)
     public List<InquiryResponseDto> getAllInquiryByUserId(Long userId, User user) throws AccessDeniedException {
-        checkRole(user); // 관리자 권한 확인
+        checkRole(user);
         return inquiryRepository.findAllByUserIdOrderByCreatedAtDesc(userId).stream()
                 .map(InquiryResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    // 문의유형 별 전체 조회
     @Override
     @Transactional(readOnly = true)
     public List<InquiryResponseDto> getAllInquiryByType(String inquiryType, User user) throws AccessDeniedException {
-        checkRole(user); // 관리자 권한 확인
+        checkRole(user);
         return inquiryRepository.findAllByType(inquiryType).stream()
                 .map(InquiryResponseDto::new)
                 .collect(Collectors.toList());
     }
 
+    // 관리자 권한 확인
     private void checkRole(User user) throws AccessDeniedException {
         if (!user.getRole().equals(UserRoleEnum.ADMIN)) {
             throw new AccessDeniedException("권한이 없습니다.");
