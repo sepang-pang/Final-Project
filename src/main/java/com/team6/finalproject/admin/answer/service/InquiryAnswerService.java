@@ -9,7 +9,10 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 public interface InquiryAnswerService {
+    // 문의 답변 작성/수정
     InquiryResponseDto inquiryAnswer(User user, AnswerRequestDto requestDto, Long inquiryId) throws AccessDeniedException, NotExistResourceException;
-
+    // 문의 전체 조회
     List<InquiryResponseDto> getAllInquiry(User user) throws AccessDeniedException;
+    // 특정 사용자 문의 전체 조회
+    List<InquiryResponseDto> getAllInquiryByUserId(Long userId, User user) throws AccessDeniedException;
 }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 public class InquiryResponseDto {
+    private String username;
     private InquiryTypeEnum inquiryType;
     private String description;
     private String answer;
@@ -15,6 +16,7 @@ public class InquiryResponseDto {
     private LocalDateTime modifiedAt;
 
     public InquiryResponseDto(Inquiry inquiry) {
+        this.username = inquiry.getUser().getUsername();
         this.inquiryType = inquiry.getInquiryType();
         this.description = inquiry.getDescription();
         this.answer = inquiry.getAnswer();

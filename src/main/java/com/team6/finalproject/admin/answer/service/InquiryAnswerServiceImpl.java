@@ -21,6 +21,7 @@ public class InquiryAnswerServiceImpl implements InquiryAnswerService {
 
     private final InquiryRepository inquiryRepository;
 
+    // 문의 답변 작성/수정
     @Override
     @Transactional
     public InquiryResponseDto inquiryAnswer(User user, AnswerRequestDto requestDto, Long inquiryId)
@@ -34,11 +35,22 @@ public class InquiryAnswerServiceImpl implements InquiryAnswerService {
         return new InquiryResponseDto(inquiry);
     }
 
+    // 문의 전체 조회
     @Override
     @Transactional(readOnly = true)
     public List<InquiryResponseDto> getAllInquiry(User user) throws AccessDeniedException {
         checkRole(user); // 관리자 권한 확인
         return inquiryRepository.findAllOrderByCreatedAtDesc().stream()
+                .map(InquiryResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 특정 사용자 문의 전체 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<InquiryResponseDto> getAllInquiryByUserId(Long userId, User user) throws AccessDeniedException {
+        checkRole(user); // 관리자 권한 확인
+        return inquiryRepository.findAllByUserIdOrderByCreatedAtDesc(userId).stream()
                 .map(InquiryResponseDto::new)
                 .collect(Collectors.toList());
     }

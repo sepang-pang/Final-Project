@@ -32,4 +32,11 @@ public class InquiryAnswerController {
     public List<InquiryResponseDto> getAllInquiry(@AuthenticationPrincipal UserDetailsImpl userDetails) throws AccessDeniedException {
         return inquiryAnswerService.getAllInquiry(userDetails.getUser());
     }
+
+    @GetMapping("/inquiry/{userId}") // 문의 유저 선택 조회
+    @ResponseBody
+    public List<InquiryResponseDto> getAllInquiryByUserId(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails)
+            throws AccessDeniedException {
+        return inquiryAnswerService.getAllInquiryByUserId(userId, userDetails.getUser());
+    }
 }
