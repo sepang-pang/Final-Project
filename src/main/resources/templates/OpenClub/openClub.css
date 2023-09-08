@@ -1,0 +1,204 @@
+/* 페이지 내용을 가운데 정렬하는 스타일 */
+body {
+    background-color: #87CEEB; /* 하늘색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0; /* 페이지 바깥 여백 제거 */
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    border-radius: 10px;
+    width: 500px;
+    text-align: center;
+    position: fixed; /* 위치를 고정 */
+    top: 0; /* 상단에 배치 */
+    left: 0; /* 왼쪽에 배치 */
+}
+
+/* 이미지 스타일 */
+.club-image {
+    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
+    max-width: 20%;
+    height: auto;
+}
+
+/* 컨테이너1 스타일 */
+.container1, .container2, .container3 {
+    background-color: rgba(255, 255, 255, 0.9); /* 투명한 흰색 배경 */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 800px; /* 컨테이너의 너비 조정 */
+    height: 530px;
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+
+    /* 페이지 가운데에 고정 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 초기에는 숨겨진 상태*/
+.container2,
+.container3 {
+    display: none;
+}
+
+
+
+/* 텍스트 박스 스타일 */
+input[type="text"],
+select {
+    width: 60%;
+    padding: 15px; /* 세로 크기 조정 */
+    margin-bottom: 30px; /* 간격 조정 */
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
+}
+
+/* 텍스트 박스 안에 옅은 글씨로 미리 입력된 내용 스타일 */
+input::placeholder {
+    color: #bbb;
+}
+
+/* 스피너 스타일 (인원수 입력) */
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath d='M5 5L0 0h10L5 5zm-5-5h10L5 3.207 0 0z' fill='%2327ae60'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* 버튼 스타일 */
+.button-group1 button {
+    background-color: #fff; /* 흰색 배경 */
+    color: #27ae60; /* 초록색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    margin-right: 30px; /* 버튼 간 간격 조정 */
+    margin-bottom: 30px; /* 간격 조정 */
+}
+
+/* 버튼 클릭 시 활성화 스타일 */
+.button-group1 button.active-button {
+    background-color: #27ae60; /* 초록색 배경 */
+    color: #fff; /* 흰색 텍스트 */
+}
+
+/* 버튼 스타일 */
+.button-group2 button {
+    background-color: #fff; /* 흰색 배경 */
+    color: #27ae60; /* 초록색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    margin-right: 30px; /* 버튼 간 간격 조정 */
+    margin-bottom: 30px; /* 간격 조정 */
+}
+
+/* 버튼 클릭 시 활성화 스타일 */
+.button-group2 button.active-button {
+    background-color: #27ae60; /* 초록색 배경 */
+    color: #fff; /* 흰색 텍스트 */
+}
+
+
+/* 메인 제목 스타일 */
+h1 {
+    font-size: 36px;
+    color: #fff; /* 흰색 텍스트 */
+    margin-bottom: 20px;
+}
+
+/* 다음 버튼 스타일 */
+#next-btn1, #next-btn2 {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: fixed; /* 페이지 우측 하단에 고정 */
+    bottom: 20px;
+    right: 230px;
+}
+
+/* 다음으로 버튼 호버 효과 */
+#next-btn1:hover, #next-btn2:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+/* 뒤로가기 버튼 스타일 */
+#goBackButton1 {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: fixed; /* 페이지 우측 하단에 고정 */
+    bottom: 20px;
+    right: 600px;
+}
+
+/* 뒤로가기 버튼 호버 효과 */
+#goBackButton1:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+
+
+/* 버튼 스타일 */
+.topic-toggle button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.subtopics {
+    display: none;
+    margin-top: 10px;
+}
+
+.subtopic-button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #00cc00; /* 선택된 버튼의 배경색을 초록색으로 변경 */
+}
