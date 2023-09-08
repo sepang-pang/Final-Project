@@ -19,6 +19,9 @@ public class LikeClub extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private boolean isDeleted;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
@@ -31,5 +34,13 @@ public class LikeClub extends Timestamped {
     public LikeClub(Profile profile, Club club) {
         this.profile = profile;
         this.club = club;
+    }
+
+    public void deleteLikeClub() {
+        this.isDeleted = true;
+    }
+
+    public void restoreLikeClub() {
+        this.isDeleted = false;
     }
 }
