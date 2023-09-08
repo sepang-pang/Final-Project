@@ -138,6 +138,20 @@ public class ClubServiceImpl implements ClubService {
         return readInterestClubs(clubs);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClubResponseDto> clubsByRecent() {
+
+        List<Club> clubs = clubRepository.findClubsByRecent();
+
+        return clubs.stream()
+                .map(club -> new ClubResponseDto(
+                        club,
+                        new InterestMajorDto(club.getMinor().getInterestMajor()),
+                        new InterestMinorDto(club.getMinor())))
+                .toList();
+    }
+
     // 동호회 개설
     @Override
     @Transactional
@@ -247,15 +261,15 @@ public class ClubServiceImpl implements ClubService {
             throw new CapacityFullException("정원이 가득찼습니다");
         }
 
-//        // 거주지 입력 여부 판단
-//        if(profileService.existValidLocate(user.getId())){
-//            throw new IllegalArgumentException("거주지를 입력해주세요");
-//        }
-//
-//        // 관심사 등록 여부 판단
-//        if(profileService.existValidInterest(user.getId())) {
-//            throw new IllegalArgumentException("관심사를 등록해주세요");
-//        }
+        // 거주지 입력 여부 판단
+        if(profileService.existValidLocate(user.getId())){
+            throw new IllegalArgumentException("거주지를 입력해주세요");
+        }
+
+        // 관심사 등록 여부 판단
+        if(profileService.existValidInterest(user.getId())) {
+            throw new IllegalArgumentException("관심사를 등록해주세요");
+        }
 
         // ======== 즉시 가입 동호회 ======== //
         if (targetClub.getJoinType() == (JoinTypeEnum.IMMEDIATE)) {
@@ -367,4 +381,6 @@ public class ClubServiceImpl implements ClubService {
 
         return distance;
     }
+
+
 }

@@ -82,4 +82,14 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                                 .and(club.isDeleted.eq(false)))
                         .fetch();
     }
+
+    @Override // 최근 개설된 동호회 조회
+    public List<Club> findClubsByRecent() {
+        return
+                jpaQueryFactory
+                        .selectFrom(club)
+                        .where(club.isDeleted.eq(false))
+                        .orderBy(club.createdAt.desc())
+                        .fetch();
+    }
 }
