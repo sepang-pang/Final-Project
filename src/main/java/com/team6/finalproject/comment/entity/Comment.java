@@ -1,9 +1,9 @@
 package com.team6.finalproject.comment.entity;
 
-import com.team6.finalproject.comment.commentLike.entity.CommentLike;
 import com.team6.finalproject.comment.dto.CommentRequestDto;
+import com.team6.finalproject.comment.like.entity.CommentLike;
 import com.team6.finalproject.common.entity.Timestamped;
-import com.team6.finalproject.post.entity.Post;
+import com.team6.finalproject.meeting.entity.Meeting;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,8 +34,8 @@ public class Comment extends Timestamped {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @JoinColumn(name = "meeting_id", nullable = false)
+    private Meeting meeting;
 
     @OneToMany(mappedBy = "comment")
     private List<CommentLike> commentLikes;

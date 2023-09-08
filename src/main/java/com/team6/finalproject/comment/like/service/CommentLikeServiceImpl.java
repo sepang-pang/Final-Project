@@ -1,11 +1,11 @@
-package com.team6.finalproject.comment.commentLike.service;
+package com.team6.finalproject.comment.like.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.advice.custom.NotLikedYetException;
 import com.team6.finalproject.advice.custom.NotOwnedByUserException;
 import com.team6.finalproject.advice.custom.SelfLikeNotAllowedException;
-import com.team6.finalproject.comment.commentLike.entity.CommentLike;
-import com.team6.finalproject.comment.commentLike.repository.CommentLikeRepository;
+import com.team6.finalproject.comment.like.entity.CommentLike;
+import com.team6.finalproject.comment.like.repository.CommentLikeRepository;
 import com.team6.finalproject.comment.entity.Comment;
 import com.team6.finalproject.comment.service.CommentService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
