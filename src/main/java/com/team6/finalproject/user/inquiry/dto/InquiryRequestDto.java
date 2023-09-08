@@ -1,4 +1,4 @@
-package com.team6.finalproject.user.dto;
+package com.team6.finalproject.user.inquiry.dto;
 
 import com.team6.finalproject.user.inquiry.entity.InquiryTypeEnum;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 //package com.team6.finalproject.user.inquiry.service;
 //
 //import com.team6.finalproject.advice.custom.NotExistResourceException;
-//import com.team6.finalproject.user.dto.InquiryRequestDto;
-//import com.team6.finalproject.user.dto.InquiryResponseDto;
+//import com.team6.finalproject.user.inquiry.dto.InquiryRequestDto;
+//import com.team6.finalproject.user.inquiry.dto.InquiryResponseDto;
 //import com.team6.finalproject.user.entity.User;
 //import com.team6.finalproject.user.inquiry.entity.Inquiry;
 //import com.team6.finalproject.user.inquiry.entity.InquiryTypeEnum;
