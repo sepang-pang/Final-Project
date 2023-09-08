@@ -8,4 +8,6 @@ import com.team6.finalproject.user.entity.User;
 public interface LikeClubService {
     // 관심 동호회 등록
     ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) throws NotExistResourceException;
+    // 관심 동호회 취소
+    ProfileResponseDto deleteLikeClub(Long clubId, User user) throws NotExistResourceException;
 }

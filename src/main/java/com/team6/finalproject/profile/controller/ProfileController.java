@@ -71,10 +71,17 @@ public class ProfileController {
         return profileInterestService.addInterests(requestDto, userDetails.getUser());
     }
 
-    @PostMapping("/profile/like-clubs") // 관심 동호회 등록
+    @PostMapping("/profile/like-club") // 관심 동호회 등록
     @ResponseBody
     public ProfileResponseDto addLikeClub(@RequestBody LikeClubRequestDto requestDto,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return likeClubService.addLikeClub(requestDto, userDetails.getUser());
+    }
+
+    @DeleteMapping("/profile/like-club/{clubId}") // 관심 동호회 취소
+    @ResponseBody
+    public ProfileResponseDto deleteLikeClub(@PathVariable Long clubId,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return likeClubService.deleteLikeClub(clubId, userDetails.getUser());
     }
 }
