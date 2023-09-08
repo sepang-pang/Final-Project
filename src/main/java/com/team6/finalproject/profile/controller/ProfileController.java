@@ -38,10 +38,16 @@ public class ProfileController {
         return profileService.createProfile(requestDto, userDetails.getUser());
     }
 
-    @GetMapping("/profile") // 프로필 조회
+    @GetMapping("/profile") // 자신의 프로필 조회
     @ResponseBody
     public ProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return profileService.getProfile(userDetails.getUser());
+    }
+
+    @GetMapping("/profile/{profileId}") // 선택한 프로필 조회
+    @ResponseBody
+    public ProfileResponseDto getProfileById(@PathVariable Long profileId) throws NotExistResourceException {
+        return profileService.getProfileById(profileId);
     }
 
     @PatchMapping("/profile") // 프로필 수정
