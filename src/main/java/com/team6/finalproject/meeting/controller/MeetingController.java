@@ -12,6 +12,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api/meetings")
 @RequiredArgsConstructor
@@ -36,6 +38,14 @@ public class MeetingController {
     public MeetingResponseDto getMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return meetingService.getMeeting(meetingId,userDetails.getUser());
     }
+
+    // 완료된 모임 조회
+    @GetMapping("/{clubId}/completed")
+    public List<MeetingResponseDto> getCompletedMeeting(@PathVariable Long clubId) {
+        return meetingService.getCompletedMeeting(clubId);
+    }
+
+    // 미완료된 모임 조회
 
     // 모임 전체 업데이트.
     @PutMapping("/{meetingId}")

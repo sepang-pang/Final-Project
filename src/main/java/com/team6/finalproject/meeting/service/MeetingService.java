@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -90,6 +91,18 @@ public class MeetingService {
         }
 
         return new MeetingResponseDto(findMeeting(meetingId));
+    }
+
+    // 완료된 모임 조회
+    public List<MeetingResponseDto> getCompletedMeeting(Long clubId) {
+        List<Meeting> meetings = meetingRepository.findByCompletedMeeting(clubId);
+
+        // 존재 하지 않을시 예외 발생
+        if (meetings.isEmpty()) {
+            throw new RejectedExecutionException();
+        }
+
+        return meetings.stream().map(MeetingResponseDto::new).toList();
     }
 
     // 모임 전체 업데이트.
@@ -172,4 +185,6 @@ public class MeetingService {
         return meetingRepository.findById(meetingId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글이 존재하지 않습니다."));
     }
+
+
 }
