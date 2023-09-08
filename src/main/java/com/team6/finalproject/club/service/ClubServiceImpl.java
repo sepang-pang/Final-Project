@@ -138,11 +138,32 @@ public class ClubServiceImpl implements ClubService {
         return readInterestClubs(clubs);
     }
 
+    // 최근 개설된 동호회 조회
     @Override
     @Transactional(readOnly = true)
     public List<ClubResponseDto> clubsByRecent() {
 
         List<Club> clubs = clubRepository.findClubsByRecent();
+
+        return clubs.stream()
+                .map(club -> new ClubResponseDto(
+                        club,
+                        new InterestMajorDto(club.getMinor().getInterestMajor()),
+                        new InterestMinorDto(club.getMinor())))
+                .toList();
+    }
+
+    // 인기 급상승 동호회 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException {
+
+        List<Club> clubs = clubRepository.findPopularClubs();
+
+        // 존재하지 않을 경우 예외 발생
+        if (clubs.isEmpty()) {
+            throw new NotExistResourceException("존재하지 않는 동호회입니다.");
+        }
 
         return clubs.stream()
                 .map(club -> new ClubResponseDto(

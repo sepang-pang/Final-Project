@@ -2,13 +2,17 @@ package com.team6.finalproject.club.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.club.member.entity.QMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 import static com.team6.finalproject.club.entity.QClub.club;
+import static com.team6.finalproject.club.member.entity.QMember.member;
 
 @Repository
 @RequiredArgsConstructor
@@ -90,6 +94,30 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                         .selectFrom(club)
                         .where(club.isDeleted.eq(false))
                         .orderBy(club.createdAt.desc())
+                        .fetch();
+    }
+
+    @Override // 인기 동호회 추천
+    public List<Club> findPopularClubs() {
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfDay = now.with(LocalTime.of(6, 0));
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+
+        return
+                jpaQueryFactory
+                        .selectFrom(club)
+                        .leftJoin(member)
+                        .on(club.id.eq(member.club.id))
+                        .where(club.activityScore.goe(60)
+                                .and(club.maxMember.multiply(0.3).loe(jpaQueryFactory.select(member.count())
+                                        .from(member)
+                                        .where(member.club.eq(club)
+                                                .and(member.createdAt.between(startOfDay, endOfDay)))))
+                        )
+                        .groupBy(club.id)
+                        .orderBy(member.count().desc())
+                        .limit(5)
                         .fetch();
     }
 }
