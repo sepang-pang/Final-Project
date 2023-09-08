@@ -38,4 +38,20 @@ public class ClubResponseDto {
         this.major = interestMajorDto.getName();
         this.minor = interestMinorDto.getName();
     }
+
+    public ClubResponseDto(Club club, InterestMajorDto interestMajorDto, InterestMinorDto interestMinorDto) {
+        this.username = club.getUsername();
+        this.nickName = club.getNickName();
+        this.name = club.getName();
+        this.description = club.getDescription();
+        this.trialAvailable = club.isTrialAvailable();
+        this.activityType = club.getActivityType().getActivity();
+        this.joinType = club.getJoinType().getJoin();
+        this.locate = club.getLocate();
+        this.maxMember = club.getMaxMember();
+        this.minAge = club.getMinAge();
+        this.maxAge = club.getMaxAge();
+        this.major = interestMajorDto.getName();
+        this.minor = interestMinorDto.getName();
+    }
 }

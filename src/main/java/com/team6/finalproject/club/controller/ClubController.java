@@ -4,6 +4,7 @@ import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
+import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -88,5 +89,10 @@ public class ClubController {
     @GetMapping("/clubs/user-age") // 동호회 연령대 별 조회
     public List<ReadInterestMajorDto> clubsByUserAge(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return clubService.clubsByUserAge(userDetails.getUser());
+    }
+
+    @GetMapping("/clubs/recent") // 최근 개설된 동호회 추천
+    public List<ClubResponseDto> clubsByRecent() {
+        return clubService.clubsByRecent();
     }
 }

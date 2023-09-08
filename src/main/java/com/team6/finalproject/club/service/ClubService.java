@@ -51,5 +51,8 @@ public interface ClubService {
 
     // 유저 나이대별 동호회 조회
     List<ReadInterestMajorDto> clubsByUserAge(User user) throws NotExistResourceException;
+
+    // 최근 개설된 동호회 조회
+    public List<ClubResponseDto> clubsByRecent();
 }
 
