@@ -1,8 +1,12 @@
 package com.team6.finalproject.club.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.entity.Club;
-import com.team6.finalproject.club.member.entity.QMember;
+import com.team6.finalproject.club.entity.QClub;
+import com.team6.finalproject.profile.entity.Profile;
+import com.team6.finalproject.profile.profileinterest.entity.ProfileInterest;
+import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.team6.finalproject.club.entity.QClub.club;
 import static com.team6.finalproject.club.member.entity.QMember.member;
@@ -109,15 +114,30 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                         .selectFrom(club)
                         .leftJoin(member)
                         .on(club.id.eq(member.club.id))
-                        .where(club.activityScore.goe(60)
-                                .and(club.maxMember.multiply(0.3).loe(jpaQueryFactory.select(member.count())
-                                        .from(member)
-                                        .where(member.club.eq(club)
-                                                .and(member.createdAt.between(startOfDay, endOfDay)))))
+                        .where(club.isDeleted.eq(false),// 삭제되지 않은 동호회만 조회
+                                club.activityScore.goe(60)
+                                        .and(club.maxMember.multiply(0.3).loe(jpaQueryFactory.select(member.count())
+                                                .from(member)
+                                                .where(member.club.eq(club)
+                                                        .and(member.createdAt.between(startOfDay, endOfDay)))))
                         )
                         .groupBy(club.id)
                         .orderBy(member.count().desc())
                         .limit(5)
                         .fetch();
+    }
+
+    @Override
+    public List<Club> findRecommendedClubs(User user) {
+        return jpaQueryFactory.selectFrom(club)
+                .where(
+                        club.isDeleted.eq(false), // 삭제되지 않은 동호회만 조회
+                        club.minAge.loe(user.getAge()), // 최소 연령
+                        club.maxAge.goe(user.getAge()), // 최대 연령
+                        club.minor.in(user.getProfile().getProfileInterests().stream()
+                                .map(ProfileInterest::getInterestMinor)
+                                .collect(Collectors.toList()))   // 관심사 일치
+                )
+                .fetch();
     }
 }

@@ -173,6 +173,37 @@ public class ClubServiceImpl implements ClubService {
                 .toList();
     }
 
+    // 거리, 연령대, 관심사가 모두 부합하는 동호회 조회
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user) {
+        List<Club> clubs = clubRepository.findRecommendedClubs(user);
+
+        // radius 의 최소값은 5km 며, 이를 충족하지 못했을시 예외 발생
+        if (radius < 5) {
+            throw new IllegalArgumentException("최소 반경은 5km 이상이어야 합니다.");
+        }
+
+        // radius 내에 존재하는 동호회를 조회하면서 가까운 순으로 정렬
+        clubs = clubs.stream()
+                .filter(club -> {
+                    double distance = calculateDistance(user.getProfile().getLatitude(), user.getProfile().getLongitude(), club.getLatitude(), club.getLongitude());
+                    return distance <= radius;
+                })
+                .sorted(Comparator.comparingDouble(club -> {
+                    double distance = calculateDistance(user.getProfile().getLatitude(), user.getProfile().getLongitude(), club.getLatitude(), club.getLongitude());
+                    return distance;
+                }))
+                .toList();
+
+        return clubs.stream()
+                .map(club -> new ClubResponseDto(
+                        club,
+                        new InterestMajorDto(club.getMinor().getInterestMajor()),
+                        new InterestMinorDto(club.getMinor())))
+                .toList();
+    }
+
     // 동호회 개설
     @Override
     @Transactional
