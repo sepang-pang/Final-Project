@@ -53,9 +53,6 @@ public class Post extends Timestamped {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Comment> commentList = new ArrayList<>();
-
     @OneToMany(mappedBy = "post")
     private List<PostLike> postLikes;
 
