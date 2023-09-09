@@ -16,6 +16,7 @@ import com.team6.finalproject.club.member.entity.Member;
 import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.repository.ClubRepository;
 import com.team6.finalproject.common.dto.ApiResponseDto;
+import com.team6.finalproject.common.file.FileUploader;
 import com.team6.finalproject.profile.dto.ProfileNickNameDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.service.ProfileService;
@@ -25,7 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +44,7 @@ public class ClubServiceImpl implements ClubService {
     private final ProfileService profileService;
     private final MemberService memberService;
     private final ApplyJoinClubService applyJoinClubService;
+    private final FileUploader fileUploader;
 
     // 동호회 멤버 전체 조회
     @Override
@@ -207,7 +211,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 개설
     @Override
     @Transactional
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
 
         // 유저 프로필 조회
         Profile profile = profileService.findProfileByUserId(user.getId());
@@ -238,6 +242,7 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
+        String media = fileUploader.upload(multipartFile);
 
         // 동호회 개설
         log.info("동호회 개설");
@@ -247,6 +252,7 @@ public class ClubServiceImpl implements ClubService {
                 .name(clubRequestDto.getName())
                 .description(clubRequestDto.getDescription())
                 .maxMember(clubRequestDto.getMaxMember())
+                .media(media)
                 .minAge(clubRequestDto.getMinAge())
                 .maxAge(clubRequestDto.getMaxAge())
                 .latitude(clubRequestDto.getLatitude())

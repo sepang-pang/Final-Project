@@ -43,6 +43,9 @@ public class Club extends Timestamped {
     @Column(name = "max_age")
     private int maxAge; // 모집 연령대의 최대 값
 
+    @Column(name = "media")
+    private String media; // 동호회 사진
+
     @Column(name = "latitude")
     private Double latitude; // 동호회 위도
 
