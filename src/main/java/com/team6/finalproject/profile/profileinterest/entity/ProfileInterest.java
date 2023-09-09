@@ -18,7 +18,7 @@ public class ProfileInterest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)

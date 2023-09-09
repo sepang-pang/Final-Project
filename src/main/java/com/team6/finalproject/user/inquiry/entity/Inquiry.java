@@ -26,7 +26,7 @@ public class Inquiry extends Timestamped {
     @Column
     private String media;
 
-    @Column
+    @Column(nullable = false)
     private boolean isDeleted;
 
     @Column
