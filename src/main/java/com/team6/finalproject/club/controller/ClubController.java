@@ -36,6 +36,12 @@ public class ClubController {
         return clubService.createClub(clubRequestDto, userDetails.getUser(), file);
     }
 
+    // 동호회 수정
+    @PutMapping("/clubs/{clubId}")
+    public ClubResponseDto updateClub(@PathVariable Long clubId, @RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+        return clubService.updateClub(clubId, clubRequestDto, userDetails.getUser(), multipartFile);
+    }
+
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {
         return clubService.deleteClub(clubId, userDetails.getUser());

@@ -11,6 +11,7 @@ public class ClubResponseDto {
     private String nickName;
     private String name;
     private String description;
+    private String media;
     private boolean trialAvailable;
     private String activityType;
     private String joinType;
@@ -28,6 +29,7 @@ public class ClubResponseDto {
         this.nickName = club.getNickName();
         this.name = club.getName();
         this.description = club.getDescription();
+        this.media = club.getMedia();
         this.trialAvailable = club.isTrialAvailable();
         this.activityType = club.getActivityType().getActivity();
         this.joinType = club.getJoinType().getJoin();

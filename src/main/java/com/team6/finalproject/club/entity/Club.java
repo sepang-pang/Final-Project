@@ -1,5 +1,6 @@
 package com.team6.finalproject.club.entity;
 
+import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
@@ -92,5 +93,21 @@ public class Club extends Timestamped {
 
     public void updateActivityScore(int i) {
         this.activityScore += i;
+    }
+
+    public void updateClub(ClubRequestDto clubRequestDto, String media, InterestMinor interestMinor, ActivityTypeEnum activity, JoinTypeEnum join) {
+        this.name = clubRequestDto.getName();
+        this.description = clubRequestDto.getDescription();
+        this.media = media;
+        this.maxMember = clubRequestDto.getMaxMember();
+        this.minAge = clubRequestDto.getMinAge();
+        this.maxAge = clubRequestDto.getMaxAge();
+        this.latitude = clubRequestDto.getLatitude();
+        this.longitude = clubRequestDto.getLongitude();
+        this.locate = clubRequestDto.getLocate();
+        this.isTrialAvailable = clubRequestDto.isTrialAvailable();
+        this.activityType = activity;
+        this.joinType = join;
+        this.minor = interestMinor;
     }
 }

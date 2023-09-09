@@ -19,8 +19,11 @@ import java.util.List;
 
 public interface ClubService {
 
-    //동호회 개설
+    // 동호회 개설
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
+
+    // 동호회 수정
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
 
     // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) throws NotExistResourceException, AccessDeniedException;

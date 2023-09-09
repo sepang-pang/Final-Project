@@ -286,6 +286,61 @@ public class ClubServiceImpl implements ClubService {
                 new InterestMinorDto(club.getMinor()));
     }
 
+    // 동호회 수정
+    @Override
+    @Transactional
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+
+        // 동호회 존재 여부 확인
+        Club targetClub = clubRepository.findByActiveId(clubId)
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 동호회입니다."));
+
+        // 본인 동호회인지 확인
+        if (!targetClub.getUsername().equals(user.getUsername())) {
+            throw new AccessDeniedException("권한이 없습니다");
+        }
+
+        // 동호회 이름 존재 확인
+        if (clubRepository.findByActiveClubName(clubRequestDto.getName()).isPresent()) { // isPresent(): 존재하면 true, 존재하지 않으면 false
+            throw new DuplicateNameException("동호회 이름이 이미 존재합니다.");
+        }
+
+        if (clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
+            throw new InvalidAgeRangeException("최소 연령대가 최대 연령대보다 클 수 없습니다.");
+        }
+
+        // 소주제 존재 유무 확인
+        InterestMinor interestMinor = interestMinorService.existsInterestMinor(clubRequestDto.getMinorId());
+
+        // 가입 방식 설정
+        JoinTypeEnum join = JoinTypeEnum.APPROVAL;
+        if (clubRequestDto.isOpenJoinType()) {
+            join = JoinTypeEnum.IMMEDIATE;
+        }
+
+        // 활동 방식 설정
+        ActivityTypeEnum activity = ActivityTypeEnum.OFFLINE;
+        if (clubRequestDto.isOnline()) {
+            activity = ActivityTypeEnum.ONLINE;
+        }
+
+        if (multipartFile != null) {
+           fileUploader.deleteFile(targetClub.getMedia());
+        }
+
+        String media = fileUploader.upload(multipartFile);
+
+        // 동호회 수정
+        targetClub.updateClub(clubRequestDto, media, interestMinor, activity, join);
+
+        // 반환
+        return new ClubResponseDto(
+                user,
+                targetClub,
+                new InterestMajorDto(targetClub.getMinor().getInterestMajor()),
+                new InterestMinorDto(targetClub.getMinor()));
+    }
+
     // 동호회 폐쇄
     @Override
     @Transactional
