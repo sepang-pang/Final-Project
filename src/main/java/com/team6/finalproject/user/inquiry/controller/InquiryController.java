@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -24,9 +26,10 @@ public class InquiryController {
 
     @PostMapping("/inquiry") // 문의 생성
     @ResponseBody
-    public InquiryResponseDto createInquiry(@RequestBody InquiryRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return inquiryService.createInquiry(requestDto, userDetails.getUser());
+    public InquiryResponseDto createInquiry(@RequestPart InquiryRequestDto requestDto,
+                                            @RequestPart MultipartFile file,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return inquiryService.createInquiry(requestDto, file, userDetails.getUser());
     }
 
     @GetMapping("/inquiry/{inquiryId}") // 문의 단건 조회
@@ -44,9 +47,10 @@ public class InquiryController {
 
     @PatchMapping("/inquiry") // 문의 수정
     @ResponseBody
-    public InquiryResponseDto updateInquiry(@RequestBody InquiryRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return inquiryService.updateInquiry(requestDto, userDetails.getUser());
+    public InquiryResponseDto updateInquiry(@RequestPart InquiryRequestDto requestDto,
+                                            @RequestPart MultipartFile file,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
+        return inquiryService.updateInquiry(requestDto, file, userDetails.getUser());
     }
 
     @DeleteMapping("/inquiry/{inquiryId}")

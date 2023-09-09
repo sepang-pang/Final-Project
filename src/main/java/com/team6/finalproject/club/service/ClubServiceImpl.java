@@ -16,6 +16,7 @@ import com.team6.finalproject.club.member.entity.Member;
 import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.repository.ClubRepository;
 import com.team6.finalproject.common.dto.ApiResponseDto;
+import com.team6.finalproject.common.file.FileUploader;
 import com.team6.finalproject.profile.dto.ProfileNickNameDto;
 import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.service.ProfileService;
@@ -25,7 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +44,7 @@ public class ClubServiceImpl implements ClubService {
     private final ProfileService profileService;
     private final MemberService memberService;
     private final ApplyJoinClubService applyJoinClubService;
+    private final FileUploader fileUploader;
 
     // 동호회 멤버 전체 조회
     @Override
@@ -207,7 +211,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 개설
     @Override
     @Transactional
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
 
         // 유저 프로필 조회
         Profile profile = profileService.findProfileByUserId(user.getId());
@@ -238,6 +242,7 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
+        String media = fileUploader.upload(multipartFile);
 
         // 동호회 개설
         log.info("동호회 개설");
@@ -247,6 +252,7 @@ public class ClubServiceImpl implements ClubService {
                 .name(clubRequestDto.getName())
                 .description(clubRequestDto.getDescription())
                 .maxMember(clubRequestDto.getMaxMember())
+                .media(media)
                 .minAge(clubRequestDto.getMinAge())
                 .maxAge(clubRequestDto.getMaxAge())
                 .latitude(clubRequestDto.getLatitude())
@@ -278,6 +284,61 @@ public class ClubServiceImpl implements ClubService {
                 club,
                 new InterestMajorDto(club.getMinor().getInterestMajor()),
                 new InterestMinorDto(club.getMinor()));
+    }
+
+    // 동호회 수정
+    @Override
+    @Transactional
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+
+        // 동호회 존재 여부 확인
+        Club targetClub = clubRepository.findByActiveId(clubId)
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 동호회입니다."));
+
+        // 본인 동호회인지 확인
+        if (!targetClub.getUsername().equals(user.getUsername())) {
+            throw new AccessDeniedException("권한이 없습니다");
+        }
+
+        // 동호회 이름 존재 확인
+        if (clubRepository.findByActiveClubName(clubRequestDto.getName()).isPresent()) { // isPresent(): 존재하면 true, 존재하지 않으면 false
+            throw new DuplicateNameException("동호회 이름이 이미 존재합니다.");
+        }
+
+        if (clubRequestDto.getMinAge() > clubRequestDto.getMaxAge()) {
+            throw new InvalidAgeRangeException("최소 연령대가 최대 연령대보다 클 수 없습니다.");
+        }
+
+        // 소주제 존재 유무 확인
+        InterestMinor interestMinor = interestMinorService.existsInterestMinor(clubRequestDto.getMinorId());
+
+        // 가입 방식 설정
+        JoinTypeEnum join = JoinTypeEnum.APPROVAL;
+        if (clubRequestDto.isOpenJoinType()) {
+            join = JoinTypeEnum.IMMEDIATE;
+        }
+
+        // 활동 방식 설정
+        ActivityTypeEnum activity = ActivityTypeEnum.OFFLINE;
+        if (clubRequestDto.isOnline()) {
+            activity = ActivityTypeEnum.ONLINE;
+        }
+
+        if (targetClub.getMedia() != null) {
+           fileUploader.deleteFile(targetClub.getMedia());
+        }
+
+        String media = fileUploader.upload(multipartFile);
+
+        // 동호회 수정
+        targetClub.updateClub(clubRequestDto, media, interestMinor, activity, join);
+
+        // 반환
+        return new ClubResponseDto(
+                user,
+                targetClub,
+                new InterestMajorDto(targetClub.getMinor().getInterestMajor()),
+                new InterestMinorDto(targetClub.getMinor()));
     }
 
     // 동호회 폐쇄

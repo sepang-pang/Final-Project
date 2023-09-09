@@ -1,6 +1,7 @@
 package com.team6.finalproject.user.inquiry.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.common.file.FileUploader;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.inquiry.dto.InquiryRequestDto;
 import com.team6.finalproject.user.inquiry.dto.InquiryResponseDto;
@@ -10,7 +11,10 @@ import com.team6.finalproject.user.inquiry.repository.InquiryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,13 +23,18 @@ import java.util.stream.Collectors;
 public class InquiryServiceImpl implements InquiryService {
 
     private final InquiryRepository inquiryRepository;
+    private final FileUploader fileUploader;
 
     @Override
     @Transactional // 문의 등록
-    public InquiryResponseDto createInquiry(InquiryRequestDto requestDto, User user) {
+    public InquiryResponseDto createInquiry(InquiryRequestDto requestDto, MultipartFile file, User user) throws IOException {
+
+        String media = fileUploader.upload(file);
+
         Inquiry inquiry = Inquiry.builder()
                 .inquiryType(requestDto.getInquiryType())
                 .description(requestDto.getDescription())
+                .media(media)
                 .user(user)
                 .build();
         inquiryRepository.save(inquiry);
@@ -49,13 +58,23 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Override
     @Transactional // 문의 수정
-    public InquiryResponseDto updateInquiry(InquiryRequestDto requestDto, User user) throws NotExistResourceException {
+    public InquiryResponseDto updateInquiry(InquiryRequestDto requestDto, MultipartFile file, User user) throws NotExistResourceException, IOException {
         Inquiry inquiry = findByIdAndUserId(requestDto.getInquiryId(), user.getId());
 
+        // 본인 문의만 수정 가능
+        if (!inquiry.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("본인 문의만 수정 가능합니다.");
+        }
+
+        if (inquiry.getMedia() != null) {
+           fileUploader.deleteFile(inquiry.getMedia());
+        }
+
+        String media = fileUploader.upload(file);
         String description = requestDto.getDescription();
         InquiryTypeEnum inquiryType = requestDto.getInquiryType();
 
-        inquiry.update(inquiryType, description);
+        inquiry.update(media, inquiryType, description);
         return new InquiryResponseDto(inquiry);
     }
 

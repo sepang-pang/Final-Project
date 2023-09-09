@@ -10,15 +10,20 @@ import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
 public interface ClubService {
 
-    //동호회 개설
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException;
+    // 동호회 개설
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
+
+    // 동호회 수정
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
 
     // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) throws NotExistResourceException, AccessDeniedException;
