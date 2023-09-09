@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public interface ProfileService {
     // 프로필 생성
-    ProfileResponseDto createProfile(ProfileRequestDto requestDto, User user);
+    ProfileResponseDto createProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws IOException;
     // 자신의 프로필 조회
     ProfileResponseDto getProfile(User user) throws NotExistResourceException;
     // 선택한 프로필 조회

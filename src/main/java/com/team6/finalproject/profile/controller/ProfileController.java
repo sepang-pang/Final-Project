@@ -28,14 +28,14 @@ public class ProfileController {
 
     @GetMapping("/profile/create")
     public String profile() {
-        return "profile";
+        return "createProfile";
     }
 
     @PostMapping("/profile") // 프로필 등록
     @ResponseBody
-    public ProfileResponseDto createProfile(@RequestBody ProfileRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return profileService.createProfile(requestDto, userDetails.getUser());
+    public ProfileResponseDto createProfile(@RequestPart ProfileRequestDto requestDto, @RequestPart MultipartFile file,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return profileService.createProfile(requestDto, file, userDetails.getUser());
     }
 
     @GetMapping("/profile") // 자신의 프로필 조회
