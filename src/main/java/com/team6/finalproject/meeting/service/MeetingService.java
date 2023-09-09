@@ -5,7 +5,11 @@ import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.member.repository.MemberRepository;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
-import com.team6.finalproject.meeting.dto.*;
+import com.team6.finalproject.common.file.FileUploader;
+import com.team6.finalproject.meeting.dto.MeetingPlaceRequestDto;
+import com.team6.finalproject.meeting.dto.MeetingRequestDto;
+import com.team6.finalproject.meeting.dto.MeetingResponseDto;
+import com.team6.finalproject.meeting.dto.MeetingScheduleRequestDto;
 import com.team6.finalproject.meeting.entity.Meeting;
 import com.team6.finalproject.meeting.repository.MeetingRepository;
 import com.team6.finalproject.user.entity.User;
@@ -13,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.RejectedExecutionException;
@@ -25,15 +31,17 @@ public class MeetingService {
     private final MeetingRepository meetingRepository;
     private final ClubService clubService;
     private final MemberRepository memberRepository;
+    private final FileUploader fileUploader;
 
     // 모임 생성.
     @Transactional
-    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) throws NotExistResourceException {
+    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws NotExistResourceException, IOException {
 
         Club club = clubService.findClub(clubId);
+        String media = fileUploader.upload(file);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(club.getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(club.getId(), user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
@@ -86,7 +94,7 @@ public class MeetingService {
         Optional<Meeting> meeting = meetingRepository.findByMeeting(meetingId);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.get().getClub().getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(meeting.get().getClub().getId(), user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
@@ -119,11 +127,12 @@ public class MeetingService {
 
     // 모임 전체 업데이트.
     @Transactional
-    public void updateMeeting(Long meetingId, MeetingRequestDto meetingRequestDto, User user) {
+    public void updateMeeting(Long meetingId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws IOException {
+
         Meeting meeting = findMeeting(meetingId);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
@@ -132,16 +141,23 @@ public class MeetingService {
             throw new RejectedExecutionException();
         }
 
-        meeting.update(meetingRequestDto);
+        // 수정 시 기존 객체 버킷에서 삭제
+        if (meeting.getMedia() != null) {
+            fileUploader.deleteFile(meeting.getMedia());
+        }
+
+        String media = fileUploader.upload(file);
+
+        meeting.update(meetingRequestDto, media);
     }
 
     // 모임 삭제.
     @Transactional
-    public void deleteMeeting(Long meetingId,User user) {
+    public void deleteMeeting(Long meetingId, User user) {
         Meeting meeting = findMeeting(meetingId);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
@@ -155,11 +171,11 @@ public class MeetingService {
 
     // 모임 일정 업데이트.
     @Transactional
-    public void updateSchedule(Long postId, MeetingScheduleRequestDto meetingScheduleRequestDto,User user) {
+    public void updateSchedule(Long postId, MeetingScheduleRequestDto meetingScheduleRequestDto, User user) {
         Meeting meeting = findMeeting(postId);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
@@ -173,11 +189,11 @@ public class MeetingService {
 
     // 모임 장소 업데이트.
     @Transactional
-    public void updatePlace(Long postId, MeetingPlaceRequestDto meetingplaceRequestDto,User user) {
+    public void updatePlace(Long postId, MeetingPlaceRequestDto meetingplaceRequestDto, User user) {
         Meeting meeting = findMeeting(postId);
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(),user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
             throw new RejectedExecutionException();
         }
 
@@ -188,6 +204,27 @@ public class MeetingService {
 
         meeting.updatePlace(meetingplaceRequestDto);
     }
+
+    // 모임 이미지 등록 / 수정
+    @Transactional
+    public MeetingResponseDto updateImage(Long meetingId, MultipartFile file, User user) throws IOException {
+        Meeting meeting = findMeeting(meetingId);
+
+        if (!meeting.getUser().getUsername().equals(user.getUsername())) {
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+        }
+        // 수정 시 기존 객체 버킷에서 삭제
+        if (meeting.getMedia() != null) {
+            fileUploader.deleteFile(meeting.getMedia());
+        }
+
+        String media = fileUploader.upload(file);
+
+        meeting.updateImage(media);
+
+        return new MeetingResponseDto(meeting);
+    }
+
 
     /////////////////////////////////////////////조회 메서드/////////////////////////////////////////
 

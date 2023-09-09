@@ -11,6 +11,7 @@ public class MeetingResponseDto {
 
     private String name;
     private String description;
+    private String media;
     private int maxMember;
     private ActivityTypeEnum ACTIVITY_TYPE;
     private LocalDateTime date;
@@ -23,6 +24,7 @@ public class MeetingResponseDto {
     public MeetingResponseDto(Meeting meeting) {
         this.name = meeting.getName();
         this.description = meeting.getDescription();
+        this.media = meeting.getMedia();
         this.maxMember = meeting.getMaxMember();
         this.ACTIVITY_TYPE = meeting.getACTIVITY_TYPE();
         this.date = meeting.getDate();
