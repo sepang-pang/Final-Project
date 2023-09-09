@@ -26,10 +26,12 @@ public class ProfileServiceImpl implements ProfileService {
     // 프로필 생성
     @Override
     @Transactional
-    public ProfileResponseDto createProfile(ProfileRequestDto requestDto, User user) {
+    public ProfileResponseDto createProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws IOException {
+        String profileImage = fileUploader.upload(file);
         Profile profile = Profile.builder()
                 .nickname(requestDto.getNickname())
                 .introduction(requestDto.getIntroduction())
+                .profileImage(profileImage)
                 .latitude(requestDto.getLatitude())
                 .longitude(requestDto.getLongitude())
                 .zoneCode(requestDto.getZoneCode())
@@ -51,6 +53,14 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileResponseDto(profile);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ProfileResponseDto getProfileById(Long profileId) throws NotExistResourceException {
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                () -> new NotExistResourceException("프로필을 찾을 수 없습니다."));
+        return new ProfileResponseDto(profile);
+    }
+
     // 프로필 nickname, introduction, zoneCode, locate 수정
     @Override
     @Transactional
@@ -59,8 +69,8 @@ public class ProfileServiceImpl implements ProfileService {
 
         String nickname = requestDto.getNickname();
         String introduction = requestDto.getIntroduction();
-        String latitude = requestDto.getLatitude();
-        String longitude = requestDto.getLongitude();
+        Double latitude = requestDto.getLatitude();
+        Double longitude = requestDto.getLongitude();
         String zoneCode = requestDto.getZoneCode();
         String locate = requestDto.getLocate();
 

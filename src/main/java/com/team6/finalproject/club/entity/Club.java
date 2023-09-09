@@ -1,11 +1,11 @@
 package com.team6.finalproject.club.entity;
 
+import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.meeting.entity.Meeting;
-import com.team6.finalproject.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +37,24 @@ public class Club extends Timestamped {
     @Column(name = "max_member")
     private int maxMember; // 동호회 최대 인원 수
 
+    @Column(name = "min_age")
+    private int minAge; // 모집 연령대의 최소 값
+
+    @Column(name = "max_age")
+    private int maxAge; // 모집 연령대의 최대 값
+
+    @Column(name = "media")
+    private String media; // 동호회 사진
+
+    @Column(name = "latitude")
+    private Double latitude; // 동호회 위도
+
+    @Column(name = "longitude")
+    private Double longitude; // 동호회 경도
+
+    @Column(name = "locate")
+    private String locate; // 동호회 위치
+
     @Column(name = "activity_score")
     private int activityScore; // 동호회 활동 점수
 
@@ -59,9 +77,6 @@ public class Club extends Timestamped {
     private InterestMinor minor;
 
     @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Post> postList = new ArrayList<>();
-
-    @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Meeting> meetings;
 
     public void deleteClub() {
@@ -70,5 +85,25 @@ public class Club extends Timestamped {
 
     public void addMeeting(Meeting meeting) {
         this.meetings.add(meeting);
+    }
+
+    public void updateActivityScore(int i) {
+        this.activityScore += i;
+    }
+
+    public void updateClub(ClubRequestDto clubRequestDto, String media, InterestMinor interestMinor, ActivityTypeEnum activity, JoinTypeEnum join) {
+        this.name = clubRequestDto.getName();
+        this.description = clubRequestDto.getDescription();
+        this.media = media;
+        this.maxMember = clubRequestDto.getMaxMember();
+        this.minAge = clubRequestDto.getMinAge();
+        this.maxAge = clubRequestDto.getMaxAge();
+        this.latitude = clubRequestDto.getLatitude();
+        this.longitude = clubRequestDto.getLongitude();
+        this.locate = clubRequestDto.getLocate();
+        this.isTrialAvailable = clubRequestDto.isTrialAvailable();
+        this.activityType = activity;
+        this.joinType = join;
+        this.minor = interestMinor;
     }
 }

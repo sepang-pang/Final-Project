@@ -1,9 +1,6 @@
 package com.team6.finalproject.club.service;
 
-import com.team6.finalproject.advice.custom.CapacityFullException;
-import com.team6.finalproject.advice.custom.DuplicateActionException;
-import com.team6.finalproject.advice.custom.DuplicateNameException;
-import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
@@ -13,15 +10,20 @@ import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
 public interface ClubService {
 
-    //동호회 개설
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException;
+    // 동호회 개설
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
+
+    // 동호회 수정
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
 
     // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(Long clubId, User user) throws NotExistResourceException, AccessDeniedException;
@@ -45,5 +47,23 @@ public interface ClubService {
 
     // 동호회 소주제 별 조회
     public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException;
+
+    // 유저 기준 거리순 동호회 조회
+    List<ReadInterestMajorDto> clubsByUserDistance(User user)throws NotExistResourceException;
+
+    // 유저 관심사 별 동호회 조회
+    List<ReadInterestMajorDto> clubsByUserInterest(User user) throws NotExistResourceException;
+
+    // 유저 나이대별 동호회 조회
+    List<ReadInterestMajorDto> clubsByUserAge(User user) throws NotExistResourceException;
+
+    // 최근 개설된 동호회 조회
+    public List<ClubResponseDto> clubsByRecent();
+
+    // 인기 급상승 동호회 조회
+    public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException;
+
+    // 거리, 연령대, 관심사가 모두 부합하는 동호회 조회
+    public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user);
 }
 

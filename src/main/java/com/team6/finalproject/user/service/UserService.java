@@ -24,4 +24,7 @@ public interface UserService {
     void updatePassword(UpdatePasswordDto passwordDto, User user);
     // 이메일으로 유저 찾기
     User findByEmail(String email) throws NotExistResourceException;
+
+    // Id로 유저 찾기
+    public User findByUser(Long id) throws NotExistResourceException;
 }

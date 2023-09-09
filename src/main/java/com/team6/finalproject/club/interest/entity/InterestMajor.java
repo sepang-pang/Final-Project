@@ -16,6 +16,6 @@ public class InterestMajor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "major_name")
+    @Column(name = "major_name", unique = true)
     private String majorName;
 }

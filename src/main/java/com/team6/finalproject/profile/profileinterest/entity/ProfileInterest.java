@@ -18,6 +18,9 @@ public class ProfileInterest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private boolean isDeleted;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interest_minor_id", nullable = false)
     private InterestMinor interestMinor;
@@ -30,5 +33,13 @@ public class ProfileInterest {
     public ProfileInterest(InterestMinor interestMinor, Profile profile) {
         this.interestMinor = interestMinor;
         this.profile = profile;
+    }
+
+    public void deleteInterest() {
+        this.isDeleted = true;
+    }
+
+    public void restoreInterest() {
+        this.isDeleted = false;
     }
 }

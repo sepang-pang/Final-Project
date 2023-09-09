@@ -11,11 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"minor_name", "interest_major_id"})
+)
 public class InterestMinor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "minor_name")
     private String minorName;
 
     @ManyToOne(fetch = FetchType.LAZY)

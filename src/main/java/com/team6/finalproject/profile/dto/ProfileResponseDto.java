@@ -27,6 +27,7 @@ public class ProfileResponseDto {
         this.createdAt = profile.getCreatedAt();
         this.modifiedAt = profile.getModifiedAt();
         this.profileInterestNames = profile.getProfileInterests().stream()
+                .filter(profileInterest -> !profileInterest.isDeleted())
                 .map(profileInterest -> profileInterest.getInterestMinor().getMinorName())
                 .collect(Collectors.toList());
     }

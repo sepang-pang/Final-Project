@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
                 .phone(signupRequestDto.getPhone())
                 .email(signupRequestDto.getEmail())
                 .birth(signupRequestDto.getBirth())
+                .age(signupRequestDto.getAge())
                 .role(signupRequestDto.getRole())
                 .build();
 
@@ -139,6 +140,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) throws NotExistResourceException {
         return userRepository.findByEmail(email).orElseThrow(
+                () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
+    }
+
+    @Override
+    public User findByUser(Long id) throws NotExistResourceException {
+        return userRepository.findByActiveId(id).orElseThrow(
                 () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
     }
 }

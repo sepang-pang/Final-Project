@@ -28,20 +28,26 @@ public class ProfileController {
 
     @GetMapping("/profile/create")
     public String profile() {
-        return "profile";
+        return "createProfile";
     }
 
     @PostMapping("/profile") // 프로필 등록
     @ResponseBody
-    public ProfileResponseDto createProfile(@RequestBody ProfileRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return profileService.createProfile(requestDto, userDetails.getUser());
+    public ProfileResponseDto createProfile(@RequestPart ProfileRequestDto requestDto, @RequestPart MultipartFile file,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return profileService.createProfile(requestDto, file, userDetails.getUser());
     }
 
-    @GetMapping("/profile") // 프로필 조회
+    @GetMapping("/profile") // 자신의 프로필 조회
     @ResponseBody
     public ProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return profileService.getProfile(userDetails.getUser());
+    }
+
+    @GetMapping("/profile/{profileId}") // 선택한 프로필 조회
+    @ResponseBody
+    public ProfileResponseDto getProfileById(@PathVariable Long profileId) throws NotExistResourceException {
+        return profileService.getProfileById(profileId);
     }
 
     @PatchMapping("/profile") // 프로필 수정
@@ -62,13 +68,20 @@ public class ProfileController {
     @ResponseBody
     public ProfileResponseDto addInterests(@RequestBody InterestRequestDto requestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return profileInterestService.addInterests(requestDto, userDetails.getUser());
+        return profileInterestService.inputInterests(requestDto, userDetails.getUser());
     }
 
-    @PostMapping("/profile/like-clubs") // 관심 동호회 등록
+    @PostMapping("/profile/like-club") // 관심 동호회 등록
     @ResponseBody
     public ProfileResponseDto addLikeClub(@RequestBody LikeClubRequestDto requestDto,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return likeClubService.addLikeClub(requestDto, userDetails.getUser());
+    }
+
+    @DeleteMapping("/profile/like-club/{clubId}") // 관심 동호회 취소
+    @ResponseBody
+    public ProfileResponseDto deleteLikeClub(@PathVariable Long clubId,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return likeClubService.deleteLikeClub(clubId, userDetails.getUser());
     }
 }

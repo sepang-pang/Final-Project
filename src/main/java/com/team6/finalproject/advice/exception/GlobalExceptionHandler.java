@@ -117,4 +117,14 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // 나이 범위가 잘못되었을 때
+    @ExceptionHandler({InvalidAgeRangeException.class})
+    public ResponseEntity<RestApiException> invalidAgeRangeException(InvalidAgeRangeException ex) {
+        RestApiException restApiException = new RestApiException(ex.getMessage(), HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(
+                restApiException,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
 }

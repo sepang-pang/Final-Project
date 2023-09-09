@@ -12,9 +12,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CommentService {
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user) throws NotExistResourceException;
+    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, User user) throws NotExistResourceException; // 모임 댓글 작성
 
-    public List<CommentResponseDto> readAllComment();
+    public List<CommentResponseDto> readAllMeetingComment(Long meetingId) throws NotExistResourceException; // 모임 댓글 조회
 
     public CommentResponseDto updateComment(Long commentId, CommentRequestDto commentRequestDto, User user) throws NotExistResourceException, NotOwnedByUserException;
 

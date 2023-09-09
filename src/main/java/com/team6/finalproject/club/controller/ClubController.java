@@ -1,12 +1,10 @@
 package com.team6.finalproject.club.controller;
 
-import com.team6.finalproject.advice.custom.CapacityFullException;
-import com.team6.finalproject.advice.custom.DuplicateActionException;
-import com.team6.finalproject.advice.custom.DuplicateNameException;
-import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
+import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -20,7 +18,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
@@ -38,8 +38,14 @@ public class ClubController {
     }
 
     @PostMapping("/clubs") // 동호회 개설
-    public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException {
-        return clubService.createClub(clubRequestDto, userDetails.getUser());
+    public ClubResponseDto createClub(@RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+        return clubService.createClub(clubRequestDto, userDetails.getUser(), file);
+    }
+
+    // 동호회 수정
+    @PutMapping("/clubs/{clubId}")
+    public ClubResponseDto updateClub(@PathVariable Long clubId, @RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+        return clubService.updateClub(clubId, clubRequestDto, userDetails.getUser(), multipartFile);
     }
 
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
@@ -79,8 +85,38 @@ public class ClubController {
         return clubService.readSelectInterestMajor(majorId);
     }
 
-    @GetMapping("clubs/interest-minor/{minorId}") // 동호회 대주제 별 조회
+    @GetMapping("clubs/interest-minor/{minorId}") // 동호회 소주제 별 조회
     public List<ReadInterestMajorDto> readSelectInterestMinor(@PathVariable Long minorId) throws NotExistResourceException {
         return clubService.readSelectInterestMinor(minorId);
+    }
+
+    @GetMapping("/clubs/user-distance")
+    public List<ReadInterestMajorDto> clubsByUserDistance(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.clubsByUserDistance(userDetails.getUser());
+    }
+
+    @GetMapping("/clubs/user-interest") // 동호회 관심사 별 조회
+    public List<ReadInterestMajorDto> clubsByUserInterest(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.clubsByUserInterest(userDetails.getUser());
+    }
+
+    @GetMapping("/clubs/user-age") // 동호회 연령대 별 조회
+    public List<ReadInterestMajorDto> clubsByUserAge(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.clubsByUserAge(userDetails.getUser());
+    }
+
+    @GetMapping("/clubs/recent") // 최근 개설된 동호회 추천
+    public List<ClubResponseDto> clubsByRecent() {
+        return clubService.clubsByRecent();
+    }
+
+    @GetMapping("/clubs/popularity") // 인기 급상승 동호회 추천
+    public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException {
+        return clubService.clubsByPopularity();
+    }
+
+    @GetMapping("/clubs/recommend") // 유저에게 최적합 동호회 추천
+    public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails)  {
+        return clubService.findRecommendedClubsForUser(radius, userDetails.getUser());
     }
 }

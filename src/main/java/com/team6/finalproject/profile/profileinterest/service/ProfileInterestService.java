@@ -7,5 +7,5 @@ import com.team6.finalproject.user.entity.User;
 
 public interface ProfileInterestService {
     // 관심사 등록
-    ProfileResponseDto addInterests(InterestRequestDto requestDto, User user) throws NotExistResourceException;
+    ProfileResponseDto inputInterests(InterestRequestDto requestDto, User user) throws NotExistResourceException;
 }

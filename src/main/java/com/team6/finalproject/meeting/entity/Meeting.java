@@ -1,7 +1,6 @@
 package com.team6.finalproject.meeting.entity;
 
 
-
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.common.entity.Timestamped;
@@ -30,6 +29,8 @@ public class Meeting extends Timestamped {
     @Column
     private String description;
     @Column
+    private String media;
+    @Column
     private int maxMember;
     @Column
     private ActivityTypeEnum ACTIVITY_TYPE;
@@ -52,9 +53,10 @@ public class Meeting extends Timestamped {
     @OneToMany(mappedBy ="meeting", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<MeetingUser> meetingUsers;
 
-    public void update(MeetingRequestDto meetingRequestDto) {
+    public void update(MeetingRequestDto meetingRequestDto, String media) {
         this.name = meetingRequestDto.getName();
         this.description = meetingRequestDto.getDescription();
+        this.media = media;
         this.maxMember = meetingRequestDto.getMaxMember();
         this.ACTIVITY_TYPE = meetingRequestDto.getACTIVITY_TYPE();
         this.date = meetingRequestDto.getDate();
@@ -75,5 +77,13 @@ public class Meeting extends Timestamped {
 
     public void addMetingUser(MeetingUser meetingUser) {
         this.meetingUsers.add(meetingUser);
+    }
+
+    public void completed() {
+        this.isCompleted = true;
+    }
+
+    public void updateImage(String media) {
+        this.media = media;
     }
 }

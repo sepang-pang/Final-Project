@@ -28,9 +28,9 @@ public class Profile extends Timestamped {
     @Column
     private String profileImage;
     @Column
-    private String latitude;
+    private Double latitude;
     @Column
-    private String longitude;
+    private Double longitude;
     @Column
     private String zoneCode;
     @Column
@@ -38,18 +38,19 @@ public class Profile extends Timestamped {
     @Column(nullable = false)
     private Long userScore;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "profile", orphanRemoval = true)
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<ProfileInterest> profileInterests = new ArrayList<>();
 
     @Builder
-    public Profile(String nickname, String introduction,
-                   String latitude, String longitude, String zoneCode, String locate, User user) {
+    public Profile(String nickname, String introduction, String profileImage,
+                   Double latitude, Double longitude, String zoneCode, String locate, User user) {
         this.nickname = nickname;
         this.introduction = introduction;
+        this.profileImage = profileImage;
         this.latitude = latitude;
         this.longitude = longitude;
         this.zoneCode = zoneCode;
@@ -59,7 +60,7 @@ public class Profile extends Timestamped {
     }
 
     public void update(String nickname, String introduction,
-                       String latitude, String longitude, String zoneCode, String locate) {
+                       Double latitude, Double longitude, String zoneCode, String locate) {
         this.nickname = nickname;
         this.introduction = introduction;
         this.latitude = latitude;
