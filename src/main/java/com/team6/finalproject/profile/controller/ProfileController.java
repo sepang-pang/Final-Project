@@ -68,7 +68,7 @@ public class ProfileController {
     @ResponseBody
     public ProfileResponseDto addInterests(@RequestBody InterestRequestDto requestDto,
                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return profileInterestService.addInterests(requestDto, userDetails.getUser());
+        return profileInterestService.inputInterests(requestDto, userDetails.getUser());
     }
 
     @PostMapping("/profile/like-club") // 관심 동호회 등록
