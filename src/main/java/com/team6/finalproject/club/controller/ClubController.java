@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,13 +24,18 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @Slf4j(topic = "controller 로직")
 public class ClubController {
 
     private final ClubService clubService;
+
+    @GetMapping("/openClub")
+    public String openClub() {
+        return "openClub";
+    }
 
     @PostMapping("/clubs") // 동호회 개설
     public ClubResponseDto createClub(@RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
