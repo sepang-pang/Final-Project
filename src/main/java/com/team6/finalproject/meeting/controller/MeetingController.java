@@ -45,12 +45,14 @@ public class MeetingController {
 
     // 완료된 모임 조회
     @GetMapping("/{clubId}/completed")
+    @ResponseBody
     public List<MeetingResponseDto> getCompletedMeeting(@PathVariable Long clubId) {
         return meetingService.getCompletedMeeting(clubId);
     }
 
     // 미완료된 모임 조회
     @GetMapping("/{clubId}/uncompleted")
+    @ResponseBody
     public List<MeetingResponseDto> getUncompletedMeeting(@PathVariable Long clubId) {
         return meetingService.getUncompletedMeeting(clubId);
     }

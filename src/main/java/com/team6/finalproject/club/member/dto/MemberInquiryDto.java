@@ -1,16 +1,17 @@
 package com.team6.finalproject.club.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.team6.finalproject.club.member.entity.Member;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class MemberInquiryDto {
     private String nickName;
     private String birth;
     private String introduction;
+
+    public MemberInquiryDto(Member member) {
+        this.nickName = member.getUser().getProfile().getNickname();
+        this.birth = member.getUser().getBirth();
+        this.introduction = member.getUser().getProfile().getIntroduction();
+    }
 }

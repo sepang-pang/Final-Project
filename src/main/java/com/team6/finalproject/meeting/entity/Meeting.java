@@ -3,6 +3,7 @@ package com.team6.finalproject.meeting.entity;
 
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
+import com.team6.finalproject.comment.entity.Comment;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.meeting.dto.MeetingPlaceRequestDto;
 import com.team6.finalproject.meeting.dto.MeetingRequestDto;
@@ -13,6 +14,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -51,7 +53,11 @@ public class Meeting extends Timestamped {
     private User user;
     // 모임 참여자
     @OneToMany(mappedBy ="meeting", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<MeetingUser> meetingUsers;
+    private List<MeetingUser> meetingUsers = new ArrayList<>();
+
+    // 모임 댓글
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Comment> meetingComments = new ArrayList<>();
 
     public void update(MeetingRequestDto meetingRequestDto, String media) {
         this.name = meetingRequestDto.getName();
@@ -77,6 +83,9 @@ public class Meeting extends Timestamped {
 
     public void addMetingUser(MeetingUser meetingUser) {
         this.meetingUsers.add(meetingUser);
+    }
+    public void addComment(Comment comment) {
+        this.meetingComments.add(comment);
     }
 
     public void completed() {

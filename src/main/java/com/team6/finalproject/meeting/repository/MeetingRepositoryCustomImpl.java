@@ -49,7 +49,7 @@ public class MeetingRepositoryCustomImpl implements MeetingRepositoryCustom {
                         .where(meeting.club.id.eq(clubId)
                                 .and(meeting.isCompleted.eq(false))
                                 .and(meeting.isDeleted.eq(false))) // 삭제되지 않은 미팅만 조회
-                        .orderBy(meeting.date.asc())
+                        .orderBy(meeting.date.desc())
                         .fetch();
     }
 }

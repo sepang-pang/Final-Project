@@ -29,7 +29,7 @@ public class ClubResponseDto {
         this.nickName = club.getNickName();
         this.name = club.getName();
         this.description = club.getDescription();
-        this.media = club.getMedia();
+//        this.media = club.getMedia();
         this.trialAvailable = club.isTrialAvailable();
         this.activityType = club.getActivityType().getActivity();
         this.joinType = club.getJoinType().getJoin();

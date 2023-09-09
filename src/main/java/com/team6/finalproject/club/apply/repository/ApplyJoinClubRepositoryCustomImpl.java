@@ -6,6 +6,7 @@ import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.team6.finalproject.club.apply.entity.QApplyJoinClub.applyJoinClub;
@@ -39,5 +40,16 @@ public class ApplyJoinClubRepositoryCustomImpl implements ApplyJoinClubRepositor
                                         .and(applyJoinClub.club.id.eq(clubId)))
                                 .fetchOne()
                 );
+    }
+
+    @Override
+    public List<ApplyJoinClub> findByActiveClubId(Long clubId) {
+        return
+                jpaQueryFactory
+                        .selectFrom(applyJoinClub)
+                        .where(applyJoinClub.club.id.eq(clubId)
+                                .and(applyJoinClub.isDeleted.eq(false))
+                                .and(applyJoinClub.approvalStateEnum.eq(ApprovalStateEnum.PENDING)))
+                        .fetch();
     }
 }

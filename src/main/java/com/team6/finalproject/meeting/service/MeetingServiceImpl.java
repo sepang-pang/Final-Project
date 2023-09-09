@@ -14,6 +14,7 @@ import com.team6.finalproject.meeting.entity.Meeting;
 import com.team6.finalproject.meeting.repository.MeetingRepository;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
+@Slf4j(topic = "MeetingServiceImpl")
 @RequiredArgsConstructor
 public class MeetingServiceImpl implements MeetingService {
 
@@ -53,6 +55,7 @@ public class MeetingServiceImpl implements MeetingService {
                 .date(meetingRequestDto.getDate())
                 .place(meetingRequestDto.getPlace())
                 .isCompleted(false)
+                .isDeleted(false)
                 .club(club)
                 .user(user)
                 .build();
@@ -122,7 +125,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         // 존재 하지 않을시 예외 발생
         if (meetings.isEmpty()) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("존재하지 않는 모임입니다.");
         }
 
         return meetings.stream().map(MeetingResponseDto::new).toList();

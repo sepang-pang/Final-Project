@@ -15,8 +15,8 @@ public enum JoinTypeEnum {
     }
 
     private static class JoinType {
-        public static final String IMMEDIATE= "ONLINE_JOIN";
-        public static final String APPROVAL = "APPROVAL_JOIN";
+        public static final String IMMEDIATE= "즉시 가입";
+        public static final String APPROVAL = "가입 승인";
 
     }
 }
