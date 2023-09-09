@@ -26,10 +26,12 @@ public class ProfileServiceImpl implements ProfileService {
     // 프로필 생성
     @Override
     @Transactional
-    public ProfileResponseDto createProfile(ProfileRequestDto requestDto, User user) {
+    public ProfileResponseDto createProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws IOException {
+        String profileImage = fileUploader.upload(file);
         Profile profile = Profile.builder()
                 .nickname(requestDto.getNickname())
                 .introduction(requestDto.getIntroduction())
+                .profileImage(profileImage)
                 .latitude(requestDto.getLatitude())
                 .longitude(requestDto.getLongitude())
                 .zoneCode(requestDto.getZoneCode())
