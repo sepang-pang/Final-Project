@@ -324,7 +324,7 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
-        if (multipartFile != null) {
+        if (targetClub.getMedia() != null) {
            fileUploader.deleteFile(targetClub.getMedia());
         }
 

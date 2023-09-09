@@ -24,6 +24,9 @@ public class Inquiry extends Timestamped {
     private String answer;
 
     @Column
+    private String media;
+
+    @Column
     private boolean isDeleted;
 
     @Column
@@ -35,13 +38,15 @@ public class Inquiry extends Timestamped {
     private User user;
 
     @Builder
-    public Inquiry(InquiryTypeEnum inquiryType, String description, User user) {
+    public Inquiry(InquiryTypeEnum inquiryType, String description, String media, User user) {
         this.inquiryType = inquiryType;
         this.description = description;
+        this.media = media;
         this.user = user;
     }
 
-    public void update(InquiryTypeEnum inquiryType, String description) {
+    public void update(String media, InquiryTypeEnum inquiryType, String description) {
+        this.media = media;
         this.inquiryType = inquiryType;
         this.description = description;
     }

@@ -11,6 +11,7 @@ public class InquiryResponseDto {
     private String username;
     private InquiryTypeEnum inquiryType;
     private String description;
+    private String media;
     private String answer;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -19,6 +20,7 @@ public class InquiryResponseDto {
         this.username = inquiry.getUser().getUsername();
         this.inquiryType = inquiry.getInquiryType();
         this.description = inquiry.getDescription();
+        this.media = inquiry.getMedia();
         this.answer = inquiry.getAnswer();
         this.createdAt = inquiry.getCreatedAt();
         this.modifiedAt = inquiry.getModifiedAt();
