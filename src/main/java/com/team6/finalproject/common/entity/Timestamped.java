@@ -1,6 +1,5 @@
 package com.team6.finalproject.common.entity;
 
-import com.team6.finalproject.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
