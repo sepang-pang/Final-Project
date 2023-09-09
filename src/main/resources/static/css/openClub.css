@@ -218,7 +218,7 @@ textarea#description {
     padding: 10px; /* 내부 여백 조정 */
     border: 1px solid #ccc;
     border-radius: 5px;
-    resize: vertical; /* 수직 리사이즈만 가능하도록 설정 */
+
 }
 
 /* 파일 업로드 버튼 스타일링 (선택사항) */
@@ -228,12 +228,6 @@ input[type="file"]#image {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-top: 10px; /* 파일 업로드와 텍스트 박스 사이 간격 조정 (선택사항) */
-}
-
-/* 다른 요소들의 스타일링 (선택사항) */
-h2#clubnameDisplay {
-    font-size: 24px; /* 원하는 글꼴 크기로 조정 (선택사항) */
-    margin-bottom: 20px; /* 요소 간 간격 조정 (선택사항) */
 }
 
 label {

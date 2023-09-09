@@ -32,7 +32,7 @@ public class ClubController {
 
     private final ClubService clubService;
 
-    @GetMapping("/openClub")
+    @GetMapping("/open-club")
     public String openClub() {
         return "openClub";
     }

@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <!--Viewport-->
-    <meta name=“viewport”
-          content=“width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale-1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale-1.0, minimum=scale-1.0">
 
     <!--(IE10)-->
-    <meta http-equiv=“X-UA-Compatible” content=“IE=edge”>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Nomalize -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
     <title>동호회 개설 페이지</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/openClub.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/openClub.css"/>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="../static/js/openClub.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9136e9354340a2231a4413678b99a13d&libraries=services"></script>
 </head>
 <body>
 <div class="container">
-    <img class="club-image" src="../static/meets_logo.png" alt="동호회 이미지">
+    <img class="club-image" src="/meets_logo.png" alt="동호회 이미지">
     <h1>동호회 개설 페이지</h1>
 </div>
 
@@ -29,8 +29,6 @@
 
         <div class="locate">
             <label for="locate">활동 위치</label>
-            <input type="hidden" id="latitude" name="latitude">
-            <input type="hidden" id="longitude" name="longitude">
             <input type="text" id="locate" placeholder="주소">
             <input type="button" onclick="locate1()" value="위치 검색">
         </div>
@@ -65,146 +63,146 @@
             <button type="button" id="topicButton1">문화,예술</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">전시</button>
-            <button type="button" class="subtopic-button">영화</button>
-            <button type="button" class="subtopic-button">페스티벌</button>
-            <button type="button" class="subtopic-button">공연</button>
-            <button type="button" class="subtopic-button">콘서트</button>
-            <button type="button" class="subtopic-button">연극</button>
-            <button type="button" class="subtopic-button">연주회</button>
-            <button type="button" class="subtopic-button">뮤지컬</button>
+            <button type="button" class="subtopic-button" data-topic="전시">전시</button>
+            <button type="button" class="subtopic-button" data-topic="영화">영화</button>
+            <button type="button" class="subtopic-button" data-topic="페스티벌">페스티벌</button>
+            <button type="button" class="subtopic-button" data-topic="공연">공연</button>
+            <button type="button" class="subtopic-button" data-topic="전시">콘서트</button>
+            <button type="button" class="subtopic-button" data-topic="연극">연극</button>
+            <button type="button" class="subtopic-button" data-topic="연주회">연주회</button>
+            <button type="button" class="subtopic-button" data-topic="뮤지컬">뮤지컬</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton2">액티비티</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">등산</button>
-            <button type="button" class="subtopic-button">러닝</button>
-            <button type="button" class="subtopic-button">산책</button>
-            <button type="button" class="subtopic-button">야구</button>
-            <button type="button" class="subtopic-button">배드민턴</button>
-            <button type="button" class="subtopic-button">클라이밍</button>
-            <button type="button" class="subtopic-button">헬스</button>
-            <button type="button" class="subtopic-button">요가</button>
-            <button type="button" class="subtopic-button">수영</button>
-            <button type="button" class="subtopic-button">볼링</button>
-            <button type="button" class="subtopic-button">서핑</button>
-            <button type="button" class="subtopic-button">풋살</button>
-            <button type="button" class="subtopic-button">다이어트</button>
-            <button type="button" class="subtopic-button">자전거</button>
-            <button type="button" class="subtopic-button">플로깅</button>
-            <button type="button" class="subtopic-button">필라테스</button>
-            <button type="button" class="subtopic-button">다이빙</button>
-            <button type="button" class="subtopic-button">골프</button>
-            <button type="button" class="subtopic-button">농구</button>
-            <button type="button" class="subtopic-button">축구</button>
+            <button type="button" class="subtopic-button" data-topic="등산">등산</button>
+            <button type="button" class="subtopic-button" data-topic="러닝">러닝</button>
+            <button type="button" class="subtopic-button" data-topic="산책">산책</button>
+            <button type="button" class="subtopic-button" data-topic="야구">야구</button>
+            <button type="button" class="subtopic-button" data-topic="배드민턴">배드민턴</button>
+            <button type="button" class="subtopic-button" data-topic="클라이밍">클라이밍</button>
+            <button type="button" class="subtopic-button" data-topic="헬스">헬스</button>
+            <button type="button" class="subtopic-button" data-topic="요가" >요가</button>
+            <button type="button" class="subtopic-button" data-topic="수영">수영</button>
+            <button type="button" class="subtopic-button" data-topic="볼링">볼링</button>
+            <button type="button" class="subtopic-button" data-topic="서핑">서핑</button>
+            <button type="button" class="subtopic-button" data-topic="풋살">풋살</button>
+            <button type="button" class="subtopic-button" data-topic="다이어트">다이어트</button>
+            <button type="button" class="subtopic-button" data-topic="자전거">자전거</button>
+            <button type="button" class="subtopic-button" data-topic="플로깅">플로깅</button>
+            <button type="button" class="subtopic-button" data-topic="필라테스">필라테스</button>
+            <button type="button" class="subtopic-button" data-topic="다이빙">다이빙</button>
+            <button type="button" class="subtopic-button" data-topic="골프">골프</button>
+            <button type="button" class="subtopic-button" data-topic="농구">농구</button>
+            <button type="button" class="subtopic-button" data-topic="축구">축구</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton3">푸드,드링크</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">맛집투어</button>
-            <button type="button"class="subtopic-button">카페</button>
-            <button type="button" class="subtopic-button">와인</button>
-            <button type="button" class="subtopic-button">맥주</button>
-            <button type="button" class="subtopic-button">요리</button>
-            <button type="button" class="subtopic-button">위스키</button>
-            <button type="button" class="subtopic-button">칵테일</button>
-            <button type="button" class="subtopic-button">커피</button>
-            <button type="button" class="subtopic-button">디저트</button>
-            <button type="button" class="subtopic-button">전통주</button>
-            <button type="button" class="subtopic-button">티룸</button>
-            <button type="button" class="subtopic-button">파인다이닝</button>
-            <button type="button" class="subtopic-button">비건</button>
-            <button type="button" class="subtopic-button">페어링</button>
+            <button type="button" class="subtopic-button" data-topic="맛집투어">맛집투어</button>
+            <button type="button" class="subtopic-button" data-topic="카페">카페</button>
+            <button type="button" class="subtopic-button" data-topic="와인">와인</button>
+            <button type="button" class="subtopic-button" data-topic="맥주">맥주</button>
+            <button type="button" class="subtopic-button" data-topic="요리">요리</button>
+            <button type="button" class="subtopic-button" data-topic="위스키">위스키</button>
+            <button type="button" class="subtopic-button" data-topic="칵테일">칵테일</button>
+            <button type="button" class="subtopic-button" data-topic="커피">커피</button>
+            <button type="button" class="subtopic-button" data-topic="디저트">디저트</button>
+            <button type="button" class="subtopic-button" data-topic="전통주">전통주</button>
+            <button type="button" class="subtopic-button" data-topic="티룸">티룸</button>
+            <button type="button" class="subtopic-button" data-topic="파인다이닝">파인다이닝</button>
+            <button type="button" class="subtopic-button" data-topic="비건">비건</button>
+            <button type="button" class="subtopic-button" data-topic="페어링">페어링</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton4">취미</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">사진</button>
-            <button type="button" class="subtopic-button">보드게임</button>
-            <button type="button" class="subtopic-button">공예</button>
-            <button type="button" class="subtopic-button">드로잉</button>
-            <button type="button" class="subtopic-button">댄스</button>
-            <button type="button" class="subtopic-button">노래</button>
-            <button type="button" class="subtopic-button">글쓰기</button>
-            <button type="button" class="subtopic-button">봉사활동</button>
-            <button type="button" class="subtopic-button">악기연주</button>
-            <button type="button" class="subtopic-button">방탈출</button>
-            <button type="button" class="subtopic-button">음악감상</button>
-            <button type="button" class="subtopic-button">만화</button>
-            <button type="button" class="subtopic-button">게임</button>
-            <button type="button" class="subtopic-button">명상</button>
-            <button type="button" class="subtopic-button">반려동물</button>
-            <button type="button" class="subtopic-button">캘리그라피</button>
+            <button type="button" class="subtopic-button" data-topic="사진">사진</button>
+            <button type="button" class="subtopic-button" data-topic="보드게임">보드게임</button>
+            <button type="button" class="subtopic-button" data-topic="공예">공예</button>
+            <button type="button" class="subtopic-button" data-topic="드로잉">드로잉</button>
+            <button type="button" class="subtopic-button" data-topic="댄스">댄스</button>
+            <button type="button" class="subtopic-button" data-topic="노래">노래</button>
+            <button type="button" class="subtopic-button" data-topic="글쓰기">글쓰기</button>
+            <button type="button" class="subtopic-button" data-topic="봉사활동">봉사활동</button>
+            <button type="button" class="subtopic-button" data-topic="악기연주">악기연주</button>
+            <button type="button" class="subtopic-button" data-topic="방탈출">방탈출</button>
+            <button type="button" class="subtopic-button" data-topic="음악감상">음악감상</button>
+            <button type="button" class="subtopic-button" data-topic="만화">만화</button>
+            <button type="button" class="subtopic-button" data-topic="게임">게임</button>
+            <button type="button" class="subtopic-button" data-topic="명상">명상</button>
+            <button type="button" class="subtopic-button" data-topic="반려동물">반려동물</button>
+            <button type="button" class="subtopic-button" data-topic="캘리그라피">캘리그라피</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton5">파티,소개팅</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">소개팅</button>
-            <button type="button" class="subtopic-button">파티</button>
+            <button type="button" class="subtopic-button" data-topic="소개팅">소개팅</button>
+            <button type="button" class="subtopic-button" data-topic="파티">파티</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton6">여행,동행</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">국내여행</button>
-            <button type="button" class="subtopic-button">해외여행</button>
-            <button type="button" class="subtopic-button">캠핑</button>
-            <button type="button" class="subtopic-button">드라이브</button>
-            <button type="button" class="subtopic-button">피크닉</button>
-            <button type="button" class="subtopic-button">테마파크</button>
-            <button type="button" class="subtopic-button">복합문화공간</button>
+            <button type="button" class="subtopic-button" data-topic="국내여행">국내여행</button>
+            <button type="button" class="subtopic-button" data-topic="해외여행">해외여행</button>
+            <button type="button" class="subtopic-button" data-topic="캠핑">캠핑</button>
+            <button type="button" class="subtopic-button" data-topic="드라이브">드라이브</button>
+            <button type="button" class="subtopic-button" data-topic="피크닉">피크닉</button>
+            <button type="button" class="subtopic-button" data-topic="테마파크">테마파크</button>
+            <button type="button" class="subtopic-button" data-topic="복합문화공간">복합문화공간</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton7">자기계발</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">독서</button>
-            <button type="button" class="subtopic-button">스터디</button>
-            <button type="button" class="subtopic-button">대화</button>
-            <button type="button" class="subtopic-button">사이드 프로젝트</button>
-            <button type="button" class="subtopic-button">커리어</button>
-            <button type="button" class="subtopic-button">브렌딩</button>
-            <button type="button" class="subtopic-button">창작</button>
+            <button type="button" class="subtopic-button" data-topic="독서">독서</button>
+            <button type="button" class="subtopic-button" data-topic="스터디">스터디</button>
+            <button type="button" class="subtopic-button" data-topic="대화">대화</button>
+            <button type="button" class="subtopic-button" data-topic="사이드 프로젝트">사이드 프로젝트</button>
+            <button type="button" class="subtopic-button" data-topic="커리어">커리어</button>
+            <button type="button" class="subtopic-button" data-topic="브렌딩">브렌딩</button>
+            <button type="button" class="subtopic-button" data-topic="창작">창작</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton8">동네,친목</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">동네</button>
-            <button type="button" class="subtopic-button">관심사</button>
-            <button type="button" class="subtopic-button">또래</button>
+            <button type="button" class="subtopic-button" data-topic="동네">동네</button>
+            <button type="button" class="subtopic-button" data-topic="관심사">관심사</button>
+            <button type="button" class="subtopic-button" data-topic="또래">또래</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton9">재테크</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">N잡</button>
-            <button type="button" class="subtopic-button">재테크</button>
-            <button type="button" class="subtopic-button">부동산</button>
-            <button type="button" class="subtopic-button">창업</button>
-            <button type="button" class="subtopic-button">주식</button>
+            <button type="button" class="subtopic-button" data-topic="N잡">N잡</button>
+            <button type="button" class="subtopic-button" data-topic="재테크">재테크</button>
+            <button type="button" class="subtopic-button" data-topic="부동산">부동산</button>
+            <button type="button" class="subtopic-button" data-topic="창업">창업</button>
+            <button type="button" class="subtopic-button" data-topic="주식">주식</button>
         </div>
 
         <div class="topic-toggle">
             <button type="button" id="topicButton10">외국어</button>
         </div>
         <div class="subtopics">
-            <button type="button" class="subtopic-button">영어</button>
-            <button type="button" class="subtopic-button">일본어</button>
-            <button type="button" class="subtopic-button">중국어</button>
-            <button type="button" class="subtopic-button">언어교환</button>
+            <button type="button" class="subtopic-button" data-topic="영어">영어</button>
+            <button type="button" class="subtopic-button" data-topic="일본어">일본어</button>
+            <button type="button" class="subtopic-button" data-topic="중국어">중국어</button>
+            <button type="button" class="subtopic-button" data-topic="언어교환">언어교환</button>
         </div>
 
         <button type="button" id="goBackButton1">뒤로가기</button>
@@ -224,8 +222,9 @@
         <input type="file" id="image" name="image">
 
         <button type="button" id="goBackButton2">뒤로가기</button>
-        <button type="button" id="next-btn3">개설하기</button>
+        <button type="button" onclick="open()" id="next-btn3">개설하기</button>
     </form>
 </div>
+<script src="/js/openClub.js"></script>
 </body>
 </html>
