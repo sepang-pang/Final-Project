@@ -6,7 +6,6 @@ import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.meeting.entity.Meeting;
-import com.team6.finalproject.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -76,9 +75,6 @@ public class Club extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interest_minor_id")
     private InterestMinor minor;
-
-    @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Post> postList = new ArrayList<>();
 
     @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Meeting> meetings;

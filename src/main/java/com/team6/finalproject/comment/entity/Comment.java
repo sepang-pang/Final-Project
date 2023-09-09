@@ -20,7 +20,7 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    @Column(name = "comment")
+    @Column(name = "content")
     private String content;
 
     @Column(name = "is_deleted", nullable = false)
