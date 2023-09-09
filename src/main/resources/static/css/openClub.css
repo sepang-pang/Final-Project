@@ -54,7 +54,6 @@ body {
 }
 
 
-
 /* 텍스트 박스 스타일 */
 input[type="text"],
 select {
@@ -134,7 +133,7 @@ h1 {
 }
 
 /* 다음 버튼 스타일 */
-#next-btn1, #next-btn2 {
+#next-btn1, #next-btn2, #next-btn3 {
     background-color: darkgray;
     color: #fff; /* 흰색 텍스트 */
     padding: 15px 30px;
@@ -148,15 +147,15 @@ h1 {
 }
 
 /* 다음으로 버튼 호버 효과 */
-#next-btn1:hover, #next-btn2:hover {
+#next-btn1:hover, #next-btn2:hover, #next-btn3:hover {
     background-color: black; /* 호버 시 색 변경 */
 }
 
 /* 뒤로가기 버튼 스타일 */
-#goBackButton1 {
+#goBackButton1, #goBackButton2 {
     background-color: darkgray;
     color: #fff; /* 흰색 텍스트 */
-    padding: 15px 30px;
+    padding: 15px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -167,18 +166,17 @@ h1 {
 }
 
 /* 뒤로가기 버튼 호버 효과 */
-#goBackButton1:hover {
+#goBackButton1:hover, #goBackButton2:hover {
     background-color: black; /* 호버 시 색 변경 */
 }
 
-
-
 /* 버튼 스타일 */
 .topic-toggle button {
-    padding: 10px 20px;
+    padding: 8px 20px;
     margin-right: 10px;
-    background-color: #007bff;
-    color: #fff;
+    margin-top: 8px;
+    background-color: #338ed3; /* 흰색 배경 */
+    color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -192,13 +190,53 @@ h1 {
 .subtopic-button {
     padding: 10px 20px;
     margin: 5px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #fff; /* 흰색 배경 */
+    color: #000000;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.selected {
-    background-color: #00cc00; /* 선택된 버튼의 배경색을 초록색으로 변경 */
+.topic-toggle button.active-button {
+    background-color: #156ba0; /* 초록색 배경 */
+    color: #fff; /* 흰색 텍스트 */
+}
+
+.subtopics button.active-button {
+    background-color: #156ba0; /* 초록색 배경 */
+    color: #fff; /* 흰색 텍스트 */
+}
+
+.hidden {
+    display: none;
+}
+
+/* 텍스트 박스 스타일링 */
+textarea#description {
+    width: 100%; /* 컨테이너의 가로 너비를 100%로 설정하여 꽉 채우도록 함 */
+    height: 300px; /* 원하는 높이로 조정 (예: 300px) */
+    padding: 10px; /* 내부 여백 조정 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical; /* 수직 리사이즈만 가능하도록 설정 */
+}
+
+/* 파일 업로드 버튼 스타일링 (선택사항) */
+input[type="file"]#image {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px; /* 파일 업로드와 텍스트 박스 사이 간격 조정 (선택사항) */
+}
+
+/* 다른 요소들의 스타일링 (선택사항) */
+h2#clubnameDisplay {
+    font-size: 24px; /* 원하는 글꼴 크기로 조정 (선택사항) */
+    margin-bottom: 20px; /* 요소 간 간격 조정 (선택사항) */
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px; /* 라벨 위 간격 조정 (선택사항) */
 }
