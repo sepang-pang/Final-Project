@@ -1,6 +1,7 @@
 package com.team6.finalproject.club.service;
 
 import com.team6.finalproject.advice.custom.*;
+import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.dto.*;
@@ -58,14 +59,14 @@ public class ClubServiceImpl implements ClubService {
             throw new NotExistResourceException("존재하지 않는 회원입니다.");
         }
 
+        for (Member member : members) {
+            log.info("member: {}", member.getUser().getProfile().getNickname());
+        }
+
         // 반환
         // 성별 및 이미지도 함께 반환 예정
         return members.stream()
-                .map(member -> MemberInquiryDto.builder()
-                        .nickName(member.getUser().getProfile().getNickname())
-                        .birth(member.getUser().getBirth())
-                        .introduction(member.getUser().getProfile().getIntroduction())
-                        .build())
+                .map(member -> new MemberInquiryDto(member))
                 .toList();
     }
 
@@ -77,11 +78,21 @@ public class ClubServiceImpl implements ClubService {
         Member member = memberService.findMember(clubId, userId);
 
         // 반환
-        return MemberInquiryDto.builder()
-                .nickName(member.getUser().getProfile().getNickname())
-                .birth(member.getUser().getBirth())
-                .introduction(member.getUser().getProfile().getIntroduction())
-                .build();
+        return new MemberInquiryDto(member);
+    }
+
+    // 동호회 상세 조회
+    @Override
+    @Transactional(readOnly = true)
+    public ClubResponseDto readClub(Long clubId) throws NotExistResourceException {
+        // 동호회 존재 여부 확인
+        Club club = findClub(clubId);
+
+        // 반환
+        return new ClubResponseDto(
+                club,
+                new InterestMajorDto(club.getMinor().getInterestMajor()),
+                new InterestMinorDto(club.getMinor()));
     }
 
     // 대주제 별 조회
@@ -208,10 +219,24 @@ public class ClubServiceImpl implements ClubService {
                 .toList();
     }
 
+    @Override
+    @Transactional(readOnly = true) // 신청서 조회
+    public List<ClubAppliesResponseDto> readClubApplies(Long clubId, User user) throws NotExistResourceException {
+        List<ApplyJoinClub> applyJoinClubs = applyJoinClubService.findClubApplies(clubId);
+
+        if (applyJoinClubs.isEmpty()) {
+            throw new NotExistResourceException("신청서가 존재하지 않습니다.");
+        }
+
+        return applyJoinClubs.stream()
+                .map(applyJoinClub -> new ClubAppliesResponseDto(applyJoinClub))
+                .toList();
+    }
+
     // 동호회 개설
     @Override
     @Transactional
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
 
         // 유저 프로필 조회
         Profile profile = profileService.findProfileByUserId(user.getId());
@@ -242,7 +267,7 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
-        String media = fileUploader.upload(multipartFile);
+//        String media = fileUploader.upload(multipartFile);
 
         // 동호회 개설
         log.info("동호회 개설");
@@ -252,7 +277,7 @@ public class ClubServiceImpl implements ClubService {
                 .name(clubRequestDto.getName())
                 .description(clubRequestDto.getDescription())
                 .maxMember(clubRequestDto.getMaxMember())
-                .media(media)
+//                .media(media)
                 .minAge(clubRequestDto.getMinAge())
                 .maxAge(clubRequestDto.getMaxAge())
                 .latitude(clubRequestDto.getLatitude())

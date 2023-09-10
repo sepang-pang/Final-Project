@@ -1,6 +1,7 @@
 package com.team6.finalproject.club.service;
 
 import com.team6.finalproject.advice.custom.*;
+import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
@@ -20,7 +21,7 @@ import java.util.List;
 public interface ClubService {
 
     // 동호회 개설
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user, MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
 
     // 동호회 수정
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, User user, MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException;
@@ -41,6 +42,9 @@ public interface ClubService {
 
     // 특정 멤버 조회
     public MemberInquiryDto readClubMember(Long clubId, Long userId) throws NotExistResourceException;
+
+    // 동호회 상세 조회
+    public ClubResponseDto readClub(Long clubId) throws NotExistResourceException;
 
     // 동호회 대주제 별 조회
     public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) throws NotExistResourceException;
@@ -65,5 +69,6 @@ public interface ClubService {
 
     // 거리, 연령대, 관심사가 모두 부합하는 동호회 조회
     public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user);
+    public List<ClubAppliesResponseDto> readClubApplies(Long clubId, User user) throws NotExistResourceException;
 }
 

@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
                 .meeting(meeting)
                 .nickname(user.getProfile().getNickname())
                 .build();
-
+        meeting.addComment(comment);
         commentRepository.save(comment);
 
         return new CommentResponseDto(comment);

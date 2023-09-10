@@ -15,8 +15,8 @@ public enum ActivityTypeEnum {
     }
 
     private static class ActivityType {
-        public static final String ONLINE = "ONLINE";
-        public static final String OFFLINE = "OFFLINE";
+        public static final String ONLINE = "온라인";
+        public static final String OFFLINE = "오프라인";
 
     }
 }

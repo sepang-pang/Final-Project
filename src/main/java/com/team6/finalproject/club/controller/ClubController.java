@@ -1,6 +1,7 @@
 package com.team6.finalproject.club.controller;
 
 import com.team6.finalproject.advice.custom.*;
+import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,13 +39,20 @@ public class ClubController {
         return "openClub";
     }
 
-    @PostMapping("/clubs") // 동호회 개설
-    public ClubResponseDto createClub(@RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile file) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
-        return clubService.createClub(clubRequestDto, userDetails.getUser(), file);
+    @GetMapping("/club-detail/{id}")
+    public String clubPage(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        model.addAttribute("clubId", id);
+        model.addAttribute("currentUsername", userDetails.getUsername());
+        model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
+        return "club-detail"; // clubPage.html 혹은 clubPage.jsp 등의 뷰 이름
     }
 
-    // 동호회 수정
-    @PutMapping("/clubs/{clubId}")
+    @PostMapping("/clubs") // 동호회 개설
+    public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+        return clubService.createClub(clubRequestDto, userDetails.getUser());
+    }
+
+    @PutMapping("/clubs/{clubId}") // 동호회 수정
     public ClubResponseDto updateClub(@PathVariable Long clubId, @RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
         return clubService.updateClub(clubId, clubRequestDto, userDetails.getUser(), multipartFile);
     }
@@ -56,6 +65,12 @@ public class ClubController {
     @PutMapping("clubs/{clubId}/apply") // 동호회 가입 신청
     public ResponseEntity<ApiResponseDto> applyJoinClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicateActionException, NotExistResourceException, CapacityFullException {
         return clubService.joinClub(clubId, userDetails.getUser());
+    }
+
+    @GetMapping("/clubs/{clubId}/applies") // 동호회 가입 신청 조회
+    @ResponseBody
+    public List<ClubAppliesResponseDto> readClubApplies(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return clubService.readClubApplies(clubId, userDetails.getUser());
     }
 
     @PutMapping("/clubs/applies/{applyId}/approve") // 동호회 가입 승인
@@ -71,6 +86,7 @@ public class ClubController {
     }
 
     @GetMapping("/clubs/{clubId}/members") // 동호회 멤버 전체 조회
+    @ResponseBody
     public List<MemberInquiryDto> readClubMembers(@PathVariable Long clubId) throws NotExistResourceException {
         return clubService.readClubMembers(clubId);
     }
@@ -78,6 +94,12 @@ public class ClubController {
     @GetMapping("clubs/{clubId}/user/{userId}") // 특정 멤버 조회
     public MemberInquiryDto readClubMember(@PathVariable Long clubId, @PathVariable Long userId) throws NotExistResourceException {
         return clubService.readClubMember(clubId, userId);
+    }
+
+    @GetMapping("/clubs/{clubId}") // 동호회 상세 조회
+    @ResponseBody
+    public ClubResponseDto readClub(@PathVariable Long clubId) throws NotExistResourceException {
+        return clubService.readClub(clubId);
     }
 
     @GetMapping("clubs/interest-major/{majorId}") // 동호회 대주제 별 조회

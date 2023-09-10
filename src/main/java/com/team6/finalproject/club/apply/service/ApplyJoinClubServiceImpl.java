@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ApplyJoinClubServiceImpl implements ApplyJoinClubService{
@@ -27,5 +29,10 @@ public class ApplyJoinClubServiceImpl implements ApplyJoinClubService{
     public ApplyJoinClub findApplication(Long applyId) throws NotExistResourceException { // 신청서 조회
         return applyJoinClubRepository.findByActiveId(applyId)
                 .orElseThrow(()-> new NotExistResourceException("존재하지 않는 신청입니다."));
+    }
+
+    @Override
+    public List<ApplyJoinClub> findClubApplies(Long clubId) {
+        return applyJoinClubRepository.findByActiveClubId(clubId);
     }
 }
