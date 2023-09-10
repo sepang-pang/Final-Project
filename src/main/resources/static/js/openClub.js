@@ -111,69 +111,54 @@ function locate1() {
 }
 
 
+var btnSave = document.getElementById('next-btn3');
+btnSave.addEventListener('click',submit);
 
+function submit(){
+    let clubname = document.getElementById('clubname').value;
+    let locate = document.getElementById('locate').value;
+    let numberOfMembers = document.getElementById('numberOfMembers').value;
+    let isOnline = document.getElementById('isOnline').value;
+    let openJoinType = document.getElementById('openJoinType').value;
+    var activeButton = document.querySelector('.subtopic-button.active-button');
+    var minorName = activeButton.getAttribute('data-topic');
+    alert(minorName);
+    let description = document.getElementById('description').value;
+    let file = document.getElementById('image').files[0]; // 선택한 파일 가져오기
+    alert(description); alert(file);
+    let clubDto = {
+        name: clubname,
+        minorId: 1,
+        description: description,
+        trialAvailable: true,
+        isOnline: isOnline,
+        openJoinType: openJoinType,
+        maxMember: numberOfMembers,
+        minAge: 10,
+        maxAge: 30,
+        latitude: 0.1,
+        longitude: 0.1,
+        locate: locate
+    };
+    alert(clubDto);
+    let formData = new FormData();
+    formData.append('clubRequestDto', new Blob([JSON.stringify(clubDto)], { type: 'application/json' }));
+    formData.append('file', file); // 파일 추가
 
-
-// 개설하기 버튼 클릭 이벤트 핸들러
-document.getElementById('next-btn3').addEventListener('click', function () {
-    // container1 정보 수집
-    const clubname = document.getElementById('clubname').value;
-    const locate = document.getElementById('locate').value;
-    const numberOfMembers = document.getElementById('numberOfMembers').value;
-    const activityType = document.querySelector('.button-group1 .selected').getAttribute('data-join-type');
-    const joinType = document.querySelector('.button-group2 .selected').getAttribute('data-join-type');
-
-    // container2 정보 수집
-    const selectedSubtopics = [];
-    const subtopicButtons = document.querySelectorAll('.subtopics .subtopic-button');
-    subtopicButtons.forEach(button => {
-        if (button.classList.contains('selected')) {
-            selectedSubtopics.push(button.getAttribute('data-topic'));
+    // Fetch를 사용하여 서버로 데이터 전송
+    fetch('/api/clubs', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('네트워크 오류');
         }
+        return response.json();
+    }).then(data => {
+        alert("동호회가 개설되었습니다.");
+    }).catch(error => {
+        alert(error);
     });
-
-    // container3 정보 수집
-    const description = document.getElementById('description').value;
-    const imageFile = document.getElementById('image').files[0];
-
-    // 수집한 정보를 서버로 전송하거나 필요한 처리를 수행
-    sendDataToServer(clubname, locate, numberOfMembers, activityType, joinType, selectedSubtopics, description, imageFile);
-});
-
-// 선택된 버튼 표시 및 선택된 상태 변경
-document.querySelectorAll('.button-group1 button, .button-group2 button').forEach(button => {
-    button.addEventListener('click', function () {
-        // 선택된 버튼 표시를 해제
-        document.querySelectorAll('.button-group1 button, .button-group2 button').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-
-        // 현재 선택한 버튼을 표시
-        button.classList.add('selected');
-    });
-});
-
-// 서브토픽 버튼 클릭 이벤트 핸들러
-document.querySelectorAll('.subtopics .subtopic-button').forEach(button => {
-    button.addEventListener('click', function () {
-        // 버튼의 선택 상태를 변경
-        button.classList.toggle('selected');
-    });
-});
-
-function sendDataToServer(clubname, locate, numberOfMembers, activityType, joinType, selectedSubtopics, description, imageFile){
-    $.ajax({
-        type: "POST",
-        url: `/api/clubs`,
-        contentType: "application/json",
-        data: JSON.stringify({clubname: clubname, numberOfMembers: numberOfMembers,
-            activityType: activityType, joinType: joinType, selectedSubtopics: selectedSubtopics, description: description, imageFile: imageFile}),
-    }).done(function () {
-        alert("동호회가 개설되었습니다.")
-        back()
-    }).fail(function (res) {
-        alert(res.responseText);
-    })
 }
 
 

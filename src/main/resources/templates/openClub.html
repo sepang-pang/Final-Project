@@ -42,14 +42,18 @@
 
         <label>활동 방식</label>
         <div class="button-group1">
-            <button type="button" data-join-type="ONLINE" id="onlineButton">ONLINE</button>
-            <button type="button" data-join-type="OFFLINE" id="offlineButton">OFFLINE</button>
+            <select id="isOnline" name="isOnline" required>
+                <option value="true">online</option>
+                <option value="false">offline</option>
+            </select>
         </div>
 
         <label>가입 승인 방식</label>
         <div class="button-group2">
-            <button type="button" data-join-type="IMMEDIATE" id="directJoinButton">바로 가입</button>
-            <button type="button" data-join-type="APPROVAL" id="approvalButton">가입 승인</button>
+            <select id="openJoinType" name="openJoinType" required>
+                <option value="true">online</option>
+                <option value="false">offline</option>
+            </select>
         </div>
         <button type="button" id="next-btn1">다음</button>
     </form>
@@ -222,7 +226,7 @@
         <input type="file" id="image" name="image">
 
         <button type="button" id="goBackButton2">뒤로가기</button>
-        <button type="button" onclick="open()" id="next-btn3">개설하기</button>
+        <button type="submit" id="next-btn3">개설하기</button>
     </form>
 </div>
 <script src="/js/openClub.js"></script>
