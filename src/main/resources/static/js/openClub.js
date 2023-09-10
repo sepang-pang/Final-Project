@@ -1,7 +1,6 @@
-const buttons1 = document.querySelectorAll('.button-group1 button');
-const buttons2 = document.querySelectorAll('.button-group2 button');
-const buttons3 = document.querySelectorAll('.topic-toggle button');
-const buttons4 = document.querySelectorAll('.subtopics button');
+const btnTopic = document.querySelectorAll('.topic-toggle button');
+const btnSubtopics = document.querySelectorAll('.subtopics button');
+const btnAge = document.querySelectorAll('.age button');
 const nextButton1 = document.getElementById('next-btn1');
 const goBackButton1 = document.getElementById('goBackButton1');
 const container1 = document.getElementById('container1');
@@ -9,16 +8,9 @@ const container2 = document.getElementById('container2');
 
 // ************** container1 ************** //
 // 버튼 활성화 효과
-buttons1.forEach(button => {
+btnAge.forEach(button => {
     button.addEventListener('click', () => {
-        buttons1.forEach(btn => btn.classList.remove('active-button'));
-        button.classList.add('active-button');
-    });
-});
-
-buttons2.forEach(button => {
-    button.addEventListener('click', () => {
-        buttons2.forEach(btn => btn.classList.remove('active-button'));
+        btnAge.forEach(btn => btn.classList.remove('active-button'));
         button.classList.add('active-button');
     });
 });
@@ -30,16 +22,16 @@ nextButton1.addEventListener('click', function () {
 });
 
 // ************** container2 ************** //
-buttons3.forEach(button => {
+btnTopic.forEach(button => {
     button.addEventListener('click', () => {
-        buttons3.forEach(btn => btn.classList.remove('active-button'));
+        btnTopic.forEach(btn => btn.classList.remove('active-button'));
         button.classList.add('active-button');
     });
 });
 
-buttons4.forEach(button => {
+btnSubtopics.forEach(button => {
     button.addEventListener('click', () => {
-        buttons4.forEach(btn => btn.classList.remove('active-button'));
+        btnSubtopics.forEach(btn => btn.classList.remove('active-button'));
         button.classList.add('active-button');
     });
 });
@@ -118,14 +110,14 @@ function submit(){
     let clubname = document.getElementById('clubname').value;
     let locate = document.getElementById('locate').value;
     let numberOfMembers = document.getElementById('numberOfMembers').value;
+    var activeButton1 = document.querySelector('.age-button.active-button');
+    var age = Number(activeButton1.getAttribute('data-age'));
     let isOnline = document.getElementById('isOnline').value;
     let openJoinType = document.getElementById('openJoinType').value;
-    var activeButton = document.querySelector('.subtopic-button.active-button');
-    var minorName = activeButton.getAttribute('data-topic');
-    alert(minorName);
+    var activeButton2 = document.querySelector('.subtopic-button.active-button');
+    var minorName = activeButton2.getAttribute('data-topic');
     let description = document.getElementById('description').value;
     let file = document.getElementById('image').files[0]; // 선택한 파일 가져오기
-    alert(description); alert(file);
     let clubDto = {
         name: clubname,
         minorId: 1,
@@ -134,13 +126,13 @@ function submit(){
         isOnline: isOnline,
         openJoinType: openJoinType,
         maxMember: numberOfMembers,
-        minAge: 10,
-        maxAge: 30,
+        minAge: 20,
+        maxAge: age,
         latitude: 0.1,
         longitude: 0.1,
         locate: locate
     };
-    alert(clubDto);
+
     let formData = new FormData();
     formData.append('clubRequestDto', new Blob([JSON.stringify(clubDto)], { type: 'application/json' }));
     formData.append('file', file); // 파일 추가

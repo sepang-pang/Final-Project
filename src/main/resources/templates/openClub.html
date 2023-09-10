@@ -40,8 +40,17 @@
             <option value="50">50 명</option>
         </select>
 
+        <label for="age">인원수 제한</label>
+        <div class="age" id="age">
+            <button type="button" class="age-button" data-age="20">20대</button>
+            <button type="button" class="age-button" data-age="30">30대</button>
+            <button type="button" class="age-button" data-age="40">40대</button>
+            <button type="button" class="age-button" data-age="50">50대 이상</button>
+            <button type="button" class="age-button" data-age="0">무관</button>
+        </div>
+
         <label>활동 방식</label>
-        <div class="button-group1">
+        <div class="inOnline">
             <select id="isOnline" name="isOnline" required>
                 <option value="true">online</option>
                 <option value="false">offline</option>
@@ -49,10 +58,10 @@
         </div>
 
         <label>가입 승인 방식</label>
-        <div class="button-group2">
+        <div class="openJoinType">
             <select id="openJoinType" name="openJoinType" required>
-                <option value="true">online</option>
-                <option value="false">offline</option>
+                <option value="true">바로 가입</option>
+                <option value="false">가입 승인</option>
             </select>
         </div>
         <button type="button" id="next-btn1">다음</button>
