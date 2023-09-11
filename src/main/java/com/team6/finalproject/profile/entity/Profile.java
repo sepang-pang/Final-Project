@@ -35,8 +35,6 @@ public class Profile extends Timestamped {
     private String zoneCode;
     @Column
     private String locate;
-    @Column(nullable = false)
-    private Long userScore;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -56,7 +54,6 @@ public class Profile extends Timestamped {
         this.zoneCode = zoneCode;
         this.locate = locate;
         this.user = user;
-        this.userScore = 0L;
     }
 
     public void update(String nickname, String introduction, String profileImage,
