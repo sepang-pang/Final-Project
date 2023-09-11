@@ -13,14 +13,17 @@ body {
 /* 컨테이너 스타일 */
 .container {
     display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    border-radius: 10px;
-    width: 500px;
-    text-align: center;
     position: fixed; /* 위치를 고정 */
     top: 0; /* 상단에 배치 */
     left: 0; /* 왼쪽에 배치 */
+}
+
+header {
+    display: flex;
+    flex-direction: row; /* 가로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 500px;
+    margin-bottom: 20px; /* 이미지와 텍스트 사이의 간격 조정 */
 }
 
 /* 이미지 스타일 */
@@ -34,7 +37,6 @@ body {
 h1 {
     font-size: 36px;
     color: #fff; /* 흰색 텍스트 */
-    margin-bottom: 20px;
 }
 
 /* 컨테이너1 스타일 */
@@ -44,13 +46,13 @@ h1 {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     width: 800px; /* 컨테이너의 너비 조정 */
-    height: auto;
     text-align: left; /* 텍스트를 왼쪽 정렬 */
-    /* 페이지 가운데에 고정 */
-    position: fixed;
-    top: 50%;
+    position: absolute;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%); /* 가운데 정렬 */
+    max-height: 70%; /* 최대 높이 설정 */
+    overflow-y: auto; /* 스크롤 가능하도록 설정 */
+    transition: height 0.3s ease; /* 높이 변경에 트랜지션을 추가합니다. */
 }
 
 /* 텍스트 박스 스타일 */
@@ -113,10 +115,6 @@ input[type="file"] {
     transition: background-color 0.3s ease;
 }
 
- {
-    background-color: black;
-}
-
 /* 확인 버튼 스타일 */
 #btn-save {
     background-color: darkgray;
@@ -128,7 +126,7 @@ input[type="file"] {
     transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
     position: fixed; /* 페이지 우측에 고정 */
     bottom: 20px;
-    right: 200px; /* 수정: 버튼 간격 조정 */
+    right: 150px; /* 수정: 버튼 간격 조정 */
 }
 
 /* 취소 버튼 스타일 */
@@ -142,7 +140,7 @@ input[type="file"] {
     transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
     position: fixed; /* 페이지 우측에 고정 */
     bottom: 20px;
-    right: 300px; /* 수정: 버튼 간격 조정 */
+    right: 250px; /* 수정: 버튼 간격 조정 */
 }
 
 /* 확인,취소 버튼 호버 효과 */
