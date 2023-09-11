@@ -28,7 +28,7 @@ public class ProfileController {
 
     @GetMapping("/profile/create")
     public String profile() {
-        return "createProfile";
+        return "create-profile";
     }
 
     @PostMapping("/profile") // 프로필 등록
