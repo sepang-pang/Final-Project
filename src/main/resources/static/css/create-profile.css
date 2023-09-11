@@ -46,7 +46,6 @@ h1 {
     width: 800px; /* 컨테이너의 너비 조정 */
     height: auto;
     text-align: left; /* 텍스트를 왼쪽 정렬 */
-
     /* 페이지 가운데에 고정 */
     position: fixed;
     top: 50%;
@@ -80,10 +79,43 @@ input::placeholder {
     color: #bbb;
 }
 
+/* 파일 미리보기 스타일 */
 .preview-group {
     text-align: center;
 }
 
+/* 파일 선택 버튼 숨김 */
+input[type="file"] {
+    display: none;
+}
+
+/* 파일 선택 버튼 스타일 */
+#file-label {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 520px;
+    margin-right: 200px;
+    transition: background-color 0.3s ease;
+}
+
+/* 주소 검색 버튼 스타일 */
+#address-search {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+ {
+    background-color: black;
+}
 
 /* 확인 버튼 스타일 */
 #btn-save {
@@ -114,7 +146,7 @@ input::placeholder {
 }
 
 /* 확인,취소 버튼 호버 효과 */
-#goBackButton:hover, #btn-save:hover {
+#file-label:hover, #address-search:hover, #goBackButton:hover, #btn-save:hover {
     background-color: black; /* 호버 시 색 변경 */
 }
 
