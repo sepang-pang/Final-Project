@@ -27,8 +27,13 @@ public class ProfileController {
     private final LikeClubService likeClubService;
 
     @GetMapping("/profile/create")
-    public String profile() {
-        return "create-profile";
+    public String create() {
+        return "manage-profile";
+    }
+
+    @GetMapping("/profile/update")
+    public String update() {
+        return "manage-profile";
     }
 
     @PostMapping("/profile") // 프로필 등록
@@ -52,16 +57,9 @@ public class ProfileController {
 
     @PatchMapping("/profile") // 프로필 수정
     @ResponseBody
-    public ProfileResponseDto updateProfile(@RequestBody ProfileRequestDto requestDto,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return profileService.updateProfile(requestDto, userDetails.getUser());
-    }
-
-    @PatchMapping("/profile/image") // 프로필 이미지 수정
-    @ResponseBody
-    public ProfileResponseDto updateImage(@RequestPart MultipartFile file,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, NotExistResourceException {
-        return profileService.updateImage(file, userDetails.getUser());
+    public ProfileResponseDto updateProfile(@RequestPart ProfileRequestDto requestDto, @RequestPart MultipartFile file,
+                                            @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
+        return profileService.updateProfile(requestDto, file, userDetails.getUser());
     }
 
     @PostMapping("/profile/interests") // 관심사 등록

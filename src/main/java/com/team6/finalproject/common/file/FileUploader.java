@@ -5,13 +5,10 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -25,9 +22,12 @@ public class FileUploader {
     private String bucketName;
 
     public String upload(MultipartFile file) throws IOException {
+        // 파일을 요청하지 않은 경우 미리 업로드해둔 기본이미지 저장
+        if (file.getOriginalFilename().equals("empty")) {
+            return amazonS3.getUrl(bucketName, "a240fa66-41d3-47c9-b9fd-6a45122fad81").toString();
+        }
 
         ObjectMetadata metadata = new ObjectMetadata();
-
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType()); // 요청받은 파일의 ContentType 메타데이터에 주입
 

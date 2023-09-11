@@ -53,6 +53,7 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileResponseDto(profile);
     }
 
+    // 타인의 프로필 조회
     @Override
     @Transactional(readOnly = true)
     public ProfileResponseDto getProfileById(Long profileId) throws NotExistResourceException {
@@ -61,35 +62,21 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileResponseDto(profile);
     }
 
-    // 프로필 nickname, introduction, zoneCode, locate 수정
+    // 프로필 수정
     @Override
     @Transactional
-    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) throws NotExistResourceException {
+    public ProfileResponseDto updateProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws NotExistResourceException, IOException {
         Profile profile = findProfileByUserId(user.getId());
 
         String nickname = requestDto.getNickname();
         String introduction = requestDto.getIntroduction();
+        String profileImage = fileUploader.upload(file);
         Double latitude = requestDto.getLatitude();
         Double longitude = requestDto.getLongitude();
         String zoneCode = requestDto.getZoneCode();
         String locate = requestDto.getLocate();
 
-        profile.update(nickname, introduction, latitude, longitude, zoneCode, locate);
-        return new ProfileResponseDto(profile);
-    }
-
-    // 프로필 이미지 등록/수정
-    @Override
-    @Transactional
-    public ProfileResponseDto updateImage(MultipartFile file, User user) throws IOException, NotExistResourceException {
-        Profile profile = findProfileByUserId(user.getId());
-        // 수정 시 기존 객체 버킷에서 삭제
-        if (profile.getProfileImage() != null) {
-            fileUploader.deleteFile(profile.getProfileImage());
-        }
-
-        String profileImage = fileUploader.upload(file);
-        profile.updateImage(profileImage);
+        profile.update(nickname, introduction, profileImage, latitude, longitude, zoneCode, locate);
         return new ProfileResponseDto(profile);
     }
 

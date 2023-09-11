@@ -95,13 +95,37 @@ function submit() {
         locate: locate
     };
 
+    // 현재 URL 가져오기
+    const currentUrl = window.location.href;
+
+    let requestMethod;
+    // 프로필 생성 페이지와 수정 페이지에서 다른 요청 받기
+    if (currentUrl.includes("/api/profile/create")) {
+        requestMethod = 'POST';
+    } else if (currentUrl.includes("/api/profile/update")) {
+        requestMethod = 'PATCH';
+    } else {
+        // 다른 URL인 경우 예외 처리
+        console.error("잘못된 경로입니다.");
+    }
+
+    // 위치 미입력 시 요청 반환
+    if (!nickname || !locate) {
+        alert("이름과 위치를 입력해주세요.");
+        return;
+    }
+    // 파일 선택하지 않았을 때 기본 이미지 요청
+    if (!file) {
+        file = new File([], "empty", {type: "image/png"});
+    }
+
     let formData = new FormData();
     formData.append('requestDto', new Blob([JSON.stringify(profileDto)], {type: 'application/json'}));
     formData.append('file', file); // 파일 추가
 
-    // Fetch를 사용하여 서버로 데이터 전송
+    // fetch 사용하여 서버로 데이터 전송
     fetch('/api/profile', {
-        method: 'POST',
+        method: requestMethod,
         body: formData
     }).then(response => {
         if (!response.ok) {
@@ -109,7 +133,7 @@ function submit() {
         }
         return response.json();
     }).then(data => {
-        alert("프로필이 생성되었습니다.");
+        alert("프로필이 변경되었습니다.");
         back();
     }).catch(error => {
         alert(error);

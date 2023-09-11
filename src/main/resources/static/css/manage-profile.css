@@ -95,6 +95,7 @@ input[type="file"] {
 #file-label {
     background-color: darkgray;
     color: #fff; /* 흰색 텍스트 */
+    text-align: center;
     padding: 10px 10px;
     border: none;
     border-radius: 5px;
@@ -115,6 +116,13 @@ input[type="file"] {
     transition: background-color 0.3s ease;
 }
 
+.btn-group {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    text-align: right; /* 버튼 그룹을 오른쪽으로 정렬 */
+    /*margin-left: 500px;*/
+}
+
 /* 확인 버튼 스타일 */
 #btn-save {
     background-color: darkgray;
@@ -124,9 +132,9 @@ input[type="file"] {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    position: fixed; /* 페이지 우측에 고정 */
-    bottom: 20px;
-    right: 150px; /* 수정: 버튼 간격 조정 */
+    position: relative;
+    margin-left: 10px; /* 버튼 사이 간격 조정 */
+    margin-right: 100px;
 }
 
 /* 취소 버튼 스타일 */
@@ -138,16 +146,10 @@ input[type="file"] {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    position: fixed; /* 페이지 우측에 고정 */
-    bottom: 20px;
-    right: 250px; /* 수정: 버튼 간격 조정 */
+    position: relative;
 }
 
 /* 확인,취소 버튼 호버 효과 */
 #file-label:hover, #address-search:hover, #goBackButton:hover, #btn-save:hover {
     background-color: black; /* 호버 시 색 변경 */
-}
-
-.btn-group {
-    margin-top: 20px;
 }
