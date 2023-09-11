@@ -1,0 +1,153 @@
+/* 페이지 내용을 가운데 정렬하는 스타일 */
+body {
+    background-color: #87CEEB; /* 하늘색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0; /* 페이지 바깥 여백 제거 */
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    display: flex;
+    position: fixed; /* 위치를 고정 */
+    top: 0; /* 상단에 배치 */
+    left: 0; /* 왼쪽에 배치 */
+}
+
+header {
+    display: flex;
+    flex-direction: row; /* 가로 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 500px;
+    margin-bottom: 20px; /* 이미지와 텍스트 사이의 간격 조정 */
+}
+
+/* 이미지 스타일 */
+.club-image {
+    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
+    max-width: 20%;
+    height: auto;
+}
+
+/* 메인 제목 스타일 */
+h1 {
+    font-size: 36px;
+    color: #fff; /* 흰색 텍스트 */
+}
+
+/* 컨테이너1 스타일 */
+.container1 {
+    background-color: rgba(255, 255, 255, 0.9); /* 투명한 흰색 배경 */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 800px; /* 컨테이너의 너비 조정 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* 가운데 정렬 */
+    max-height: 70%; /* 최대 높이 설정 */
+    overflow-y: auto; /* 스크롤 가능하도록 설정 */
+    transition: height 0.3s ease; /* 높이 변경에 트랜지션을 추가합니다. */
+}
+
+/* 텍스트 박스 스타일 */
+input[type="text"],
+select {
+    width: 60%;
+    padding: 15px; /* 세로 크기 조정 */
+    margin-left: 120px;
+    margin-bottom: 30px; /* 간격 조정 */
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-left: 120px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* 텍스트 박스 안에 옅은 글씨로 미리 입력된 내용 스타일 */
+input::placeholder {
+    color: #bbb;
+}
+
+/* 파일 미리보기 스타일 */
+.preview-group {
+    text-align: center;
+}
+
+/* 파일 선택 버튼 숨김 */
+input[type="file"] {
+    display: none;
+}
+
+/* 파일 선택 버튼 스타일 */
+#file-label {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 520px;
+    margin-right: 200px;
+    transition: background-color 0.3s ease;
+}
+
+/* 주소 검색 버튼 스타일 */
+#address-search {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 확인 버튼 스타일 */
+#btn-save {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: fixed; /* 페이지 우측에 고정 */
+    bottom: 20px;
+    right: 150px; /* 수정: 버튼 간격 조정 */
+}
+
+/* 취소 버튼 스타일 */
+#goBackButton {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: fixed; /* 페이지 우측에 고정 */
+    bottom: 20px;
+    right: 250px; /* 수정: 버튼 간격 조정 */
+}
+
+/* 확인,취소 버튼 호버 효과 */
+#file-label:hover, #address-search:hover, #goBackButton:hover, #btn-save:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+.btn-group {
+    margin-top: 20px;
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>프로필 생성</title>
+
+    <!--Viewport-->
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0"
+          name="viewport">
+
+    <!--(IE10)-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <!-- Normalize -->
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' rel="stylesheet">
+
+    <!--load CSS-->
+    <link href="/css/create-profile.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <img alt="동호회 이미지" class="club-image" src="/meets_logo.png">
+        <h1>프로필 생성 페이지</h1>
+    </header>
+</div>
+<div class="container1" id="container1">
+    <div class="form-group">
+        <label for="nickname">이름</label>
+        <input class="form-control" id="nickname" name="nickname" placeholder="이름을 입력하세요" type="text">
+    </div>
+    <div class="form-group">
+        <label for="introduction">소개</label>
+        <input class="form-control" id="introduction" name="introduction" placeholder="소개글을 입력하세요" type="text">
+    </div>
+    <div class="preview-group">
+        <img alt="파일 미리보기" id="image-preview" src="/meets_logo.png" style="max-width: 100%; max-height: 200px;">
+        <label for="file" id="file-label">파일 선택</label>
+        <input class="form-control" id="file" name="file" type="file">
+    </div>
+    <div class="form-group">
+        <input id="latitude" name="latitude" type="hidden">
+        <input id="longitude" name="longitude" type="hidden">
+        <input id="zoneCode" name="zoneCode" placeholder="우편번호" type="text">
+        <input id="locate" name="locate" placeholder="주소" type="text">
+        <input id="address-search" onclick="execDaumPostcode()" type="button" value="주소 검색">
+        <div id="map" style="width:300px;height:300px;margin-top:10px;margin-left:120px;display:none"></div>
+    </div>
+    <!-- 버튼 -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">취소</button>
+        <button class="btn btn-primary" id="btn-save" type="submit">확인</button>
+    </div>
+</div>
+</body>
+<!--주소 검색-->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d5cbf2c7b1151b1ca7e03a028094c2&libraries=services"></script>
+<!--load JS-->
+<script src="/js/create-profile.js"></script>
+</html>
