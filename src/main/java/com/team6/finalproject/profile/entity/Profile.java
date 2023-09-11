@@ -59,17 +59,14 @@ public class Profile extends Timestamped {
         this.userScore = 0L;
     }
 
-    public void update(String nickname, String introduction,
+    public void update(String nickname, String introduction, String profileImage,
                        Double latitude, Double longitude, String zoneCode, String locate) {
         this.nickname = nickname;
         this.introduction = introduction;
+        this.profileImage = profileImage;
         this.latitude = latitude;
         this.longitude = longitude;
         this.zoneCode = zoneCode;
         this.locate = locate;
-    }
-
-    public void updateImage(String profileImage) {
-        this.profileImage = profileImage;
     }
 }

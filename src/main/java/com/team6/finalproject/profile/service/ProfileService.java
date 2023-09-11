@@ -12,14 +12,16 @@ import java.io.IOException;
 public interface ProfileService {
     // 프로필 생성
     ProfileResponseDto createProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws IOException;
+
     // 자신의 프로필 조회
     ProfileResponseDto getProfile(User user) throws NotExistResourceException;
+
     // 선택한 프로필 조회
     ProfileResponseDto getProfileById(Long profileId) throws NotExistResourceException;
+
     // 프로필 수정
-    ProfileResponseDto updateProfile(ProfileRequestDto requestDto, User user) throws NotExistResourceException;
-    // 이미지 삽입/수정
-    ProfileResponseDto updateImage(MultipartFile file, User user) throws IOException, NotExistResourceException;
+    ProfileResponseDto updateProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws NotExistResourceException, IOException;
+
     // 현재 인가된 유저의 프로필 이름 추출
     Profile findProfileByUserId(Long id) throws NotExistResourceException;
 
