@@ -24,7 +24,7 @@ public class ProfileInterestServiceImpl implements ProfileInterestService {
     private final ProfileService profileService;
     private final InterestMinorService interestMinorService;
 
-    // 관심사 등록/수정/제거
+    // 관심사 등록/삭제/재등록
     @Override
     @Transactional
     public ProfileResponseDto inputInterests(InterestRequestDto requestDto, User user) throws NotExistResourceException {
