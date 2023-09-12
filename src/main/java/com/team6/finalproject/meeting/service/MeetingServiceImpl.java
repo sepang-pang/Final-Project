@@ -12,6 +12,8 @@ import com.team6.finalproject.meeting.dto.MeetingResponseDto;
 import com.team6.finalproject.meeting.dto.MeetingScheduleRequestDto;
 import com.team6.finalproject.meeting.entity.Meeting;
 import com.team6.finalproject.meeting.repository.MeetingRepository;
+import com.team6.finalproject.meeting_user.entity.MeetingUser;
+import com.team6.finalproject.meeting_user.repository.MeetingUserRepository;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,43 +33,44 @@ import java.util.concurrent.RejectedExecutionException;
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
+    private final MeetingUserRepository meetingUserRepository;
     private final ClubService clubService;
     private final MemberRepository memberRepository;
     private final FileUploader fileUploader;
 
     @Override
     @Transactional // 모임 생성
-    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws NotExistResourceException, IOException {
+    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) throws NotExistResourceException {
 
         Club club = clubService.findClub(clubId);
-        String media = fileUploader.upload(file);
+//        String media = fileUploader.upload(file);
 
+        log.info("1");
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
         if (memberRepository.findActiveUserAndClub(club.getId(), user.getId()).isEmpty()) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
 
-        Meeting meeting = Meeting.builder()
-                .name(meetingRequestDto.getName())
-                .description(meetingRequestDto.getDescription())
-                .maxMember(meetingRequestDto.getMaxMember())
-                .ACTIVITY_TYPE(meetingRequestDto.getACTIVITY_TYPE())
-                .date(meetingRequestDto.getDate())
-                .place(meetingRequestDto.getPlace())
-                .isCompleted(false)
-                .isDeleted(false)
-                .club(club)
-                .user(user)
-                .build();
+        log.info("2");
 
-        club.addMeeting(meeting);
+        // 모임 생성
+        Meeting meeting = new Meeting(meetingRequestDto, club, user);
 
+        log.info("3");
+        // 모임 생성자를 모임 참여자로 추가
+        MeetingUser meetingUser = new MeetingUser(meeting, user);
+
+        log.info("4");
+        // 모임 참여자 추가
+        meeting.addMeetingUser(meetingUser);
+
+        log.info("5");
+        // 데이터베이스에 저장
         meetingRepository.save(meeting);
     }
 
     @Override
     @Transactional // 모임 완료
-
     public ResponseEntity<ApiResponseDto> completedMeeting(Long meetingId, User user) {
 
         Meeting meeting = findMeeting(meetingId);
@@ -79,7 +82,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         // 이미 완료된 모임인지 확인
         if (meeting.getIsCompleted()) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("이미 완료된 모임입니다.");
         }
 
         // 모임 완료 설정
@@ -93,13 +96,14 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     @Transactional(readOnly = true) // 모임 조회
-    public MeetingResponseDto getMeeting(Long meetingId, User user) {
+    public MeetingResponseDto getMeeting(Long meetingId, User user) throws NotExistResourceException {
 
-        Optional<Meeting> meeting = meetingRepository.findByMeeting(meetingId);
+        Meeting meeting = meetingRepository.findByMeeting(meetingId)
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 모임입니다."));
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.get().getClub().getId(), user.getId()).isEmpty()) {
-            throw new RejectedExecutionException();
+        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
+            throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
 
         return new MeetingResponseDto(findMeeting(meetingId));

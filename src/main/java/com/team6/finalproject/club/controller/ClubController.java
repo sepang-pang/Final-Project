@@ -11,6 +11,7 @@ import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
+import com.team6.finalproject.profile.likeclub.service.LikeClubService;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import java.util.List;
 public class ClubController {
 
     private final ClubService clubService;
+    private final LikeClubService likeClubService;
 
     @GetMapping("/open-club")
     public String openClub() {
@@ -44,6 +46,7 @@ public class ClubController {
         model.addAttribute("clubId", id);
         model.addAttribute("currentUsername", userDetails.getUsername());
         model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
+        model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
         return "club-detail"; // clubPage.html 혹은 clubPage.jsp 등의 뷰 이름
     }
 

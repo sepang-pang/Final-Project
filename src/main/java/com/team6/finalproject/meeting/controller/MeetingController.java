@@ -27,8 +27,9 @@ public class MeetingController {
 
     // 모임 생성.
     @PostMapping("/{clubId}")
-    public void createMeeting(@PathVariable Long clubId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
-        meetingService.createPost(clubId, meetingRequestDto, file, userDetails.getUser());
+    @ResponseBody
+    public void createMeeting(@PathVariable Long clubId, @RequestBody MeetingRequestDto meetingRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
+        meetingService.createPost(clubId, meetingRequestDto, userDetails.getUser());
     }
 
     // 모임 완료
@@ -39,7 +40,7 @@ public class MeetingController {
 
     // 모임 조회.
     @GetMapping("/{meetingId}")
-    public MeetingResponseDto getMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public MeetingResponseDto getMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return meetingService.getMeeting(meetingId,userDetails.getUser());
     }
 

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "like_club", uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "profile_id"}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LikeClub extends Timestamped {
 

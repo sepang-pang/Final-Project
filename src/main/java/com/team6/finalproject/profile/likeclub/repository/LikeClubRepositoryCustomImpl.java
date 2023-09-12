@@ -19,8 +19,9 @@ public class LikeClubRepositoryCustomImpl implements LikeClubRepositoryCustom {
     public LikeClub findByClubAndProfile(Club club, Profile profile) {
         return jpaQueryFactory
                 .selectFrom(likeClub)
-                .where(likeClub.club.id.eq(club.getId())
-                        .and(likeClub.profile.id.eq(profile.getId())))
+                .where(likeClub.club.eq(club),
+                        likeClub.profile.eq(profile),
+                        likeClub.isDeleted.eq(false))
                 .fetchOne();
     }
 }

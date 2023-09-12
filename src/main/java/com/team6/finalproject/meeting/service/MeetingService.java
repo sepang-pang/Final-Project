@@ -17,13 +17,13 @@ import java.util.List;
 public interface MeetingService {
 
     // 모임 생성.
-    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws NotExistResourceException, IOException;
+    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) throws NotExistResourceException, IOException;
 
     // 모임 완료
     public ResponseEntity<ApiResponseDto> completedMeeting(Long meetingId, User user);
 
     // 모임 조회
-    public MeetingResponseDto getMeeting(Long meetingId, User user);
+    public MeetingResponseDto getMeeting(Long meetingId, User user) throws NotExistResourceException;
 
     // 완료된 모임 조회
     public List<MeetingResponseDto> getCompletedMeeting(Long clubId);

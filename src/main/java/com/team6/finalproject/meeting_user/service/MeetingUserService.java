@@ -30,19 +30,18 @@ public class MeetingUserService {
         Meeting meeting = meetingService.findMeeting(meetingId);
 
         // 참여자 수 조회
-        int participants = meetingUserRepository.findAll().size();
+        int participants = meetingUserRepository.findByMeetingUsers(meetingId).size();
 
         // 정원에 도달 했을 경우 모임 참여 불가
-        if (meeting.getMaxMember()<participants) {
+        if (meeting.getMaxMember() < participants) {
             throw new IllegalArgumentException("참여자 수가 다 찼습니다.");
         }
 
         MeetingUser meetingUser = MeetingUser.builder()
                 .meeting(meeting)
                 .user(user)
+                .isDeleted(false)
                 .build();
-
-        meeting.addMetingUser(meetingUser);
 
         meetingUserRepository.save(meetingUser);
     }
