@@ -12,6 +12,7 @@ import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,17 +37,18 @@ public class ProfileController {
         return "manage-profile";
     }
 
+    @GetMapping("/own-profile") // 자신의 프로필 조회
+    public String getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) throws NotExistResourceException {
+        ProfileResponseDto profileDto = profileService.getProfile(userDetails.getUser());
+        model.addAttribute("profileDto", profileDto);
+        return "own-profile";
+    }
+
     @PostMapping("/profile") // 프로필 등록
     @ResponseBody
     public ProfileResponseDto createProfile(@RequestPart ProfileRequestDto requestDto, @RequestPart MultipartFile file,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return profileService.createProfile(requestDto, file, userDetails.getUser());
-    }
-
-    @GetMapping("/profile") // 자신의 프로필 조회
-    @ResponseBody
-    public ProfileResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return profileService.getProfile(userDetails.getUser());
     }
 
     @GetMapping("/profile/{profileId}") // 선택한 프로필 조회
