@@ -7,7 +7,16 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}"/>
     <style>
         body {
-            background-color: #f8f9fa;
+            background-image: url('../static/meets_logo.png'); /* 이미지 경로 설정 */
+            background-repeat: no-repeat;
+            background-size: 300px; /* 이미지 크기 설정 */
+            background-position: center top; /* 이미지 위치 설정 */
+            background-color: #749ce5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .signup-container {
@@ -157,7 +166,7 @@
             password: password,
             email: email,
             birth: birth,
-            age:ageDiff,
+            age: ageDiff,
             role: role
         };
 
