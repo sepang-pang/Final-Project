@@ -14,13 +14,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class MeetingRequestDto {
-    private String name;
+    private String title;
     private String description;
     private int maxMember;
-    private ActivityTypeEnum ACTIVITY_TYPE;
     private String place;
 
-    @JsonDeserialize(using = com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime date;
 
     public static class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {

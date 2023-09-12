@@ -1,3 +1,4 @@
+
 window.onload = function () {
     const clubId = [[${clubId}]]; // club의 아이디를 PathVariable로 받아옴.
     const currentUsername = [[${currentUsername}]];
@@ -99,55 +100,12 @@ window.onload = function () {
             document.querySelector('.leader-name').textContent = data.nickName; // 동호회장 이름
             document.querySelector('.max-members').textContent = data.maxMember; // 최대 인원 수
             document.querySelector('.activity-method').textContent = data.activityType; // 활동 방식
-            document.querySelector('.join-method').textContent = data.joinType;
+            document.querySelector('.join-method').textContent = data.joinType; // 가입 방식
         })
         .catch(error => {
             console.error("There was a problem with the fetch operation:", error.message);
         });
 
-
-    document.getElementById('addCardBtn').addEventListener('click', function () {
-        // 카드 추가 모달을 보여준다.
-        document.getElementById('addCardModal').style.display = 'block';
-    });
-
-    document.getElementById('submitCard').addEventListener('click', function () {
-        // 사용자가 입력한 정보를 가져온다.
-        const date = document.getElementById('inputDate').value;
-        const title = document.getElementById('inputTitle').value;
-        const time = document.getElementById('inputTime').value;
-        const location = document.getElementById('inputLocation').value;
-        const participants = document.getElementById('inputParticipants').value;
-
-        // 새 카드 HTML을 생성한다.
-        const newCardHTML = `
-            <div class="card">
-                <div class="card-title-section">
-                    <h3 class="card-date">${date}</h3>
-                    <h4 class="card-title">${title}</h4>
-                </div>
-                <div class="card-info-section">
-                    <p>일시 <span class="card-time">${time}</span></p>
-                    <p>위치 <span class="card-location">${location}</span></p>
-                    <p>참여인원 <span class="card-participants">${participants}</span></p>
-                </div>
-            </div>
-        `;
-
-        // 생성한 카드 HTML을 .cards-container에 추가한다.
-        const cardsContainer = document.querySelector('.cards-container');
-        cardsContainer.innerHTML += newCardHTML;
-
-        // 카드 추가 모달을 숨긴다.
-        document.getElementById('addCardModal').style.display = 'none';
-
-        // 입력 필드 초기화
-        document.getElementById('inputDate').value = '';
-        document.getElementById('inputTitle').value = '';
-        document.getElementById('inputTime').value = '';
-        document.getElementById('inputLocation').value = '';
-        document.getElementById('inputParticipants').value = '';
-    });
 
     // /{clubId}/uncompleted API 호출
     fetch(`/api/meetings/${clubId}/uncompleted`)
@@ -164,12 +122,12 @@ window.onload = function () {
                 <div class="card">
                     <div class="card-title-section">
                         <h3 class="card-date">${meeting.date}</h3>
-                        <h4 class="card-title">${meeting.description}</h4>
+                        <h4 class="card-title">${meeting.title}</h4>
                     </div>
                     <div class="card-info-section">
                         <p>일시 <span class="card-time">${meeting.dateDetail}</span></p>
                         <p>위치 <span class="card-location">${meeting.place}</span></p>
-                        <p>참여인원 <span class="card-participants">${meeting.maxMember}</span></p>
+                        <p>참여인원 <span class="card-participants">${meeting.memberCount} / ${meeting.maxMember}</span></p>
                     </div>
                 </div>
             `;
@@ -270,5 +228,51 @@ window.onload = function () {
             });
         }
     });
-};
 
+    document.getElementById('createMeetingBtn').addEventListener('click', function() {
+        document.getElementById('meetingModal').style.display = "block";
+    });
+
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('meetingModal').style.display = "none";
+    });
+
+    document.getElementById('maxMembers').addEventListener('input', function() {
+        document.getElementById('maxMemberValue').innerText = this.value;
+    });
+
+    document.getElementById('submitMeeting').addEventListener('click', function() {
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+        const maxMembers = document.getElementById('maxMembers').value;
+        const location = document.getElementById('location').value;
+        const date = document.getElementById('date').value;
+        const ampm = document.getElementById('ampm').value;
+        const hour = document.getElementById('hour').value;
+        const minute = document.getElementById('minute').value;
+
+        const fullDate = `${date} ${(ampm === '오후' && hour !== '12') ? parseInt(hour) + 12 : hour}:${minute}`;
+
+        // API 호출
+        fetch(`/api/meetings/${clubId}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                maxMembers: maxMembers,
+                location: location,
+                date: fullDate
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // 로직 처리 (예: 팝업 닫기)
+                document.getElementById('meetingModal').style.display = "none";
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+};

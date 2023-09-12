@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 @Controller
 @RequiredArgsConstructor
@@ -74,7 +75,7 @@ public class ProfileController {
     @PostMapping("/profile/like-club") // 관심 동호회 등록
     @ResponseBody
     public ProfileResponseDto addLikeClub(@RequestBody LikeClubRequestDto requestDto,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {
         return likeClubService.addLikeClub(requestDto, userDetails.getUser());
     }
 

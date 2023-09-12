@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 @Getter
 public class MeetingResponseDto {
 
-    private String name;
+    private String title;
     private String description;
     private String media;
     private int maxMember;
-    private ActivityTypeEnum ACTIVITY_TYPE;
+    private int memberCount; // 참여자
     private String place;
     private Boolean isCompleted;
     private Boolean isDeleted;
@@ -36,11 +36,10 @@ public class MeetingResponseDto {
     private LocalDateTime dateDetail;
 
     public MeetingResponseDto(Meeting meeting) {
-        this.name = meeting.getName();
+        this.title = meeting.getTitle();
         this.description = meeting.getDescription();
         this.media = meeting.getMedia();
         this.maxMember = meeting.getMaxMember();
-        this.ACTIVITY_TYPE = meeting.getACTIVITY_TYPE();
         this.date = meeting.getDate();
         this.dateDetail = meeting.getDate();
         this.place = meeting.getPlace();
@@ -49,6 +48,8 @@ public class MeetingResponseDto {
         this.createAt = meeting.getCreatedAt();
         this.modifiedAt = meeting.getModifiedAt();
         this.commentCount = meeting.getMeetingComments().size();
+        this.memberCount = meeting.getMeetingUsers().size();
+
     }
 
     public static class DateSerializer extends JsonSerializer<LocalDateTime> {

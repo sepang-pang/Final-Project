@@ -22,7 +22,7 @@ public class MeetingUserRepositoryCustomImpl implements MeetingUserRepositoryCus
                 jpaQueryFactory
                         .selectFrom(meetingUser)
                         .where(meetingUser.id.eq(meetingId)
-                                .and(meetingUser.isDeleted.eq(false))) // 삭제되지 않은 동호회만 조회
+                                .and(meetingUser.isDeleted.eq(false))) // 삭제되지 않은 모임만 조회
                         .fetch();
     }
 }

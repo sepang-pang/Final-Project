@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
+
 @Service
 @RequiredArgsConstructor
 public class LikeClubServiceImpl implements LikeClubService {
@@ -25,9 +27,13 @@ public class LikeClubServiceImpl implements LikeClubService {
     // 관심 동호회 등록
     @Override
     @Transactional
-    public ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) throws NotExistResourceException {
+    public ProfileResponseDto addLikeClub(LikeClubRequestDto requestDto, User user) throws NotExistResourceException, AccessDeniedException {
         Profile profile = profileService.findProfileByUserId(user.getId());
         Club club = clubService.findClub(requestDto.getClubId()); // 요청 클럽 담기
+
+        if(club.getUsername().equals(user.getUsername())) {
+            throw new AccessDeniedException("본인이 개설한 동호회는 찜 할 수 없음");
+        }
 
         LikeClub likeClub = likeClubRepository.findByClubAndProfile(club, profile);
         if (likeClub == null) {
@@ -55,5 +61,16 @@ public class LikeClubServiceImpl implements LikeClubService {
         likeClub.deleteLikeClub();
 
         return new ProfileResponseDto(profile);
+    }
+
+    // 관심 동호회 여부 확인
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isLikeClub(Long clubId, User user) throws NotExistResourceException {
+        Club club = clubService.findClub(clubId);
+        Profile profile = profileService.findProfileByUserId(user.getId());
+
+        LikeClub likeClub = likeClubRepository.findByClubAndProfile(club, profile);
+        return likeClub != null; // likeClub이 null이 아니면 true, null이면 false
     }
 }
