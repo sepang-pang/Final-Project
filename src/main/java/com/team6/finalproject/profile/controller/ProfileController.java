@@ -38,11 +38,18 @@ public class ProfileController {
         return "manage-profile";
     }
 
-    @GetMapping("/own-profile") // 자신의 프로필 조회
+    @GetMapping("/my-profile") // 자신의 프로필 조회
     public String getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) throws NotExistResourceException {
         ProfileResponseDto profileDto = profileService.getProfile(userDetails.getUser());
         model.addAttribute("profileDto", profileDto);
-        return "own-profile";
+        return "my-profile";
+    }
+
+    @GetMapping("/profile/{targetId}") // 선택한 프로필 조회
+    public String getProfileById(@PathVariable Long targetId, Model model) throws NotExistResourceException {
+        ProfileResponseDto profileDto = profileService.getProfileById(targetId);
+        model.addAttribute("profileDto", profileDto);
+        return "profile";
     }
 
     @PostMapping("/profile") // 프로필 등록
@@ -50,12 +57,6 @@ public class ProfileController {
     public ProfileResponseDto createProfile(@RequestPart ProfileRequestDto requestDto, @RequestPart MultipartFile file,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return profileService.createProfile(requestDto, file, userDetails.getUser());
-    }
-
-    @GetMapping("/profile/{profileId}") // 선택한 프로필 조회
-    @ResponseBody
-    public ProfileResponseDto getProfileById(@PathVariable Long profileId) throws NotExistResourceException {
-        return profileService.getProfileById(profileId);
     }
 
     @PatchMapping("/profile") // 프로필 수정

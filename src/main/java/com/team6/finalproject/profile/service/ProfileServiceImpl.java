@@ -56,9 +56,8 @@ public class ProfileServiceImpl implements ProfileService {
     // 타인의 프로필 조회
     @Override
     @Transactional(readOnly = true)
-    public ProfileResponseDto getProfileById(Long profileId) throws NotExistResourceException {
-        Profile profile = profileRepository.findById(profileId).orElseThrow(
-                () -> new NotExistResourceException("프로필을 찾을 수 없습니다."));
+    public ProfileResponseDto getProfileById(Long targetId) throws NotExistResourceException {
+        Profile profile = findProfileByUserId(targetId);
         return new ProfileResponseDto(profile);
     }
 

@@ -17,7 +17,7 @@ public interface ProfileService {
     ProfileResponseDto getProfile(User user) throws NotExistResourceException;
 
     // 선택한 프로필 조회
-    ProfileResponseDto getProfileById(Long profileId) throws NotExistResourceException;
+    ProfileResponseDto getProfileById(Long targetId) throws NotExistResourceException;
 
     // 프로필 수정
     ProfileResponseDto updateProfile(ProfileRequestDto requestDto, MultipartFile file, User user) throws NotExistResourceException, IOException;
