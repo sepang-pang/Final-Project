@@ -2,111 +2,222 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <!--Viewport-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale-1.0, minimum=scale-1.0">
+
+    <!--(IE10)-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Nomalize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
     <title>회원 가입</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.5.3/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <style>
-        body {
-            background-image: url('images/meets_logo.png'); /* 이미지 경로 설정 */
-            background-repeat: no-repeat;
-            background-size: 300px; /* 이미지 크기 설정 */
-            background-position: center top; /* 이미지 위치 설정 */
-            background-color: #749ce5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+        img {
+            width: 100%;
         }
 
-        .signup-container {
-            background-color: white;
-            padding: 30px;
+        .signup {
+            height: 1000px;
+            width: 100%;
+            background: radial-gradient(#52f6e9, #2387c5);
+            position: relative;
+        }
+
+        .signup_box {
+            width: 1050px;
+            height: 750px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 1px 4px 22px -8px #0004;
+            display: flex;
+            overflow: hidden; /* 스크롤 없애기 */
+
         }
 
-        .signup-container h2 {
-            margin-bottom: 20px;
+        .signup_box .left {
+            width: 41%;
+            height: 100%;
+            padding: 25px 25px;
+
+
         }
 
-        .form-group label {
+        .signup_box .right {
+            width: 59%;
+            height: 100%
+        }
+
+        .left .top_link a {
+            color: #452A5A;
+            font-weight: 400;
+        }
+
+        .left .top_link {
+            height: 20px
+        }
+
+        .left .contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            height: 100%;
+            width: 73%;
+            margin: auto;
+        }
+
+        .left h3 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .left input {
+            border: none;
+            margin: 15px 0px;
+            border-bottom: 1px solid #4f30677d;
+            padding: 7px 9px;
+            width: 100%;
+            overflow: hidden;
+            background: transparent;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .left {
+            background: linear-gradient(-45deg, #dcd7e0, #fff);
+        }
+
+        .submit {
+            border: none;
+            padding: 15px 70px;
+            border-radius: 8px;
+            display: block;
+            margin: auto;
+            margin-top: 90px;
+            background: #2b7ca9;
+            color: #fff;
             font-weight: bold;
+            -webkit-box-shadow: 0px 9px 15px -11px rgb(52, 137, 183);
+            -moz-box-shadow: 0px 9px 15px -11px rgba(52, 137, 183);
+            box-shadow: 0px 9px 15px -11px rgba(52, 137, 183);
         }
 
-        .btn-primary {
-            background-color: #e5d674;
-            border-color: #ffb700;
+        .right {
+            background: linear-gradient(212.38deg, rgba(12, 49, 107, 0.67) 0%, rgba(41, 152, 222, 0.6) 100%), url(https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20160309_46%2Fnhkuhak_1457488586120clAUR_JPEG%2FIMG_0527.JPG&type=sc960_832);
+            background-size: cover; /* 이미지를 화면에 가득 차게 설정 */
+            background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+            background-position: center center; /* 이미지를 중앙으로 정렬 */
+            color: #ffffff;
+            position: relative;
         }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+        .right .right-text {
+            height: 100%;
+            position: relative;
+            transform: translate(0%, 40%);
         }
+
+        .right-text h2 {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 50px;
+            font-weight: 500;
+        }
+
+        .right-text h5 {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 19px;
+            font-weight: 400;
+        }
+
+        .right .right-inductor {
+            position: absolute;
+            width: 70px;
+            height: 7px;
+            background: #fff0;
+            left: 50%;
+            bottom: 70px;
+            transform: translate(-50%, 0%);
+        }
+
+        .top_link img {
+            width: 28px;
+            padding-right: 7px;
+            margin-top: -3px;
+        }
+
+
     </style>
 </head>
 <body>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="signup-container">
-                <h2 class="text-center mb-4">회원 가입</h2>
-                <div class="mb-5">
-                    <label for="userName" class="form-label">아이디:</label>
-                    <input type="text" id="userName" name="userName" class="form-control" required
-                           pattern="[a-z0-9]{4,10}">
-                    <!-- 추가: 아이디 피드백 엘리먼트 -->
-                    <small class="text-danger" id="userNameFeedback"></small>
-                </div>
-                <div class="mb-5" style="margin-bottom: 10px">
-                    <!-- 수정: 아이디 피드백 엘리먼트에 ID 추가 -->
-                    <small class="text-muted" id="userNameRules">
-                        아이디는 최소 4자 이상, 10자 이하의 알파벳 소문자와 숫자로 구성되어야 합니다.
-                    </small>
-                </div>
+<section class="signup">
+    <div class="signup_box">
+        <div class="left">
+            <h3>SIGN UP</h3>
+            <div >
+                <div class="contact">
+                    <form action="">
+                        <input type="text" id="userName" placeholder="USERNAME" required pattern="[a-z0-9]{4,10}">
+                        <!-- 추가: 아이디 피드백 엘리먼트 -->
+                        <small class="text-danger" id="userNameFeedback"></small>
+                        <div class="mb-2">
+                            <small class="form-text text-muted">
+                                아이디는 최소 4자 이상, 10자 이하의 알파벳 소문자와 숫자로 구성되어야 합니다..
+                            </small>
+                        </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">비밀번호:</label>
-                    <input type="password" id="password" name="password" class="form-control" required
-                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$">
-                    <!-- 추가: 비밀번호 피드백 엘리먼트 -->
-                    <small class="text-danger" id="passwordFeedback"></small>
-                </div>
-                <div class="mb-2" style="margin-bottom: 10px">
-                    <small class="form-text text-muted">
-                        최소 8자 이상, 15자 이하의 알파벳 대소문자, 숫자, 특수문자를 포함해야 합니다.
-                    </small>
-                </div>
+                        <input type="password" id="password" placeholder="PASSWORD" required
+                               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$">
+                        <small class="text-danger" id="passwordFeedback"></small>
+                        <div class="mb-2">
+                            <small class="form-text text-muted">
+                                최소 8자 이상, 15자 이하의 알파벳 대소문자, 숫자, 특수문자를 포함해야 합니다.
+                            </small>
+                        </div>
 
+                        <div class="password_confirm">
+                            <input type="text" id="password_confirm" placeholder="PASSWORD CHECK" required>
+                        </div>
 
-                <div class="mb-3" style="margin-bottom: 10px">
-                    <label for="password_confirm" class="form-label">비밀번호 확인:</label>
-                    <input type="password" id="password_confirm" name="password_confirm" class="form-control"
-                           required>
-                </div>
+                        <div class="email">
+                            <input type="text" id="email" placeholder="EMAIL" required>
+                        </div>
 
-                <div class="mb-3" style="margin-bottom: 10px">
-                    <label for="email" class="form-label">이메일:</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
-                </div>
+                        <div class="birth">
+                            <input type="date" id="birth" placeholder="BIRTH" required>
+                        </div>
 
-                <div class="mb-3" style="margin-bottom: 10px">
-                    <label for="birth" class="form-label">생년월일:</label>
-                    <input type="date" id="birth" name="birth" class="form-control" required>
+                        <div class="role">
+                            <select id="role" class="form-control" required>
+                                <option value="USER">사용자</option>
+                                <option value="ADMIN">관리자</option>
+                            </select>
+                        </div>
+                        <button class="submit" onclick="signup()">SIGN UP</button>
+                    </form>
                 </div>
-
-                <div class="mb-3" style="margin-bottom: 10px">
-                    <label for="role" class="form-label">역할:</label>
-                    <select id="role" class="form-control" required>
-                        <option value="USER">사용자</option>
-                        <option value="ADMIN">관리자</option>
-                    </select>
-                </div>
-                <button onclick="signup()" class="btn btn-primary btn-block">가입하기</button>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-text">
+                <h2>MEETS</h2>
+                <h5>내가 찾던 모든 취미 모임</h5>
+            </div>
+            <div class="right-inductor">
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <script>
     let userNameInput = document.getElementById("userName");
@@ -134,7 +245,6 @@
     });
 
     function signup() {
-        alert("버튼 클릭")
         let userName = document.getElementById("userName").value;
         let password = document.getElementById("password").value;
         let password_confirm = document.getElementById("password_confirm").value;
