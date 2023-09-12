@@ -1,4 +1,4 @@
-let main = "http://localhost:8080/main"
+let main = "http://localhost:8081/main"
 
 function back() {
     window.location.href = main
@@ -100,9 +100,9 @@ function submit() {
 
     let requestMethod;
     // 프로필 생성 페이지와 수정 페이지에서 다른 요청 받기
-    if (currentUrl.includes("/api/profile/create")) {
+    if (currentUrl.includes("/api/profile.html/create")) {
         requestMethod = 'POST';
-    } else if (currentUrl.includes("/api/profile/update")) {
+    } else if (currentUrl.includes("/api/profile.html/update")) {
         requestMethod = 'PATCH';
     } else {
         // 다른 URL인 경우 예외 처리
