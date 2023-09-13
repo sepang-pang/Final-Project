@@ -26,7 +26,7 @@ public class SmsController {
 
     // 휴대폰 인증 번호 확인
     @PostMapping("/check")
-    public ResponseEntity<ApiResponseDto> checkSmsCertification(@RequestBody SmsCertificationDto smsCertificationDto) {
-        return smsService.checkSmsCertification(smsCertificationDto.getPhoneNumber(), smsCertificationDto.getKey());
+    public void checkSmsCertification(@RequestBody SmsCertificationDto smsCertificationDto) {
+        smsService.checkSmsCertification(smsCertificationDto.getPhoneNumber(), smsCertificationDto.getVerificationCode());
     }
 }

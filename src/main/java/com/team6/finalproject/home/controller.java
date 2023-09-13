@@ -31,4 +31,14 @@ public class controller {
     public String osignup() {
         return "oAuthSignup";
     }
+
+    @GetMapping("/api/findid")
+    public String findId() {
+        return "findId";
+    }
+
+    @GetMapping("/api/findpassword")
+    public String findPassword() {
+        return "findPassword";
+    }
 }
