@@ -7,6 +7,7 @@ import com.team6.finalproject.meeting.dto.MeetingRequestDto;
 import com.team6.finalproject.meeting.dto.MeetingResponseDto;
 import com.team6.finalproject.meeting.dto.MeetingScheduleRequestDto;
 import com.team6.finalproject.meeting.entity.Meeting;
+import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.user.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,4 +49,5 @@ public interface MeetingService {
 
     // 미팅 조회 메서드
     public Meeting findMeeting(Long meetingId);
+
 }

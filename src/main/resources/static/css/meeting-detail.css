@@ -1,0 +1,227 @@
+/* --- 전역 설정 --- */
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- 메인 컨테이너 설정 --- */
+.body-container {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+
+/* --- 헤더 설정 --- */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.logout-btn, .profile-btn {
+    margin-right: 10px;
+}
+
+.profile-btn {
+    margin-right: 30px;
+}
+
+/* --- 모임 상세 정보 설정 --- */
+.detail-info {
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.detail-info p {
+    color: gray;
+}
+
+.detail-info span {
+    color: black;
+}
+
+/* --- 레이아웃 설정 --- */
+.container {
+    display: flex;  /* flexbox 레이아웃 사용 */
+}
+
+.left-content {
+    flex: 1;  /* 왼쪽 컨텐츠가 가능한 모든 공간을 차지하도록 설정 */
+}
+
+.right-content {
+    display: flex;
+    flex-direction: row; /* 수직에서 수평으로 변경 */
+    justify-content: flex-end; /* 컨텐츠를 컨테이너의 오른쪽 끝에 정렬 */
+    align-items: flex-start; /* 컨텐츠를 컨테이너의 상단에 정렬 */
+    gap: 10px; /* 버튼 간 간격 */
+    margin-top: 80px;
+}
+
+
+/* --- 멤버 정보 설정 --- */
+.member-info {
+    border: 1px solid #e0e0e0;
+    overflow-y: auto;
+    height: 200px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.member-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.member-card img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* --- 컨텐츠 정보 설정 --- */
+.content-info {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.content-info .photo {
+    width: 50%;
+    height: 0;
+    padding-bottom: 28.125%;
+    background: #e0e0e0;
+    margin: 0 auto 20px;
+    position: relative;
+}
+
+.content-info .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.content-info .description {
+    margin-bottom: 50px;
+}
+
+/* --- 댓글 정보 설정 --- */
+.comments-info {
+    margin-bottom: 100px;
+}
+
+.comments-header {
+    margin-bottom: 15px;
+}
+
+.comments-count-text {
+    color: gray;
+}
+
+.comments-count {
+    color: black;
+}
+
+.comments-info textarea {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.input-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-section textarea {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.comment-text {
+    flex: 1;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-text p {
+    margin: 0;
+}
+
+.comment-buttons button {
+    margin-left: 5px;
+}
+
+/* 추가된 스타일 */
+.username, .create_time {
+    color: gray;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: #707070;
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}

@@ -1,5 +1,5 @@
-let main = "http://localhost:8080/main"
-let updateURL = "http://localhost:8080/api/profile/update"
+let main = "http://localhost:8081/main"
+let updateURL = "http://localhost:8081/api/profile/update"
 
 function back() {
     window.location.href = main

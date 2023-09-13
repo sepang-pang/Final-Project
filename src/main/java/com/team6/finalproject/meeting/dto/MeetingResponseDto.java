@@ -35,7 +35,7 @@ public class MeetingResponseDto {
     @JsonSerialize(using = DateDetailSerializer.class)
     private LocalDateTime dateDetail;
 
-    public MeetingResponseDto(Meeting meeting) {
+    public MeetingResponseDto(Meeting meeting , int count) {
         this.title = meeting.getTitle();
         this.description = meeting.getDescription();
         this.media = meeting.getMedia();
@@ -48,7 +48,7 @@ public class MeetingResponseDto {
         this.createAt = meeting.getCreatedAt();
         this.modifiedAt = meeting.getModifiedAt();
         this.commentCount = meeting.getMeetingComments().size();
-        this.memberCount = meeting.getMeetingUsers().size();
+        this.memberCount = count;
 
     }
 

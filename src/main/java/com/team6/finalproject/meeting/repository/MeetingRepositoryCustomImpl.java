@@ -2,6 +2,8 @@ package com.team6.finalproject.meeting.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.meeting.entity.Meeting;
+import com.team6.finalproject.meeting_user.entity.MeetingUser;
+import com.team6.finalproject.meeting_user.entity.QMeetingUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.team6.finalproject.meeting.entity.QMeeting.meeting;
+import static com.team6.finalproject.meeting_user.entity.QMeetingUser.meetingUser;
 
 @Repository
 @RequiredArgsConstructor
@@ -50,6 +53,16 @@ public class MeetingRepositoryCustomImpl implements MeetingRepositoryCustom {
                                 .and(meeting.isCompleted.eq(false))
                                 .and(meeting.isDeleted.eq(false))) // 삭제되지 않은 미팅만 조회
                         .orderBy(meeting.date.asc())
+                        .fetch();
+    }
+
+    @Override
+    public List<MeetingUser> countByMeetingUser(Long meetingId) {
+        return
+                jpaQueryFactory
+                        .selectFrom(meetingUser)
+                        .where(meetingUser.meeting.id.eq(meetingId)
+                                .and(meetingUser.isDeleted.eq(false)))
                         .fetch();
     }
 }

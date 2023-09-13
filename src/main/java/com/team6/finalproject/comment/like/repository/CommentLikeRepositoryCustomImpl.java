@@ -5,6 +5,7 @@ import com.team6.finalproject.comment.like.entity.CommentLike;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.team6.finalproject.comment.like.entity.QCommentLike.commentLike;
@@ -25,6 +26,29 @@ public class CommentLikeRepositoryCustomImpl implements CommentLikeRepositoryCus
                                         .and(commentLike.isDeleted.eq(false)))
                                 .fetchOne()
                 );
+    }
+
+    @Override
+    public Optional<CommentLike> existsByActiveCommentIdAndUser(Long commentId, Long id) {
+        return
+                Optional.ofNullable(
+                        jpaQueryFactory
+                                .selectFrom(commentLike)
+                                .where(commentLike.comment.commentId.eq(commentId)
+                                        .and(commentLike.user.id.eq(id))
+                                        .and(commentLike.isDeleted.eq(false)))
+                                .fetchOne()
+                );
+    }
+
+    @Override
+    public List<CommentLike> countByActiveCommentId(Long commentId) {
+        return
+                jpaQueryFactory
+                        .selectFrom(commentLike)
+                        .where(commentLike.comment.commentId.eq(commentId)
+                                .and(commentLike.isDeleted.eq(false)))
+                        .fetch();
     }
 
 }
