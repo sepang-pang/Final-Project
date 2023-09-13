@@ -38,11 +38,11 @@ public class ProfileController {
         return "manage-profile";
     }
 
-    @GetMapping("/own-profile") // 자신의 프로필 조회
+    @GetMapping("/my-profile") // 자신의 프로필 조회
     public String getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) throws NotExistResourceException {
         ProfileResponseDto profileDto = profileService.getProfile(userDetails.getUser());
         model.addAttribute("profileDto", profileDto);
-        return "own-profile";
+        return "my-profile";
     }
 
     @PostMapping("/profile") // 프로필 등록
