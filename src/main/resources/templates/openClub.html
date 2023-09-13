@@ -33,16 +33,18 @@
             <input type="button" onclick="locate1()" value="위치 검색">
         </div>
 
-        <label for="maxMember">인원수 제한</label>
-        <div id="maxMember" name="maxMember">
-            <input type="range" id="slider1" min="0" max="300" step="1" value="0">
-            <p>제한 인원 수 : <span id="sliderValue1">0</span></p>
+        <label for="member">인원수 제한</label>
+        <div id="member" name="member">
+            <input type="text" id="maxMember" placeholder="인원수">
         </div>
 
         <label for="age">나이대 제한</label>
         <div id="age" name="age">
-            <input type="range" id="slider2" min="20" max="60" step="10" value="20">
-            <p>희망 나이대 : <span id="sliderValue2">20</span></p>
+            <button type="button" class="age-button" data-age="20">20대</button>
+            <button type="button" class="age-button" data-age="30">30대</button>
+            <button type="button" class="age-button" data-age="40">40대</button>
+            <button type="button" class="age-button" data-age="50">50대</button>
+            <button type="button" class="age-button" data-age="0">무관</button>
         </div>
 
         <label>활동 방식</label>

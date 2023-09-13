@@ -51,7 +51,7 @@ public class ClubController {
     }
 
     @PostMapping("/clubs") // 동호회 개설
-    public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+    public ClubResponseDto createClub(@RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
         return clubService.createClub(clubRequestDto, userDetails.getUser());
     }
 
