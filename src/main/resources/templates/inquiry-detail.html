@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 상세 정보</title>
+    <!--Viewport-->
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0"
+          name="viewport">
+
+    <!--(IE10)-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <!-- Normalize -->
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' rel="stylesheet">
+
+    <!--load CSS-->
+    <!--    <link href="/css/inquiry-detail.css" rel="stylesheet">-->
+</head>
+<body>
+<div class="container">
+    <h1>문의 상세 정보</h1>
+    <div class="inquiry-details">
+        <h2 th:text="${inquiryDto.title}"></h2>
+        <p>작성자: <span th:text="${inquiryDto.username}"></span></p>
+        <p>문의 유형: <span th:text="${inquiryDto.inquiryType}"></span></p>
+        <p>내용: <span th:text="${inquiryDto.description}"></span></p>
+
+        <p>이미지:</p>
+        <img alt="문의 이미지" th:if="${inquiryDto.media != null}" th:src="${inquiryDto.media}">
+
+        <p>답변:</p>
+        <div th:if="${inquiryDto.answer != null}" th:text="${inquiryDto.answer}"></div>
+        <div th:unless="${inquiryDto.answer != null}">답변 대기 중</div>
+    </div>
+    <!-- 버튼 -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
+        <button class="btn btn-primary" id="btn-update" type="submit">수정</button>
+    </div>
+</div>
+<!--load JS-->
+<script src="/js/inquiry-detail.js"></script>
+</body>
+</html>

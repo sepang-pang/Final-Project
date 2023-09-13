@@ -26,34 +26,35 @@ public class InquiryServiceImpl implements InquiryService {
     private final FileUploader fileUploader;
 
     @Override
-    @Transactional // 문의 등록
-    public InquiryResponseDto createInquiry(InquiryRequestDto requestDto, MultipartFile file, User user) throws IOException {
-
-        String media = fileUploader.upload(file);
-
-        Inquiry inquiry = Inquiry.builder()
-                .inquiryType(requestDto.getInquiryType())
-                .description(requestDto.getDescription())
-                .media(media)
-                .user(user)
-                .build();
-        inquiryRepository.save(inquiry);
-        return new InquiryResponseDto(inquiry);
+    @Transactional(readOnly = true) // 문의 전체 조회
+    public List<InquiryResponseDto> getAllInquiry(User user) {
+        return inquiryRepository.findAllByUserIdOrderByCreatedAtDesc(user.getId()).stream()
+                .map(InquiryResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override
-    @Transactional(readOnly = true) // 문의 단건 조회
+    @Transactional(readOnly = true) // 문의 상세 조회
     public InquiryResponseDto getInquiry(Long inquiryId, User user) throws NotExistResourceException {
         Inquiry inquiry = findByIdAndUserId(inquiryId, user.getId());
         return new InquiryResponseDto(inquiry);
     }
 
     @Override
-    @Transactional(readOnly = true) // 문의 전체 조회
-    public List<InquiryResponseDto> getAllInquiry(User user) {
-        return inquiryRepository.findAllByUserIdOrderByCreatedAtDesc(user.getId()).stream()
-                .map(InquiryResponseDto::new)
-                .collect(Collectors.toList());
+    @Transactional // 문의 등록
+    public InquiryResponseDto createInquiry(InquiryRequestDto requestDto, MultipartFile file, User user) throws IOException {
+
+        String media = fileUploader.upload(file);
+
+        Inquiry inquiry = Inquiry.builder()
+                .title(requestDto.getTitle())
+                .description(requestDto.getDescription())
+                .media(media)
+                .inquiryType(requestDto.getInquiryType())
+                .user(user)
+                .build();
+        inquiryRepository.save(inquiry);
+        return new InquiryResponseDto(inquiry);
     }
 
     @Override
@@ -67,14 +68,15 @@ public class InquiryServiceImpl implements InquiryService {
         }
 
         if (inquiry.getMedia() != null) {
-           fileUploader.deleteFile(inquiry.getMedia());
+            fileUploader.deleteFile(inquiry.getMedia());
         }
 
-        String media = fileUploader.upload(file);
+        String title = requestDto.getTitle();
         String description = requestDto.getDescription();
+        String media = fileUploader.upload(file);
         InquiryTypeEnum inquiryType = requestDto.getInquiryType();
 
-        inquiry.update(media, inquiryType, description);
+        inquiry.update(title, description, media, inquiryType);
         return new InquiryResponseDto(inquiry);
     }
 

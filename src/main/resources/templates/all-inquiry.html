@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title> 1:1문의 목록 </title>
+
+    <!--Viewport-->
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0"
+          name="viewport">
+
+    <!--(IE10)-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <!-- Normalize -->
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' rel="stylesheet">
+
+    <!--load CSS-->
+    <link href="/css/all-inquiry.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <img alt="동호회 이미지" class="club-image" src="/meets_logo.png">
+        <h1>1:1문의 목록</h1>
+    </header>
+</div>
+<div class="center-container" id="center-container">
+    <!-- 문의 목록 -->
+    <div class="all-inquiry">
+        <table>
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th>작성일</th>
+                <th>답변여부</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Thymeleaf를 이용하여 반복 출력 -->
+            <tr th:each="inquiry, rowStat : ${inquiryDtos}">
+                <td>
+                    <!-- 제목을 클릭하면 상세 페이지로 이동하도록 링크 추가 -->
+                    <a th:href="'/api/inquiry/' + ${inquiry.inquiryId}" th:text="${inquiry.title}"></a>
+                </td>
+                <td th:text="${#temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:if="${inquiry.answer != null}">답변대기</td>
+                <td th:unless="${inquiry.answer != null}">답변대기</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 버튼 -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
+        <button class="btn btn-primary" id="btn-inquiry" type="inquiry">문의하기</button>
+    </div>
+</div>
+</body>
+</html>

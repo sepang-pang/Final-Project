@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class InquiryRequestDto {
     private Long inquiryId;
-    private InquiryTypeEnum inquiryType;
+    private String title;
     private String description;
+    private InquiryTypeEnum inquiryType;
 }
