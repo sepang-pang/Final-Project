@@ -25,9 +25,7 @@
 
 <body>
 <div class="body-container">
-    <!-- Header -->This branch has conflicts that must be resolved
-    to resolve conflicts before continuing.
-    Conflicting files
+    <!-- Header -->
     <div class="header">
         <button class="logout-btn">로그아웃</button>
         <button class="profile-btn">내 프로필</button>
@@ -108,6 +106,15 @@
 
 <script th:inline="javascript">
 
+    // -------------- 모임 수정 기능  -------------- //
+    document.addEventListener("DOMContentLoaded", function() {
+        const editButton = document.getElementById("edit-btn");
+
+        editButton.addEventListener("click", function() {
+            window.location.href = "/meeting-update";
+        });
+    });
+
     window.onload = function () {
 
         // -------------- 데이터 초기화  -------------- //
@@ -117,20 +124,30 @@
 
         fetchData(meetingId);
         fetchMeetingUsers(meetingId);
-        // 체크 참석 상태
-        checkAttendStatus();
+        checkAttendStatus(); // 체크 참석 상태
 
-        if(username === meetingUsername) {
+        // "마감하기" 버튼 처리
+        if (username === meetingUsername) {
             document.getElementById('close-btn').style.display = "inline-block"; // 모임 작성자라면 "마감하기" 버튼 표시
+        }
+
+        // "수정하기"와 "삭제하기" 버튼 처리
+        const editButton = document.getElementById('edit-btn');
+        const deleteButton = document.getElementById('delete-btn');
+        if (username === meetingUsername) {
+            editButton.style.display = "inline-block"; // 모임 작성자라면 "수정하기"와 "삭제하기" 버튼을 표시합니다.
+            deleteButton.style.display = "inline-block";
+        } else {
+            editButton.style.display = "none"; // 모임 작성자가 아니라면 "수정하기"와 "삭제하기" 버튼을 숨깁니다.
+            deleteButton.style.display = "none";
         }
 
         let isMeetingCompleted = false;  // 모임이 마감되었는지 여부를 저장하는 변수
 
 
-        document.querySelector('.profile-btn').addEventListener('click', function() {
+        document.querySelector('.profile-btn').addEventListener('click', function () {
             window.location.href = "/api/my-profile";
         });
-
 
 
         // -------------- 모임 데이터 가져오기  -------------- //
@@ -153,7 +170,6 @@
                     console.error("There was a problem with the fetch operation:", error.message);
                 });
         }
-
 
 
         // -------------- 모임 데이터 표시  -------------- //
@@ -194,7 +210,7 @@
 
             members.forEach(member => {
                 const memberCardHTML = `
-            <div class="member-card">
+           <div class="member-card" data-user-id="${member.userId}">
                 <img src="${member.profileImage}" alt="프로필 사진">
                 <p>${member.nickname}</p>
             </div>
@@ -202,8 +218,17 @@
 
                 memberContainer.innerHTML += memberCardHTML;
             });
-        }
 
+            // 모든 member-card에 클릭 이벤트를 추가합니다.
+            document.querySelectorAll('.member-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // 카드의 data-user-id 값을 가져와서 URL을 생성합니다.
+                    const userId = this.getAttribute('data-user-id');
+                    window.location.href = `/api/profile/${userId}`;
+                });
+            });
+
+        }
 
         // -------------- 댓글 제출 기능  -------------- //
         function submitComment() {
@@ -365,9 +390,7 @@
                             }
                         });
                 }
-            }
-
-            else if (event.target.classList.contains('like-button')) {
+            } else if (event.target.classList.contains('like-button')) {
                 const commentId = commentElement.dataset.commentId;
                 fetch(`/api/comments/${commentId}/like-status`, {
                     method: 'GET'
@@ -390,6 +413,7 @@
                     });
             }
         });
+
         function revertToOriginalCommentForm(commentElement) {
             const originalCommentText = commentElement.querySelector('.original-comment-text');
             const editArea = commentElement.querySelector('.edit-textarea');
@@ -426,7 +450,7 @@
         }
 
 
-        document.querySelector('.detail-info button').addEventListener('click', function() {
+        document.querySelector('.detail-info button').addEventListener('click', function () {
             const buttonText = this.textContent;
 
             if (isMeetingCompleted && buttonText === "참여하기") {
@@ -469,7 +493,7 @@
                 });
         });
 
-        document.getElementById('close-btn').addEventListener('click', function() {
+        document.getElementById('close-btn').addEventListener('click', function () {
             fetch(`/api/meetings/${meetingId}/completed`, {
                 method: 'PATCH',
                 headers: {
@@ -477,7 +501,7 @@
                 },
             })
                 .then(response => {
-                    if(response.ok) {
+                    if (response.ok) {
                         return response.json();
                     } else {
                         throw new Error("Something went wrong");
@@ -495,6 +519,7 @@
 
         // -------------- 모임 삭제 기능  -------------- //
         document.getElementById("delete-btn").addEventListener("click", deleteMeeting);
+
         function deleteMeeting() {
             const confirmation = confirm("정말로 이 모임을 삭제하시겠습니까?");  // 사용자에게 삭제 확인
 
@@ -523,7 +548,7 @@
         }
 
         // -------------- 로그아웃 기능  -------------- //
-        document.querySelector('.logout-btn').addEventListener('click', function() {
+        document.querySelector('.logout-btn').addEventListener('click', function () {
             fetch('/logout', {
                 method: 'POST',
             })
