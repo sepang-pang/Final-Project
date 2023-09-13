@@ -30,6 +30,7 @@ function signup() {
     let email = document.getElementById("email").value;
     let birth = document.getElementById("birth").value;
     let role = document.getElementById("role").value;
+    let phoneNumber = document.getElementById("phoneNumber").value;
 
     if (password !== password_confirm) {
         alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
@@ -55,6 +56,7 @@ function signup() {
         password: password,
         email: email,
         birth: birth,
+        phoneNumber : phoneNumber,
         age: ageDiff,
         role: role
     };

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>회원 가입</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/signup.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/signup.css"/>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script src="../static/js/signup.js"></script>
+    <script src="/js/signup.js"></script>
 </head>
 <body>
 <div class="container mt-5">
@@ -65,10 +65,79 @@
                         <option value="ADMIN">관리자</option>
                     </select>
                 </div>
+                <div class="mb-3" style="margin-bottom: 10px">
+                    <label for="phoneNumber" class="form-label">전화번호:</label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" required>
+                    <button type="button" class="btn btn-primary btn-verify" onclick="sendPhoneNumberVerification()">
+                        인증번호 보내기
+                    </button>
+                </div>
+
+                <div class="mb-3" style="margin-bottom: 10px">
+                    <label for="verification-code" class="form-label">인증코드:</label>
+                    <input type="text" id="verification-code" name="verification-code" class="form-control" required>
+                    <button type="button" class="btn btn-primary btn-verify" onclick="sendCodeCheck()">인증</button>
+                </div>
                 <button onclick="signup()" class="btn btn-primary btn-block">가입하기</button>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function sendPhoneNumberVerification() {
+        let phoneNumber = document.getElementById("phoneNumber").value;
+
+        let data = {
+            phoneNumber: phoneNumber
+        };
+
+        fetch('/api/sms/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("인증번호가 발송되었습니다.");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("인증번호 발송에 실패했습니다.");
+            });
+    }
+
+    function sendCodeCheck() {
+        let phoneNumber = document.getElementById("phoneNumber").value;
+        let verificationCode = document.getElementById("verification-code").value;
+
+        let data = {
+            phoneNumber: phoneNumber,
+            verificationCode: verificationCode
+        };
+
+        fetch('/api/sms/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(data => {
+                alert("인증에 성공했습니다.");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("인증에 실패했습니다.");
+            });
+    }
+</script>
 </body>
 </html>

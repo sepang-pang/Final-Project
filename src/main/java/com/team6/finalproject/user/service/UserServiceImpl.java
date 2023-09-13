@@ -30,14 +30,14 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("중복된 이름입니다.");
         }
 
-//        if(!redisUtil.isVerified(signupRequestDto.getPhone())){
-//            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
-//        }
+        if(!redisUtil.isVerified(signupRequestDto.getPhoneNumber())){
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
 
         User user = User.builder()
                 .username(signupRequestDto.getUsername())
                 .password(passwordEncoder.encode(signupRequestDto.getPassword()))
-                .phone(signupRequestDto.getPhone())
+                .phone(signupRequestDto.getPhoneNumber())
                 .email(signupRequestDto.getEmail())
                 .birth(signupRequestDto.getBirth())
                 .age(signupRequestDto.getAge())
