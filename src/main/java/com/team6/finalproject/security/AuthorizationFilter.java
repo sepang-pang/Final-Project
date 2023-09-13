@@ -1,21 +1,16 @@
 package com.team6.finalproject.security;
 
-import com.team6.finalproject.user.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -30,9 +25,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("authorizationFilter 필터");
         UserDetails user = (UserDetailsImpl) request.getSession().getAttribute("username");
+        String requestURI = request.getRequestURI();
 
-        String uri = request.getRequestURI();
-        if (uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".png") || uri.endsWith(".jpeg")|| uri.endsWith(".jpg")|| uri.endsWith(".dmp")) {
+        if (isPermitUrl(requestURI) || isStaticResource(requestURI)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -72,8 +67,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback",
-                "/api/sms", "/api/findid", "/api/findpassword", "/api/users/id-inquiry"};
+        String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
@@ -89,5 +83,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
+
+    private boolean isPermitUrl(String requestURI) {
+        return requestURI.endsWith("/api/**") || requestURI.endsWith("/login") || requestURI.endsWith("/signup") || requestURI.endsWith("/main");
+    }
+
+    private boolean isStaticResource(String requestURI) {
+        return requestURI.endsWith(".css") || requestURI.endsWith(".js") || requestURI.endsWith(".html");
     }
 }

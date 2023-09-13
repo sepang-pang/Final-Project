@@ -18,6 +18,9 @@ public class Inquiry extends Timestamped {
     private Long id;
 
     @Column
+    private String title;
+
+    @Column
     private String description;
 
     @Column
@@ -38,17 +41,19 @@ public class Inquiry extends Timestamped {
     private User user;
 
     @Builder
-    public Inquiry(InquiryTypeEnum inquiryType, String description, String media, User user) {
-        this.inquiryType = inquiryType;
+    public Inquiry(String title, String description, String media, InquiryTypeEnum inquiryType, User user) {
+        this.title = title;
         this.description = description;
         this.media = media;
+        this.inquiryType = inquiryType;
         this.user = user;
     }
 
-    public void update(String media, InquiryTypeEnum inquiryType, String description) {
+    public void update(String title, String description, String media, InquiryTypeEnum inquiryType) {
+        this.title = title;
+        this.description = description;
         this.media = media;
         this.inquiryType = inquiryType;
-        this.description = description;
     }
 
     public void saveAnswer(String answer) {
