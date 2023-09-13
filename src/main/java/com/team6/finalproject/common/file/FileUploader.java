@@ -24,7 +24,7 @@ public class FileUploader {
     public String upload(MultipartFile file) throws IOException {
         // 파일을 요청하지 않은 경우 미리 업로드해둔 기본이미지 저장
         if (file.getOriginalFilename().equals("empty")) {
-            return amazonS3.getUrl(bucketName, "a240fa66-41d3-47c9-b9fd-6a45122fad81").toString();
+            return amazonS3.getUrl(bucketName, "meets_logo.png").toString();
         }
 
         ObjectMetadata metadata = new ObjectMetadata();
