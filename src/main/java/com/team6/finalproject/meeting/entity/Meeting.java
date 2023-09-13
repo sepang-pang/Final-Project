@@ -101,10 +101,6 @@ public class Meeting extends Timestamped {
         this.isDeleted = true;
     }
 
-    public void addComment(Comment comment) {
-        this.meetingComments.add(comment);
-    }
-
     public void completed() {
         this.isCompleted = true;
     }

@@ -1,17 +1,22 @@
 package com.team6.finalproject.comment.like.service;
 
-import com.team6.finalproject.advice.custom.NotExistResourceException;
-import com.team6.finalproject.advice.custom.NotLikedYetException;
 import com.team6.finalproject.advice.custom.NotOwnedByUserException;
-import com.team6.finalproject.advice.custom.SelfLikeNotAllowedException;
-import com.team6.finalproject.common.dto.ApiResponseDto;
+import com.team6.finalproject.comment.like.entity.CommentLike;
 import com.team6.finalproject.user.entity.User;
-import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 public interface CommentLikeService {
-    ResponseEntity<ApiResponseDto> commentLike(Long postId, User user) throws SelfLikeNotAllowedException, NotExistResourceException;
 
-    ResponseEntity<ApiResponseDto> CommentDislike(Long commentId, User user) throws NotLikedYetException, NotOwnedByUserException;
 
+    Boolean commentLikeCheck(Long commentId, User user);
+
+    int countCommentLike(Long commentId);
+
+    void save(CommentLike like);
+
+    void checkedUser(CommentLike commentLike, User user) throws NotOwnedByUserException;
+
+    Optional<CommentLike> findCommentLike(Long commentId);
 
 }

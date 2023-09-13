@@ -1,17 +1,22 @@
 package com.team6.finalproject.meeting.controller;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.club.member.dto.MemberInquiryDto;
+import com.team6.finalproject.comment.like.service.CommentLikeService;
+import com.team6.finalproject.comment.service.CommentService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.meeting.dto.MeetingPlaceRequestDto;
 import com.team6.finalproject.meeting.dto.MeetingRequestDto;
 import com.team6.finalproject.meeting.dto.MeetingResponseDto;
 import com.team6.finalproject.meeting.dto.MeetingScheduleRequestDto;
 import com.team6.finalproject.meeting.service.MeetingService;
+import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +30,15 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
+    @GetMapping("/meeting-detail/{meetingId}")
+    public String clubPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, Model model) throws NotExistResourceException {
+        model.addAttribute("meetingId", meetingId);
+        model.addAttribute("username", userDetails.getUsername()); // 현재 인가된 사용자의 이름
+        model.addAttribute("meetingUsername", meetingService.findMeeting(meetingId).getUser().getUsername()); // 모임 작성자의 이름
+
+        return "meeting-detail";
+    }
+
     // 모임 생성.
     @PostMapping("/{clubId}")
     @ResponseBody
@@ -34,12 +48,14 @@ public class MeetingController {
 
     // 모임 완료
     @PatchMapping("/{meetingId}/completed")
+    @ResponseBody
     public ResponseEntity<ApiResponseDto> completedMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return meetingService.completedMeeting(meetingId, userDetails.getUser());
     }
 
     // 모임 조회.
     @GetMapping("/{meetingId}")
+    @ResponseBody
     public MeetingResponseDto getMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return meetingService.getMeeting(meetingId,userDetails.getUser());
     }
@@ -66,6 +82,7 @@ public class MeetingController {
 
     // 모임 삭제.
     @DeleteMapping("/{meetingId}")
+    @ResponseBody
     public void deleteMeeting(@PathVariable Long meetingId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         meetingService.deleteMeeting(meetingId,userDetails.getUser());
     }

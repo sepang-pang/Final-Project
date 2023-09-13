@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface MemberRepositoryCustom {
     public Optional<Member> findActiveUser(Long userId);
-    public Optional<Member> findActiveUserAndClub(Long clubId, Long userId);
+    public Optional<Member> findActiveUserAndClub(Long userId, Long clubId);
     public List<Member> findActiveMembers(Long clubId);
 }

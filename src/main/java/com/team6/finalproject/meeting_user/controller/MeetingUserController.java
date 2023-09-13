@@ -6,10 +6,9 @@ import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,20 +18,30 @@ public class MeetingUserController {
     private final MeetingUserService meetingUserService;
 
     // 모임 참석 유저 조회.
-    @GetMapping("/{meetingId}/users")
-    public MeetingUsersResponseDto getMeetingUser(@PathVariable Long meetingId) {
+    @GetMapping("/{meetingId}/members")
+    @ResponseBody
+    public List<MeetingUsersResponseDto> getMeetingUsers(@PathVariable Long meetingId) {
         return meetingUserService.getMeetingUsers(meetingId);
     }
 
     // 모임 참석.
-    @GetMapping("/{meetingId}/attend")
+    @PutMapping("/{meetingId}/attend")
+    @ResponseBody
     public void meetingAttend(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         meetingUserService.meetingAttend(meetingId,userDetails.getUser());
     }
 
     // 모임 참석 취소.
-    @DeleteMapping("/{meetingUserId}/cancel")
-    public void meetingCancel(@PathVariable Long meetingUserId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        meetingUserService.meetingCancel(meetingUserId,userDetails.getUser());
+    @DeleteMapping("/{meetingId}/cancel")
+    @ResponseBody
+    public void meetingCancel(@PathVariable Long meetingId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        meetingUserService.meetingCancel(meetingId, userDetails.getUser());
+    }
+
+    // 모임 참석 여부 확인.
+    @GetMapping("/{meetingId}/isAttend")
+    @ResponseBody
+    public boolean isAttend(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+       return meetingUserService.isAttend(meetingId, userDetails.getUser());
     }
 }

@@ -10,24 +10,21 @@ import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/clubs/posts/comments")
+@RequestMapping("/api/comments")
 public class CommentLikeController {
 
     private final CommentLikeService commentLikeService;
 
-    // 좋아요
-    @PostMapping("/{commentId}/like")
-    public ResponseEntity<ApiResponseDto> commentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws SelfLikeNotAllowedException, NotExistResourceException {
-        return commentLikeService.commentLike(commentId,userDetails.getUser());
-    }
 
-    // 좋아요 취소
-    @DeleteMapping("{commentId}/dislike")
-    public ResponseEntity<ApiResponseDto> CommentDislike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotOwnedByUserException, NotLikedYetException {
-       return commentLikeService.CommentDislike(commentId, userDetails.getUser());
+    // 좋아요 여부
+    @GetMapping("/{commentId}/like-status")
+    @ResponseBody
+    public Boolean commentLikeCheck(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        return commentLikeService.commentLikeCheck(commentId, userDetails.getUser());
     }
 }

@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "meeting_user", uniqueConstraints = {@UniqueConstraint(columnNames = {"meeting_id", "user_id"})})
+@Table(name = "meeting_user")
 public class MeetingUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

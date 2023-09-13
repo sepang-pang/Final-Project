@@ -31,11 +31,13 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
 
     @Override
     public List<Comment> findByActiveMeetingId(Long meetingId) {
-        return
+        return // order by commentId created_at desc
                 jpaQueryFactory
                         .selectFrom(comment)
                         .where(comment.meeting.id.eq(meetingId)
                                 .and(comment.isDeleted.eq(false)))
+                        .orderBy(comment.createdAt.desc())
                         .fetch();
     }
+
 }

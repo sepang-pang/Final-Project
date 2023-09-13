@@ -134,7 +134,7 @@
 
         <!-- 활동지역 section -->
         <div class="activity-area content-section" style="display: none;">
-            <H1> 활동지역 </H1>
+            <div id="map" style="width:100%;height:350px;"></div>
         </div>
         <!--        &lt;!&ndash; 채팅방 section &ndash;&gt;-->
         <!--        <div class="chat-room content-section" style="display: none;">-->
@@ -281,6 +281,16 @@
         });
         // ================================================ //
 
+        document.getElementById('place').addEventListener('click', function () {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 결과값에서 주소 정보 가져와서 input에 표시
+                    document.getElementById('place').value = data.roadAddress;
+                }
+            }).open();
+        });
+
+
         sirenBtn.addEventListener("click", function () {
             animateButton(sirenBtn);  // 애니메이션 적용
         });
@@ -352,11 +362,32 @@
                 document.querySelector('h1').textContent = data.name; // 동호회 이름
                 document.querySelector('.tag1').textContent = data.major; // 동호회 대주제
                 document.querySelector('.tag2').textContent = data.minor; // 동호회 소주제
+                document.querySelector('.photo-box img').src = data.media; // 동호회 사진
                 document.querySelector('.article-content').textContent = data.description; // 동호회 소개글
                 document.querySelector('.leader-name').textContent = data.nickName; // 동호회장 이름
                 document.querySelector('.max-members').textContent = data.maxMember; // 최대 인원 수
                 document.querySelector('.activity-method').textContent = data.activityType; // 활동 방식
                 document.querySelector('.join-method').textContent = data.joinType; // 가입 방식
+
+                // 지도를 생성합니다
+                const mapContainer = document.getElementById('map');
+                const mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 우선 임시로 중심 좌표를 설정
+                    level: 3
+                };
+                const map = new kakao.maps.Map(mapContainer, mapOption);
+
+                // 주소-좌표 변환 객체 생성
+                const geocoder = new kakao.maps.services.Geocoder();
+
+                // 주소로 좌표를 검색
+                geocoder.addressSearch(data.locate, function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        map.setCenter(new kakao.maps.LatLng(result[0].y, result[0].x)); // 지도의 중심 좌표를 검색 결과 좌표로 설정
+                    } else {
+                        console.log('검색 결과가 없습니다.');
+                    }
+                });
             })
             .catch(error => {
                 console.error("There was a problem with the fetch operation:", error.message);
@@ -664,9 +695,9 @@
                     alert(error.message);
                 });
         });
-
-
     }
 </script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d5cbf2c7b1151b1ca7e03a028094c2&libraries=services"></script>
 </body>
 </html>

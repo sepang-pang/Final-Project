@@ -28,15 +28,14 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
     }
 
     @Override
-    public Optional<Member> findActiveUserAndClub(Long clubId, Long userId) {
+    public Optional<Member> findActiveUserAndClub(Long userId, Long clubId) {
         return
                 Optional.ofNullable(
                         jpaQueryFactory
                                 .selectFrom(member)
                                 .where(member.user.id.eq(userId)
                                         .and(member.club.id.eq(clubId))
-                                        .and(member.user.isDeleted.eq(false))
-                                        .and(member.club.isDeleted.eq(false)))
+                                        .and(member.isDeleted.eq(false)))
                                 .fetchOne()
                 );
     }
