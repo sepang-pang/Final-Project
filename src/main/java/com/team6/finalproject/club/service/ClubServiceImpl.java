@@ -87,12 +87,8 @@ public class ClubServiceImpl implements ClubService {
     public ClubResponseDto readClub(Long clubId) throws NotExistResourceException {
         // 동호회 존재 여부 확인
         Club club = findClub(clubId);
-
         // 반환
-        return new ClubResponseDto(
-                club,
-                new InterestMajorDto(club.getMinor().getInterestMajor()),
-                new InterestMinorDto(club.getMinor()));
+        return new ClubResponseDto(club);
     }
 
     // 대주제 별 조회
@@ -161,10 +157,7 @@ public class ClubServiceImpl implements ClubService {
         List<Club> clubs = clubRepository.findClubsByRecent();
 
         return clubs.stream()
-                .map(club -> new ClubResponseDto(
-                        club,
-                        new InterestMajorDto(club.getMinor().getInterestMajor()),
-                        new InterestMinorDto(club.getMinor())))
+                .map(club -> new ClubResponseDto(club))
                 .toList();
     }
 
@@ -181,10 +174,7 @@ public class ClubServiceImpl implements ClubService {
         }
 
         return clubs.stream()
-                .map(club -> new ClubResponseDto(
-                        club,
-                        new InterestMajorDto(club.getMinor().getInterestMajor()),
-                        new InterestMinorDto(club.getMinor())))
+                .map(club -> new ClubResponseDto(club))
                 .toList();
     }
 
@@ -212,10 +202,7 @@ public class ClubServiceImpl implements ClubService {
                 .toList();
 
         return clubs.stream()
-                .map(club -> new ClubResponseDto(
-                        club,
-                        new InterestMajorDto(club.getMinor().getInterestMajor()),
-                        new InterestMinorDto(club.getMinor())))
+                .map(club -> new ClubResponseDto(club))
                 .toList();
     }
 
@@ -231,6 +218,13 @@ public class ClubServiceImpl implements ClubService {
         return applyJoinClubs.stream()
                 .map(applyJoinClub -> new ClubAppliesResponseDto(applyJoinClub))
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true) // 내가 개설한 동호회 조회
+    public List<ClubResponseDto> myClubs(User user) {
+        return clubRepository.findMyClubs(user).stream().map(ClubResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     // 동호회 개설
@@ -304,11 +298,7 @@ public class ClubServiceImpl implements ClubService {
 
         // response 반환
         log.info("response 반환");
-        return new ClubResponseDto(
-                user,
-                club,
-                new InterestMajorDto(club.getMinor().getInterestMajor()),
-                new InterestMinorDto(club.getMinor()));
+        return new ClubResponseDto(club);
     }
 
     // 동호회 수정
@@ -359,11 +349,7 @@ public class ClubServiceImpl implements ClubService {
         targetClub.updateClub(clubRequestDto, media, interestMinor, activity, join);
 
         // 반환
-        return new ClubResponseDto(
-                user,
-                targetClub,
-                new InterestMajorDto(targetClub.getMinor().getInterestMajor()),
-                new InterestMinorDto(targetClub.getMinor()));
+        return new ClubResponseDto(targetClub);
     }
 
     // 동호회 폐쇄
