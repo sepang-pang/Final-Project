@@ -79,7 +79,6 @@ function submit() {
     }).then(data => {
         alert("문의 저장 완료");
         back();
-        // window.location.href = main
     }).catch(error => {
         alert(error);
     });

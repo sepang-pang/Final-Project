@@ -52,7 +52,7 @@
     <!-- 버튼 -->
     <section class="btn-group">
         <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
-        <button class="btn btn-primary" id="btn-main" type="main">메인</button>
+        <button class="btn btn-primary" id="btn-create" type="create">문의하기</button>
     </section>
 </section>
 <!-- Footer Section -->
@@ -84,10 +84,10 @@
     }
 
     // 메인 버튼
-    var btnMain = document.getElementById('btn-main');
-    btnMain.addEventListener('click', main);
-    function main() {
-        window.location.href = "http://localhost:8081/main";
+    var btnCreate = document.getElementById('btn-create');
+    btnCreate.addEventListener('click', create);
+    function create() {
+        window.location.href = "http://localhost:8081/api/inquiry/create";
     }
 </script>
 </body>

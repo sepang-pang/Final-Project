@@ -69,7 +69,7 @@ header {
     text-align: center; /* 버튼 그룹을 오른쪽으로 정렬 */
 }
 /* 확인 버튼 스타일 */
-#btn-main {
+#btn-create {
     background-color: darkgray;
     color: #fff; /* 흰색 텍스트 */
     padding: 15px 25px;
@@ -92,7 +92,7 @@ header {
     position: relative;
 }
 /* 버튼 호버 효과 */
-#goBackButton:hover, #btn-main:hover {
+#goBackButton:hover, #btn-create:hover {
     background-color: black; /* 호버 시 색 변경 */
 }
 
