@@ -50,8 +50,10 @@ public class WebSecurityConfig{
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
                                 .requestMatchers("/api/**").permitAll()
+                                .requestMatchers("/images/**", "/js/**", "/webjars/**", "/css/**").permitAll()
                                 .anyRequest().permitAll()
                 );
+
 
 
         http.addFilterBefore(AuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
@@ -63,4 +65,6 @@ public class WebSecurityConfig{
 
         return http.build();
     }
+
+
 }

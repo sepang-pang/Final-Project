@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 50px;
+    height: 100vh;
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+.container {
+    width: 50%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+}
+
+.title-group h1 {
+    margin-right: 10px;
+}
+
+/* === inquiry-body === */
+.inquiry-body {
+    min-height: calc(100vh - 80px); /* 페이지 아래 여백을 고려하여 최소 높이 설정 */
+    padding-top: 40px; /* footer 아래 여백을 추가 */
+    display: flex; /* Flexbox를 사용하여 하위 요소를 가로로 배열합니다. */
+    flex-direction: column; /* 하위 요소를 세로로 배열합니다. */
+    align-items: center; /* 하위 요소를 수직 가운데로 정렬합니다. */
+}
+
+/* 문의 목록 테이블 스타일 */
+.all-inquiry {
+    width: 60%; /* 테이블의 가로 너비를 조절할 수 있습니다. */
+    margin: 0 auto; /* 가운데 정렬합니다. */
+    margin-right: 28%;
+    border-collapse: collapse; /* 테이블 셀의 경계를 합칩니다. */
+}
+
+.all-inquiry th, .all-inquiry td {
+    padding: 8px; /* 셀 내부 여백을 설정합니다. */
+    text-align: center; /* 셀 내용을 가운데 정렬합니다. */
+}
+
+/* 각 열의 가로 비율 조정 */
+.all-inquiry th:nth-child(1), .all-inquiry td:nth-child(1) {
+    width: 60%; /* 첫 번째 열(제목)의 가로 비율 조정 */
+}
+
+.all-inquiry th:nth-child(2), .all-inquiry td:nth-child(2) {
+    width: 20%; /* 두 번째 열(답변여부)의 가로 비율 조정 */
+}
+
+.all-inquiry th:nth-child(3), .all-inquiry td:nth-child(3) {
+    width: 20%; /* 세 번째 열(작성일)의 가로 비율 조정 */
+}
+
+/* 버튼 그룹 */
+.btn-group {
+    margin-top: 50px;
+    text-align: center; /* 버튼 그룹을 오른쪽으로 정렬 */
+}
+/* 확인 버튼 스타일 */
+#btn-create {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+    margin-left: 10px; /* 버튼 사이 간격 조정 */
+}
+/* 뒤로 버튼 스타일 */
+#goBackButton {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+}
+/* 버튼 호버 효과 */
+#goBackButton:hover, #btn-create:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}

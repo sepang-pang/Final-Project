@@ -1,5 +1,6 @@
 package com.team6.finalproject.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team6.finalproject.profile.entity.Profile;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,7 @@ public class User {
     private String birth;
     private int age;
 
+    @JsonIgnore
     @OneToOne
     private Profile profile;
 

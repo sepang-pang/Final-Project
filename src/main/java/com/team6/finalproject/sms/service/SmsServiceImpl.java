@@ -3,6 +3,7 @@ package com.team6.finalproject.sms.service;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.common.redis.RedisUtil;
 import com.team6.finalproject.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class SmsServiceImpl implements SmsService {
     private final DefaultMessageService messageService;
     private final UserService userService;
@@ -57,7 +59,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     @Transactional
-    public ResponseEntity<ApiResponseDto> checkSmsCertification(String phoneNumber, String key) {
+    public void checkSmsCertification(String phoneNumber, String key) {
         String redisKey = redisUtil.getSmsCertification(phoneNumber);
 
         if (!redisUtil.hasKey(phoneNumber)) { // 인증번호 유효성 검사
@@ -73,8 +75,6 @@ public class SmsServiceImpl implements SmsService {
         }
 
         redisUtil.markAsVerified(phoneNumber); // 인증 완료
-
-        return ResponseEntity.ok().body(new ApiResponseDto("인증 완료", 200));
     }
 
     public String createKey() { // 키 생성 함수

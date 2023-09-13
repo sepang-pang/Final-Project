@@ -1,11 +1,9 @@
 package com.team6.finalproject.security;
 
-import com.team6.finalproject.user.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -28,11 +25,18 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("authorizationFilter 필터");
         UserDetails user = (UserDetailsImpl) request.getSession().getAttribute("username");
-        if (user !=null) { // 조건 변경 해야함
+        String requestURI = request.getRequestURI();
+
+        if (isPermitUrl(requestURI) || isStaticResource(requestURI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if (user != null) { // 조건 변경 해야함
             try {
                 log.info(request.getRequestURI() + " 인증 정보 있음");
                 setAuthentication(user.getUsername());
-                filterChain.doFilter(request,response);
+                filterChain.doFilter(request, response);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
@@ -54,7 +58,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (user==null) {
+        if (user == null) {
             log.info("인증 정보가 없습니다. 로그인페이지로 이동합니다.");
             log.info(request.getRequestURI());
             response.sendRedirect("/login");
@@ -63,7 +67,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/signup", "/login", "/user/reissue","/aa","/kakao/callback", "/api/sms"};
+        String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
@@ -81,5 +85,11 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
+    private boolean isPermitUrl(String requestURI) {
+        return requestURI.endsWith("/api/**") || requestURI.endsWith("/login") || requestURI.endsWith("/signup") || requestURI.endsWith("/main");
+    }
 
+    private boolean isStaticResource(String requestURI) {
+        return requestURI.endsWith(".css") || requestURI.endsWith(".js") || requestURI.endsWith(".html");
+    }
 }

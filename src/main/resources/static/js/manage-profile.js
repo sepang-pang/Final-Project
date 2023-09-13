@@ -1,4 +1,4 @@
-let main = "http://localhost:8080/main"
+let main = "http://localhost:8081/main"
 
 function back() {
     window.location.href = main

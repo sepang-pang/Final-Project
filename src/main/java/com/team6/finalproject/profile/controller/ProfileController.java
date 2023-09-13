@@ -45,17 +45,24 @@ public class ProfileController {
         return "my-profile";
     }
 
+    @GetMapping("/profile/{targetId}") // 선택한 프로필 조회
+    public String getProfileById(@PathVariable Long targetId, Model model) throws NotExistResourceException {
+        ProfileResponseDto profileDto = profileService.getProfileById(targetId);
+        model.addAttribute("profileDto", profileDto);
+        return "profile";
+    }
+
+    @GetMapping("/profile/interests") // 관심사 조회
+    public String getInterests() {
+        return "manage-interests";
+
+    }
+
     @PostMapping("/profile") // 프로필 등록
     @ResponseBody
     public ProfileResponseDto createProfile(@RequestPart ProfileRequestDto requestDto, @RequestPart MultipartFile file,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return profileService.createProfile(requestDto, file, userDetails.getUser());
-    }
-
-    @GetMapping("/profile/{profileId}") // 선택한 프로필 조회
-    @ResponseBody
-    public ProfileResponseDto getProfileById(@PathVariable Long profileId) throws NotExistResourceException {
-        return profileService.getProfileById(profileId);
     }
 
     @PatchMapping("/profile") // 프로필 수정
@@ -65,10 +72,10 @@ public class ProfileController {
         return profileService.updateProfile(requestDto, file, userDetails.getUser());
     }
 
-    @PostMapping("/profile/interests") // 관심사 등록
+    @PostMapping("/profile/interests") // 관심사 등록/삭제/재등록
     @ResponseBody
-    public ProfileResponseDto addInterests(@RequestBody InterestRequestDto requestDto,
-                                           @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+    public ProfileResponseDto inputInterests(@RequestBody InterestRequestDto requestDto,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return profileInterestService.inputInterests(requestDto, userDetails.getUser());
     }
 

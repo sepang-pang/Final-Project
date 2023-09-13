@@ -1,7 +1,6 @@
 package com.team6.finalproject.user.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.team6.finalproject.user.entity.QUser;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
