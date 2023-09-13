@@ -1,0 +1,230 @@
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 50px;
+    height: 100vh;
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+.container {
+    width: 50%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+}
+
+.title-group h1 {
+    margin-right: 10px;
+}
+
+/* 신고하기 버튼 스타일 */
+#btn-delete {
+    background-color: red;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+    margin-left: 10px; /* 버튼 사이 간격 조정 */
+}
+
+#btn-delete:hover {
+    background-color: darkred; /* 호버 시 색 변경 */
+}
+
+/* 삭제 확인 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* === inquiry-body === */
+.inquiry-body {
+    min-height: calc(100vh - 80px); /* 페이지 아래 여백을 고려하여 최소 높이 설정 */
+    padding-bottom: 80px; /* footer 아래 여백을 추가 */
+}
+
+/* === 문의 유형 스타일 === */
+.inquiry-type {
+    text-align: center; /* 가운데 정렬 */
+    margin: 40px auto; /* 가운데 정렬 및 상하 여백 설정 */
+}
+
+.form-label {
+    display: block; /* 라벨을 블록 요소로 설정하여 중앙 정렬 */
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.form-control {
+    text-align: center;
+    width: 200px; /* 필요한 너비 조정 */
+}
+
+/* === 제목 === */
+.inquiry-title {
+    width: 50%;
+    margin: 20px auto; /* 중앙 정렬 및 상하 여백 설정 */
+    font-size: 1em; /* 글자 크기 설정, 필요에 따라 조절 가능 */
+    line-height: 1.6; /* 줄 간격 설정 */
+    text-align: justify; /* 양쪽 정렬 설정, 원하시면 변경 가능 */
+    white-space: pre-line; /* 줄바꿈을 위한 white-space 설정 */
+}
+
+#title {
+    width: 90%;
+    height: 30px;
+}
+
+/* === 문의 내용 === */
+.description, .inquiry-answer {
+    width: 50%;
+    margin: 20px auto; /* 중앙 정렬 및 상하 여백 설정 */
+    font-size: 1em; /* 글자 크기 설정, 필요에 따라 조절 가능 */
+    line-height: 1.6; /* 줄 간격 설정 */
+    text-align: justify; /* 양쪽 정렬 설정, 원하시면 변경 가능 */
+    white-space: normal; /* 기본 줄바꿈 */
+}
+
+#description, #answer {
+    width: 90%;
+    height: 250px;
+}
+
+/* 파일 미리보기 스타일 */
+.preview-group {
+    text-align: center; /* 가운데 정렬 */
+    margin: 60px auto; /* 가운데 정렬 및 상하 여백 설정 */
+}
+
+/* 파일 선택 버튼 숨김 */
+input[type="file"] {
+    display: none;
+}
+
+/* 파일 선택 버튼 스타일 */
+#file-label {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    text-align: center;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼 그룹 */
+.btn-group {
+    margin-top: 50px;
+    text-align: center; /* 버튼 그룹을 오른쪽으로 정렬 */
+}
+
+/* 확인 버튼 스타일 */
+#btn-update {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+    margin-left: 10px; /* 버튼 사이 간격 조정 */
+}
+
+/* 뒤로 버튼 스타일 */
+#goBackButton {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+}
+
+/* 버튼 호버 효과 */
+#goBackButton:hover, #btn-update:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}

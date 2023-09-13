@@ -18,6 +18,7 @@ fileInput.addEventListener('change', function () {
     }
 });
 
+// 뒤로가기 버튼 클릭
 function back() {
     window.history.back();
 }
@@ -77,7 +78,8 @@ function submit() {
         return response.json();
     }).then(data => {
         alert("문의 저장 완료");
-        window.location.href = main
+        back();
+        // window.location.href = main
     }).catch(error => {
         alert(error);
     });

@@ -12,7 +12,7 @@ public class InquiryResponseDto {
     private Long userId;
     private String username;
     private String title;
-    private InquiryTypeEnum inquiryType;
+    private String inquiryType;
     private String description;
     private String media;
     private String answer;
@@ -24,11 +24,19 @@ public class InquiryResponseDto {
         this.userId = inquiry.getUser().getId();
         this.username = inquiry.getUser().getUsername();
         this.title = inquiry.getTitle();
-        this.inquiryType = inquiry.getInquiryType();
+        this.inquiryType = getInquiryTypeString(inquiry.getInquiryType());
         this.description = inquiry.getDescription();
         this.media = inquiry.getMedia();
         this.answer = inquiry.getAnswer();
         this.createdAt = inquiry.getCreatedAt();
         this.modifiedAt = inquiry.getModifiedAt();
+    }
+
+    private String getInquiryTypeString(InquiryTypeEnum inquiryTypeEnum) {
+        if (inquiryTypeEnum == InquiryTypeEnum.CUSTOMER_SUPPORT) {
+            return "고객지원";
+        } else {
+            return "기능제안";
+        }
     }
 }
