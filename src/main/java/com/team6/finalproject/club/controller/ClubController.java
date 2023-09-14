@@ -51,23 +51,26 @@ public class ClubController {
 
     @GetMapping("/my-club") // 개설한 동호회 목록 조회
     public String myClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<ClubResponseDto> myClubs = clubService.myClubs(userDetails.getUser());
-        model.addAttribute("myClubs", myClubs);
+        List<ClubResponseDto> clubs = clubService.myClubs(userDetails.getUser());
+        model.addAttribute("clubs", clubs);
+        model.addAttribute("pageTitle", "개설한 동호회");
         return "my-club";
     }
 
     @GetMapping("/my-join-club") // 가입한 동호회 목록 조회
     public String myJoinClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<ClubResponseDto> joinClubs = clubService.myJoinClubs(userDetails.getUser());
-        model.addAttribute("joinClubs", joinClubs);
-        return "my-join-club";
+        List<ClubResponseDto> clubs = clubService.myJoinClubs(userDetails.getUser());
+        model.addAttribute("clubs", clubs);
+        model.addAttribute("pageTitle", "가입한 동호회");
+        return "my-club";
     }
 
     @GetMapping("/my-like-club") // 찜한 동호회 목록 조회
     public String myLikeClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<ClubResponseDto> likeClubs = clubService.myLikeClubs(userDetails.getUser());
-        model.addAttribute("likeClubs", likeClubs);
-        return "my-like-club";
+        List<ClubResponseDto> clubs = clubService.myLikeClubs(userDetails.getUser());
+        model.addAttribute("clubs", clubs);
+        model.addAttribute("pageTitle", "찜한 동호회");
+        return "my-club";
     }
 
     @PostMapping("/clubs") // 동호회 개설
