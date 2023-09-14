@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ClubResponseDto {
+    private Long clubId;
     private String username;
     private String nickName;
     private String name;
@@ -22,26 +23,8 @@ public class ClubResponseDto {
     private int minAge;
     private int maxAge;
 
-
-
-    public ClubResponseDto(User user, Club club, InterestMajorDto interestMajorDto, InterestMinorDto interestMinorDto) {
-        this.username = user.getUsername();
-        this.nickName = club.getNickName();
-        this.name = club.getName();
-        this.description = club.getDescription();
-//        this.media = club.getMedia();
-        this.trialAvailable = club.isTrialAvailable();
-        this.activityType = club.getActivityType().getActivity();
-        this.joinType = club.getJoinType().getJoin();
-        this.locate = club.getLocate();
-        this.maxMember = club.getMaxMember();
-        this.minAge = club.getMinAge();
-        this.maxAge = club.getMaxAge();
-        this.major = interestMajorDto.getName();
-        this.minor = interestMinorDto.getName();
-    }
-
-    public ClubResponseDto(Club club, InterestMajorDto interestMajorDto, InterestMinorDto interestMinorDto) {
+    public ClubResponseDto(Club club) {
+        this.clubId = club.getId();
         this.username = club.getUsername();
         this.nickName = club.getNickName();
         this.name = club.getName();
@@ -54,7 +37,7 @@ public class ClubResponseDto {
         this.maxMember = club.getMaxMember();
         this.minAge = club.getMinAge();
         this.maxAge = club.getMaxAge();
-        this.major = interestMajorDto.getName();
-        this.minor = interestMinorDto.getName();
+        this.major = club.getMinor().getInterestMajor().getMajorName();
+        this.minor = club.getMinor().getMinorName();
     }
 }

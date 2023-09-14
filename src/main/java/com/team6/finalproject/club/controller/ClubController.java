@@ -50,6 +50,13 @@ public class ClubController {
         return "club-detail"; // clubPage.html 혹은 clubPage.jsp 등의 뷰 이름
     }
 
+    @GetMapping("/my-club") // 개설한 동호회 목록 조회
+    public String myClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        List<ClubResponseDto> myClubs = clubService.myClubs(userDetails.getUser());
+        model.addAttribute("myClubs", myClubs);
+        return "my-club";
+    }
+
     @PostMapping("/clubs") // 동호회 개설
     public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
         return clubService.createClub(clubRequestDto, userDetails.getUser());
@@ -115,7 +122,7 @@ public class ClubController {
         return clubService.readSelectInterestMinor(minorId);
     }
 
-    @GetMapping("/clubs/user-distance")
+    @GetMapping("/clubs/user-distance") // 동호회 거리순 조회
     public List<ReadInterestMajorDto> clubsByUserDistance(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return clubService.clubsByUserDistance(userDetails.getUser());
     }

@@ -140,4 +140,14 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                 )
                 .fetch();
     }
+
+    // 내가 개설한 동호회
+    @Override
+    public List<Club> findMyClubs(User user) {
+        return jpaQueryFactory.selectFrom(club)
+                .where(club.isDeleted.eq(false)
+                        .and(club.username.eq(user.getUsername())))
+                .orderBy(club.createdAt.desc())
+                .fetch();
+    }
 }
