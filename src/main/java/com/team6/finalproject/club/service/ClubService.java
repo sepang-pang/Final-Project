@@ -71,7 +71,11 @@ public interface ClubService {
     public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user);
     public List<ClubAppliesResponseDto> readClubApplies(Long clubId, User user) throws NotExistResourceException;
 
-    // 내가 개설한 동호회 조회
+    // 개설한 동호회 목록 조회
     List<ClubResponseDto> myClubs(User user);
+    // 가입한 동호회 목록 조회
+    List<ClubResponseDto> myJoinClubs(User user);
+    // 찜한 동호회 목록 조회
+    List<ClubResponseDto> myLikeClubs(User user);
 }
 

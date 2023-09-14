@@ -1,5 +1,3 @@
-let main = "http://localhost:8081/main"
-
 var fileInput = document.getElementById('file');
 // 파일 미리보기 엘리먼트
 var imagePreview = document.getElementById('image-preview');

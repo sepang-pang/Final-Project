@@ -4,7 +4,9 @@ import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
 import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
-import com.team6.finalproject.club.dto.*;
+import com.team6.finalproject.club.dto.ClubRequestDto;
+import com.team6.finalproject.club.dto.ClubResponseDto;
+import com.team6.finalproject.club.dto.ReadInterestMajorDto;
 import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
@@ -221,10 +223,26 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    @Transactional(readOnly = true) // 내가 개설한 동호회 조회
+    @Transactional(readOnly = true) // 개설한 동호회 목록 조회
     public List<ClubResponseDto> myClubs(User user) {
         return clubRepository.findMyClubs(user).stream().map(ClubResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true) // 가입한 동호회 목록 조회
+    public List<ClubResponseDto> myJoinClubs(User user) {
+        List<Member> memberList = memberService.findJoinClubs(user); // 멤버로 참여중인 리스트
+
+        List<Club> joinClubs = memberList.stream().map(Member::getClub).collect(Collectors.toList());
+        return joinClubs.stream().map(ClubResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true) // 찜한 동호회 목록 조회
+    public List<ClubResponseDto> myLikeClubs(User user) {
+        return clubRepository.findLikeClubs(user.getProfile()).stream()
+                .map(ClubResponseDto::new).collect(Collectors.toList());
     }
 
     // 동호회 개설
