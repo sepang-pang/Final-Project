@@ -2,6 +2,7 @@ package com.team6.finalproject.club.member.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.member.entity.Member;
+import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -48,5 +49,14 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
                         .where(member.club.id.eq(clubId)
                                 .and(member.isDeleted.eq(false)))
                         .fetch();
+    }
+
+    @Override
+    public List<Member> findJoinClubs(User user) {
+        return jpaQueryFactory.selectFrom(member)
+                .where(member.user.id.eq(user.getId())
+                        .and(member.club.isDeleted.eq(false))
+                        .and(member.isDeleted.eq(false)))
+                .fetch();
     }
 }

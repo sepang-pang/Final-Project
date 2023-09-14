@@ -63,6 +63,13 @@ public class ClubController {
         return "my-join-club";
     }
 
+    @GetMapping("/my-like-club") // 찜한 동호회 목록 조회
+    public String myLikeClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<ClubResponseDto> likeClubs = clubService.myLikeClubs(userDetails.getUser());
+        model.addAttribute("likeClubs", likeClubs);
+        return "my-like-club";
+    }
+
     @PostMapping("/clubs") // 동호회 개설
     public ClubResponseDto createClub(@RequestBody ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
         return clubService.createClub(clubRequestDto, userDetails.getUser());

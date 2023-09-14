@@ -2,6 +2,7 @@ package com.team6.finalproject.club.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.entity.Club;
+import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.profileinterest.entity.ProfileInterest;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -148,11 +149,11 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                 .fetch();
     }
 
+    // 찜한 동호회
     @Override
-    public List<Club> findJoinClubs(User user) {
+    public List<Club> findLikeClubs(Profile profile) {
         return jpaQueryFactory.selectFrom(club)
-                .innerJoin(club.members, member)
-                .where(member.user.id.eq(user.getId())
+                .where(club.likeClubs.any().profile.eq(profile) // 찜 동호회 목록에 해당 프로필이 있는지 확인
                         .and(club.isDeleted.eq(false)))
                 .fetch();
     }
