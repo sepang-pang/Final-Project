@@ -89,9 +89,9 @@ public class Meeting extends Timestamped {
             this.description = meetingRequestDto.getDescription();
         }
 
-        if (media != null) {
-            this.media = media;
-        }
+
+        this.media = media;
+
 
         if (meetingRequestDto.getMaxMember() > 0) {
             this.maxMember = meetingRequestDto.getMaxMember();

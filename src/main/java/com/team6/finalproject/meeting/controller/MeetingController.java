@@ -86,7 +86,7 @@ public class MeetingController {
     // 모임 전체 업데이트.
     @PutMapping("/{meetingId}")
     @ResponseBody
-    public void updateMeeting(@PathVariable Long meetingId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    public void updateMeeting(@PathVariable Long meetingId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart(value = "file", required = false) MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         meetingService.updateMeeting(meetingId, meetingRequestDto, file,userDetails.getUser());
     }
 

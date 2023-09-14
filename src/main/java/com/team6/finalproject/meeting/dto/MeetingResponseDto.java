@@ -32,6 +32,9 @@ public class MeetingResponseDto {
     @JsonSerialize(using = DateSerializer.class)
     private LocalDateTime date;
 
+    @JsonSerialize(using = DateSerializerCurrent.class)
+    private LocalDateTime currentDate;
+
     @JsonSerialize(using = DateDetailSerializer.class)
     private LocalDateTime dateDetail;
 
@@ -40,6 +43,7 @@ public class MeetingResponseDto {
         this.description = meeting.getDescription();
         this.media = meeting.getMedia();
         this.maxMember = meeting.getMaxMember();
+        this.currentDate = meeting.getDate();
         this.date = meeting.getDate();
         this.dateDetail = meeting.getDate();
         this.place = meeting.getPlace();
@@ -56,6 +60,13 @@ public class MeetingResponseDto {
         @Override
         public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             gen.writeString(value.format(DateConstants.RESPONSE_FORMATTER));
+        }
+    }
+
+    public static class DateSerializerCurrent extends JsonSerializer<LocalDateTime> {
+        @Override
+        public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            gen.writeString(value.format(DateConstants.REQUEST_FORMATTER));
         }
     }
 
