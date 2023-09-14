@@ -31,12 +31,21 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @GetMapping("/meeting-detail/{meetingId}")
-    public String clubPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, Model model) throws NotExistResourceException {
+    public String clubPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, Model model) {
         model.addAttribute("meetingId", meetingId);
         model.addAttribute("username", userDetails.getUsername()); // 현재 인가된 사용자의 이름
         model.addAttribute("meetingUsername", meetingService.findMeeting(meetingId).getUser().getUsername()); // 모임 작성자의 이름
 
         return "meeting-detail";
+    }
+
+    @GetMapping("/meeting-update/{meetingId}")
+    public String updateMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, Model model) {
+        model.addAttribute("meetingId", meetingId);
+        model.addAttribute("username", userDetails.getUsername()); // 현재 인가된 사용자의 이름
+        model.addAttribute("meetingUsername", meetingService.findMeeting(meetingId).getUser().getUsername()); // 모임 작성자의 이름
+
+        return "meeting-update";
     }
 
     // 모임 생성.
@@ -76,6 +85,7 @@ public class MeetingController {
 
     // 모임 전체 업데이트.
     @PutMapping("/{meetingId}")
+    @ResponseBody
     public void updateMeeting(@PathVariable Long meetingId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         meetingService.updateMeeting(meetingId, meetingRequestDto, file,userDetails.getUser());
     }

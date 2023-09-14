@@ -81,12 +81,29 @@ public class Meeting extends Timestamped {
     }
 
     public void update(MeetingRequestDto meetingRequestDto, String media) {
-        this.title = meetingRequestDto.getTitle();
-        this.description = meetingRequestDto.getDescription();
-        this.media = media;
-        this.maxMember = meetingRequestDto.getMaxMember();
-        this.date = meetingRequestDto.getDate();
-        this.place = meetingRequestDto.getPlace();
+        if (meetingRequestDto.getTitle() != null) {
+            this.title = meetingRequestDto.getTitle();
+        }
+
+        if (meetingRequestDto.getDescription() != null) {
+            this.description = meetingRequestDto.getDescription();
+        }
+
+        if (media != null) {
+            this.media = media;
+        }
+
+        if (meetingRequestDto.getMaxMember() > 0) {
+            this.maxMember = meetingRequestDto.getMaxMember();
+        }
+
+        if (meetingRequestDto.getDate() != null) {
+            this.date = meetingRequestDto.getDate();
+        }
+
+        if (meetingRequestDto.getPlace() != null) {
+            this.place = meetingRequestDto.getPlace();
+        }
     }
 
     public void updateSchedule(MeetingScheduleRequestDto meetingScheduleRequestDto) {
