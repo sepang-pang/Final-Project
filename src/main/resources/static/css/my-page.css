@@ -41,8 +41,9 @@ header {
 .btn-join-club,
 .btn-my-club,
 .btn-like-club,
-.btn-update-password,
 .btn-inquiry,
+.btn-update-password,
+.btn-withdrawal,
 #goBackButton,
 #btn-main {
     display: inline-block; /* 인라인 블록 요소로 변경 */
@@ -62,8 +63,9 @@ header {
 .btn-join-club,
 .btn-my-club,
 .btn-like-club,
+.btn-inquiry,
 .btn-update-password,
-.btn-inquiry {
+.btn-withdrawal {
     background-color: #ff9f43;
 }
 /* 선택 버튼 호버 효과 */
@@ -72,8 +74,9 @@ header {
 .btn-join-club:hover,
 .btn-my-club:hover,
 .btn-like-club:hover,
+.btn-inquiry:hover,
 .btn-update-password:hover,
-.btn-inquiry:hover {
+.btn-withdrawal:hover {
     background-color: #ffd180;
 }
 
@@ -82,17 +85,14 @@ header {
 #btn-main:hover {
     background-color: black; /* 호버 시 색 변경 */
 }
-
 /* 메인 버튼 스타일 */
 #btn-main {
     background-color: darkgray;
 }
-
 /* 뒤로 버튼 스타일 */
 #goBackButton {
     background-color: darkgray;
 }
-
 /* 버튼 호버 효과 */
 #goBackButton:hover, #btn-main:hover {
     background-color: black; /* 호버 시 색 변경 */
