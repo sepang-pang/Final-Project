@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 50px;
+    height: 100vh;
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+.container {
+    width: 50%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+}
+
+.title-group h1 {
+    margin-right: 10px;
+}
+
+/* 버튼 그룹 */
+.btn-group {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    text-align: center; /* 버튼 그룹을 오른쪽으로 정렬 */
+}
+
+/* 버튼 스타일 */
+.btn-profile,
+.btn-join-club,
+.btn-my-club,
+.btn-like-club,
+.btn-update-password,
+.btn-inquiry,
+#goBackButton,
+#btn-main {
+    display: inline-block; /* 인라인 블록 요소로 변경 */
+    padding: 15px 25px;
+    color: #fff; /* 흰색 텍스트 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+    margin: 15px; /* 간격 조정 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+/* 선택 버튼 컬러 지정 */
+.btn-profile,
+.btn-join-club,
+.btn-my-club,
+.btn-like-club,
+.btn-update-password,
+.btn-inquiry {
+    background-color: #ff9f43;
+}
+
+/* 버튼 호버 효과 */
+.btn-profile:hover,
+.btn-join-club:hover,
+.btn-my-club:hover,
+.btn-like-club:hover,
+.btn-update-password:hover,
+.btn-inquiry:hover,
+#goBackButton:hover,
+#btn-main:hover{
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+/* 메인 버튼 스타일 */
+#btn-main {
+    background-color: darkgray;
+}
+
+/* 뒤로 버튼 스타일 */
+#goBackButton {
+    background-color: darkgray;
+}
+
+/* 버튼 호버 효과 */
+#goBackButton:hover, #btn-main:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}

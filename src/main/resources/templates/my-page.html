@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title> 마이 페이지 </title>
+
+    <!--Viewport-->
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0"
+          name="viewport">
+
+    <!--(IE10)-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <!-- Normalize -->
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' rel="stylesheet">
+
+    <!--load CSS-->
+    <link href="/css/my-page.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <div class="title-group">
+            <h1> 마이 페이지 </h1>
+        </div>
+    </header>
+</div>
+<section class="btn-group">
+    <section>
+        <a class="btn-profile" href='/api/my-profile'>
+            <sapn class="my-profile" type="text">내 프로필</sapn>
+        </a>
+    </section>
+    <section>
+        <a class="btn-join-club" href='/api/my-join-club'>
+            <sapn class="join-club" type="text">가입한 동호회</sapn>
+        </a>
+    </section>
+    <section>
+        <a class="btn-my-club" href='/api/my-club'>
+            <sapn class="my-club" type="text">개설한 동호회</sapn>
+        </a>
+    </section>
+    <section>
+        <a class="btn-like-club" href='/api/my-like-club'>
+            <sapn class="my-like-club" type="text">찜한 동호회</sapn>
+        </a>
+    </section>
+    <section>
+        <a class="btn-update-password" href='/api/update-password'>
+            <sapn class="update-password" type="text">비밀번호 변경</sapn>
+        </a>
+    </section>
+    <section>
+        <a class="btn-inquiry" href='/api/all-inquiry'>
+            <sapn class="all-inquiry" type="text">1:1문의</sapn>
+        </a>
+    </section>
+    <!-- 버튼 -->
+    <section class="btn-group">
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
+        <button class="btn btn-primary" id="btn-main" type="button">메인</button>
+    </section>
+</section>
+<!-- Footer Section -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
+<!--load JS-->
+<script src="/js/my-page.js"></script>
+</body>
+</html>

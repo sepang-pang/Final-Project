@@ -1,5 +1,5 @@
 function back() {
-    window.location.href = "/main"
+    window.history.back()
 }
 
 var btnUpdate = document.getElementById('btn-update');
