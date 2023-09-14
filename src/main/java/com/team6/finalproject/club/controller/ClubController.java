@@ -50,9 +50,12 @@ public class ClubController {
         return "club-detail"; // clubPage.html 혹은 clubPage.jsp 등의 뷰 이름
     }
 
+
     @PostMapping("/clubs") // 동호회 개설
-    public ClubResponseDto createClub(@RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
-        return clubService.createClub(clubRequestDto, userDetails.getUser());
+    @ResponseBody
+    public ResponseEntity createClub(@RequestPart ClubRequestDto clubRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+        ClubResponseDto clubResponseDto = clubService.createClub(clubRequestDto, file, userDetails.getUser());
+         return ResponseEntity.ok().body(clubResponseDto);
     }
 
     @PutMapping("/clubs/{clubId}") // 동호회 수정
@@ -60,6 +63,7 @@ public class ClubController {
         return clubService.updateClub(clubId, clubRequestDto, userDetails.getUser(), multipartFile);
     }
 
+//    @ResponseBody
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
     public ResponseEntity<ApiResponseDto> deleteClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {
         return clubService.deleteClub(clubId, userDetails.getUser());

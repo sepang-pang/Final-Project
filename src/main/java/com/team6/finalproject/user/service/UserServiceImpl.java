@@ -5,6 +5,7 @@ import com.team6.finalproject.common.redis.RedisUtil;
 import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.user.email.EmailAuth;
 import com.team6.finalproject.user.entity.User;
+import com.team6.finalproject.user.entity.UserRoleEnum;
 import com.team6.finalproject.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,11 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("중복된 이름입니다.");
         }
 
-        if(!redisUtil.isVerified(signupRequestDto.getPhoneNumber())){
-            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
-        }
+//        if(!redisUtil.isVerified(signupRequestDto.getPhoneNumber())){
+//            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+//        }
+
+        UserRoleEnum role = UserRoleEnum.USER;
 
         User user = User.builder()
                 .username(signupRequestDto.getUsername())
@@ -41,7 +44,7 @@ public class UserServiceImpl implements UserService {
                 .email(signupRequestDto.getEmail())
                 .birth(signupRequestDto.getBirth())
                 .age(signupRequestDto.getAge())
-                .role(signupRequestDto.getRole())
+                .role(role)
                 .build();
 
         userRepository.save(user);

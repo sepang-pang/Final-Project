@@ -25,7 +25,7 @@ public class User {
     private boolean isDeleted;
     private boolean isBlock;
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum role;
+    private  UserRoleEnum role;
     private Long oAuth_id;
     private String birth;
     private int age;

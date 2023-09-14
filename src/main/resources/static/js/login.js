@@ -1,5 +1,4 @@
 function login() {
-    alert("버튼 클릭")
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 

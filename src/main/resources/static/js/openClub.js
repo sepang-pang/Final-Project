@@ -28,15 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// 다음 버튼을 클릭 할 때 컨테이너 전환 1 -> 2
-const nextButton1 = document.getElementById('next-btn1');
-const container1 = document.getElementById('container1');
-const container2 = document.getElementById('container2');
-nextButton1.addEventListener('click', function () {
-    container1.style.display = 'none';
-    container2.style.display = 'block';
-});
-
 // ************** container2 ************** //
 const btnTopic = document.querySelectorAll('.topic-toggle button');
 const btnSubtopics = document.querySelectorAll('.subtopics button');
@@ -77,29 +68,6 @@ btnTopic.forEach((button, index) => {
     });
 });
 
-// 뒤로가기 버튼을 클릭 할 때 컨테이너 전환 2 -> 1
-const goBackButton1 = document.getElementById('goBackButton1');
-goBackButton1.addEventListener('click', function () {
-    container1.style.display = 'block';
-    container2.style.display = 'none';
-});
-
-// 다음 버튼을 클릭 할 때 컨테이너 전환 2 -> 3
-const nextButton2 = document.getElementById('next-btn2');
-const container3 = document.getElementById('container3');
-nextButton2.addEventListener('click', function () {
-    container2.style.display = 'none';
-    container3.style.display = 'block';
-});
-
-// ************** container3 ************** //
-// 뒤로가기 버튼을 클릭 할 때 컨테이너 전환 2 -> 1
-const goBackButton2 = document.getElementById('goBackButton2');
-goBackButton2.addEventListener('click', function () {
-    container2.style.display = 'block';
-    container3.style.display = 'none';
-});
-
 // ************** 연결 ************** //
 
 // 위치 검색
@@ -133,12 +101,12 @@ function submit(){
     let isOnline = document.getElementById('isOnline').value;
     let openJoinType = document.getElementById('openJoinType').value;
     var activeButton2 = document.querySelector('.subtopic-button.active-button');
-    var minorName = activeButton2.getAttribute('data-topic');
+    var minorId = Number(activeButton2.getAttribute('data-topic'));
     let description = document.getElementById('description').value;
     let file = document.getElementById('image').files[0]; // 선택한 파일 가져오기
     let clubDto = {
         name: clubname,
-        minorId: 1,
+        minorId: minorId,
         description: description,
         trialAvailable: true,
         isOnline: isOnline,
@@ -159,12 +127,8 @@ function submit(){
     fetch('/api/clubs', {
         method: 'POST',
         body: formData
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('네트워크 오류');
-        }
-        return response.json();
     }).then(data => {
+        console.log(data);
         alert("동호회가 개설되었습니다.");
     }).catch(error => {
         alert(error);
