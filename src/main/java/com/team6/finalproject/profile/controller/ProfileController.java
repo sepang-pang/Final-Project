@@ -55,6 +55,7 @@ public class ProfileController {
     @GetMapping("/profile/interests") // 관심사 조회
     public String getInterests() {
         return "manage-interests";
+
     }
 
     @PostMapping("/profile") // 프로필 등록

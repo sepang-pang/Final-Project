@@ -21,7 +21,7 @@
 <body>
 <div class="container">
     <header>
-        <img alt="동호회 이미지" class="club-image" src="/meets_logo.png">
+        <img alt="동호회 이미지" class="club-image" src="/images/meets_logo.png">
         <h1>내 프로필</h1>
     </header>
 </div>
@@ -30,7 +30,7 @@
     <div class="image-and-details">
         <!-- 프로필 이미지 -->
         <div class="profile-image">
-            <img alt="프로필 이미지" id="profile-image" name="profileImage" src="/meets_logo.png"
+            <img alt="프로필 이미지" id="profile-image" name="profileImage" src="/images/meets_logo.png"
                  th:src="${profileDto.getProfileImage()}">
         </div>
         <!-- 닉네임, 소개글, 위치 -->
@@ -61,7 +61,7 @@
 
     <!-- 버튼 -->
     <div class="btn-group">
-        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">메인으로</button>
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
         <button class="btn btn-primary" id="btn-update" type="update">수정하기</button>
     </div>
 </div>

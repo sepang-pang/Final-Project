@@ -6,7 +6,6 @@ function login() {
         username: username,
         password: password
     };
-
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "/api/login", true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

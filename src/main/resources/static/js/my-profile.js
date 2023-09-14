@@ -1,13 +1,10 @@
-let main = "http://localhost:8081/main"
-let updateURL = "http://localhost:8081/api/profile/update"
-
 function back() {
-    window.location.href = main
+    window.history.back()
 }
 
 var btnUpdate = document.getElementById('btn-update');
 btnUpdate.addEventListener('click', update);
 
 function update() {
-    window.location.href = updateURL
+    window.location.href = "/api/profile/update"
 }

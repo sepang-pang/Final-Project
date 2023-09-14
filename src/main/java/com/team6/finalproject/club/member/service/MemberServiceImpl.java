@@ -58,7 +58,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findMember(Long clubId, Long userId) throws NotExistResourceException {
         return memberRepository.findActiveUserAndClub(clubId, userId)
-                .orElseThrow(()-> new NotExistResourceException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new NotExistResourceException("존재하지 않는 회원입니다."));
+    }
+
+    @Override // 가입한 동호회 조회
+    public List<Member> findJoinClubs(User user) {
+        return memberRepository.findJoinClubs(user);
     }
 
     // 멤버 조회

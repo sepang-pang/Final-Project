@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class UpdatePasswordDto {
+    private String currentPassword;
     private String newPassword;
-    private String checkNewPassword;
+    private String checkPassword;
 }

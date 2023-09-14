@@ -1,5 +1,3 @@
-let main = "http://localhost:8081/main"
-
 var fileInput = document.getElementById('file');
 // 파일 미리보기 엘리먼트
 var imagePreview = document.getElementById('image-preview');
@@ -18,6 +16,7 @@ fileInput.addEventListener('change', function () {
     }
 });
 
+// 뒤로가기 버튼 클릭
 function back() {
     window.history.back();
 }
@@ -77,7 +76,7 @@ function submit() {
         return response.json();
     }).then(data => {
         alert("문의 저장 완료");
-        window.location.href = main
+        back();
     }).catch(error => {
         alert(error);
     });

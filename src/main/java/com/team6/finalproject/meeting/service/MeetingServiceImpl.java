@@ -13,7 +13,6 @@ import com.team6.finalproject.meeting.dto.MeetingScheduleRequestDto;
 import com.team6.finalproject.meeting.entity.Meeting;
 import com.team6.finalproject.meeting.repository.MeetingRepository;
 import com.team6.finalproject.meeting_user.entity.MeetingUser;
-import com.team6.finalproject.meeting_user.repository.MeetingUserRepository;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.RejectedExecutionException;
 
 @Service
@@ -33,28 +31,34 @@ import java.util.concurrent.RejectedExecutionException;
 public class MeetingServiceImpl implements MeetingService {
 
     private final MeetingRepository meetingRepository;
-    private final MeetingUserRepository meetingUserRepository;
     private final ClubService clubService;
     private final MemberRepository memberRepository;
     private final FileUploader fileUploader;
 
+
     @Override
     @Transactional // 모임 생성
-    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) throws NotExistResourceException {
+    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws NotExistResourceException, IOException {
 
         Club club = clubService.findClub(clubId);
-//        String media = fileUploader.upload(file);
+
+        String media = fileUploader.upload(file);
 
         log.info("1");
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(club.getId(), user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(user.getId(), club.getId()).isEmpty()) {
             throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
 
         log.info("2");
 
+        // meetingRequestDto 필드값 중 하나라도 null 값이면 예외 발생
+        if (meetingRequestDto.getTitle() == null || meetingRequestDto.getDescription() == null || meetingRequestDto.getMaxMember() == 0 || meetingRequestDto.getDate() == null || meetingRequestDto.getPlace() == null) {
+            throw new IllegalArgumentException("필수 입력값이 누락되었습니다.");
+        }
+
         // 모임 생성
-        Meeting meeting = new Meeting(meetingRequestDto, club, user);
+        Meeting meeting = new Meeting(meetingRequestDto, media, club, user);
 
         log.info("3");
         // 모임 생성자를 모임 참여자로 추가
@@ -72,13 +76,13 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     @Transactional // 모임 완료
     public ResponseEntity<ApiResponseDto> completedMeeting(Long meetingId, User user) {
-
         Meeting meeting = findMeeting(meetingId);
 
         // 작성자만 수정 가능하게 예외처리.
         if (!meeting.getUser().getId().equals(user.getId())) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
+
 
         // 이미 완료된 모임인지 확인
         if (meeting.getIsCompleted()) {
@@ -102,24 +106,42 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new NotExistResourceException("존재하지 않는 모임입니다."));
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(user.getId(), meeting.getClub().getId()).isEmpty()) {
             throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
 
-        return new MeetingResponseDto(findMeeting(meetingId));
+        int userCount = meetingRepository.countByMeetingUser(meetingId).size();
+
+        Long commentCount = meeting.getMeetingComments().stream()
+                .filter(comment -> !comment.isDeleted())
+                .count();
+
+        return new MeetingResponseDto(findMeeting(meetingId), userCount, commentCount);
     }
 
     @Override
-    @Transactional(readOnly = true) // 완료된 모임 조회
+    @Transactional(readOnly = true)
     public List<MeetingResponseDto> getCompletedMeeting(Long clubId) {
         List<Meeting> meetings = meetingRepository.findByCompletedMeeting(clubId);
 
         // 존재 하지 않을시 예외 발생
         if (meetings.isEmpty()) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("존재하지 않는 모임입니다.");
         }
 
-        return meetings.stream().map(MeetingResponseDto::new).toList();
+
+        return meetings.stream()
+                .map(meeting -> {
+                    int userCount = meetingRepository.countByMeetingUser(meeting.getId()).size();
+                    Long commentCount = meeting.getMeetingComments().stream()
+                            .filter(comment -> !comment.isDeleted())
+                            .count();
+                    return new MeetingResponseDto(meeting, userCount, commentCount); // MeetingResponseDto의 생성자를 이와 같이 수정해야 합니다.
+                })
+                .toList();
+
+
+
     }
 
     @Override
@@ -127,54 +149,74 @@ public class MeetingServiceImpl implements MeetingService {
     public List<MeetingResponseDto> getUncompletedMeeting(Long clubId) {
         List<Meeting> meetings = meetingRepository.findByUncompletedMeeting(clubId);
 
-        // 존재 하지 않을시 예외 발생
-        if (meetings.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 모임입니다.");
-        }
-
-        return meetings.stream().map(MeetingResponseDto::new).toList();
+        return meetings.stream()
+                .map(meeting -> {
+                    int userCount = meetingRepository.countByMeetingUser(meeting.getId()).size();
+                    Long commentCount = meeting.getMeetingComments().stream()
+                            .filter(comment -> !comment.isDeleted())
+                            .count();
+                    return new MeetingResponseDto(meeting, userCount, commentCount); // MeetingResponseDto의 생성자를 이와 같이 수정해야 합니다.
+                })
+                .toList();
     }
 
     @Override
     @Transactional // 모임 수정
     public void updateMeeting(Long meetingId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws IOException {
 
+        log.info("updateMeeting 1");
+
         Meeting meeting = findMeeting(meetingId);
 
+        log.info("updateMeeting 2");
+
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
-            throw new RejectedExecutionException();
+        if (memberRepository.findActiveUserAndClub(user.getId(), meeting.getClub().getId()).isEmpty()) {
+            throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
+
+        log.info("updateMeeting 3");
 
         // 작성자만 수정 가능하게 예외처리.
         if (!meeting.getUser().getId().equals(user.getId())) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
 
-        // 수정 시 기존 객체 버킷에서 삭제
-        if (meeting.getMedia() != null) {
-            fileUploader.deleteFile(meeting.getMedia());
+        log.info("updateMeeting 4");
+
+
+        String media;
+
+        // 파일 검사 및 처리
+        if (file == null || file.isEmpty()) {
+            media = meeting.getMedia();
+        } else {
+            // 수정 시 기존 객체 버킷에서 삭제
+            if (meeting.getMedia() != null) {
+                fileUploader.deleteFile(meeting.getMedia());
+            }
+            media = fileUploader.upload(file);
         }
 
-        String media = fileUploader.upload(file);
+        log.info("updateMeeting 6");
 
         meeting.update(meetingRequestDto, media);
+
+        log.info("updateMeeting 7");
     }
 
     @Override
     @Transactional // 모임 삭제
     public void deleteMeeting(Long meetingId, User user) {
         Meeting meeting = findMeeting(meetingId);
-
-        // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
-            throw new RejectedExecutionException();
-        }
+        log.info("deleteMeeting 1");
 
         // 작성자만 수정 가능하게 예외처리.
         if (!meeting.getUser().getId().equals(user.getId())) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
+
+        log.info("deleteMeeting 3");
 
         meeting.deleted();
     }

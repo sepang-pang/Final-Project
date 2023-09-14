@@ -79,7 +79,7 @@ btnSave.addEventListener('click', () => {
         })
         .then(data => {
             alert("저장 완료");
-            window.location.href = 'http://localhost:8081/main';
+            window.location.href = '/main';
         })
         .catch(error => {
             console.error('Error:', error);

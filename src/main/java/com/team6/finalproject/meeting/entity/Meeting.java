@@ -12,6 +12,7 @@ import com.team6.finalproject.meeting_user.entity.MeetingUser;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,9 +69,10 @@ public class Meeting extends Timestamped {
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> meetingComments = new ArrayList<>();
 
-    public Meeting(MeetingRequestDto meetingRequestDto, Club club, User user) {
+    public Meeting(MeetingRequestDto meetingRequestDto, String media, Club club, User user) {
         this.title = meetingRequestDto.getTitle();
         this.description = meetingRequestDto.getDescription();
+        this.media = media;
         this.maxMember = meetingRequestDto.getMaxMember();
         this.date = meetingRequestDto.getDate();
         this.place = meetingRequestDto.getPlace();
@@ -81,12 +83,29 @@ public class Meeting extends Timestamped {
     }
 
     public void update(MeetingRequestDto meetingRequestDto, String media) {
-        this.title = meetingRequestDto.getTitle();
-        this.description = meetingRequestDto.getDescription();
+        if (meetingRequestDto.getTitle() != null) {
+            this.title = meetingRequestDto.getTitle();
+        }
+
+        if (meetingRequestDto.getDescription() != null) {
+            this.description = meetingRequestDto.getDescription();
+        }
+
+
         this.media = media;
-        this.maxMember = meetingRequestDto.getMaxMember();
-        this.date = meetingRequestDto.getDate();
-        this.place = meetingRequestDto.getPlace();
+
+
+        if (meetingRequestDto.getMaxMember() > 0) {
+            this.maxMember = meetingRequestDto.getMaxMember();
+        }
+
+        if (meetingRequestDto.getDate() != null) {
+            this.date = meetingRequestDto.getDate();
+        }
+
+        if (meetingRequestDto.getPlace() != null) {
+            this.place = meetingRequestDto.getPlace();
+        }
     }
 
     public void updateSchedule(MeetingScheduleRequestDto meetingScheduleRequestDto) {
@@ -101,16 +120,8 @@ public class Meeting extends Timestamped {
         this.isDeleted = true;
     }
 
-    public void addComment(Comment comment) {
-        this.meetingComments.add(comment);
-    }
-
     public void completed() {
         this.isCompleted = true;
-    }
-
-    public void updateImage(String media) {
-        this.media = media;
     }
 
     public void addMeetingUser(MeetingUser meetingUser) {

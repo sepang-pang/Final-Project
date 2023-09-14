@@ -26,4 +26,7 @@ public interface MemberService {
 
     // 특정 멤버(단일) 조회
     public Member findMember(Long clubId, Long userId) throws NotExistResourceException;
+
+    // 가입한 동호회 조회
+    List<Member> findJoinClubs(User user);
 }

@@ -2,13 +2,15 @@ package com.team6.finalproject.club.controller;
 
 import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
+import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
+import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
-import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
+import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.likeclub.service.LikeClubService;
@@ -35,6 +37,8 @@ public class ClubController {
 
     private final ClubService clubService;
     private final LikeClubService likeClubService;
+    private final MemberService memberService;
+    private final ApplyJoinClubService applyJoinClubService;
 
     @GetMapping("/open-club")
     public String openClub() {
@@ -47,7 +51,33 @@ public class ClubController {
         model.addAttribute("currentUsername", userDetails.getUsername());
         model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
         model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
-        return "club-detail"; // clubPage.html 혹은 clubPage.jsp 등의 뷰 이름
+        model.addAttribute("memberStatus", memberService.existJoinClub(userDetails.getUser().getId(), id));
+        model.addAttribute("applyStatus", applyJoinClubService.hasPendingApplication(userDetails.getUser().getId(), id));
+        return "club-detail";
+    }
+
+    @GetMapping("/my-club") // 개설한 동호회 목록 조회
+    public String myClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<ClubResponseDto> clubs = clubService.myClubs(userDetails.getUser());
+        model.addAttribute("clubs", clubs);
+        model.addAttribute("pageTitle", "개설한 동호회");
+        return "my-club";
+    }
+
+    @GetMapping("/my-join-club") // 가입한 동호회 목록 조회
+    public String myJoinClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<ClubResponseDto> clubs = clubService.myJoinClubs(userDetails.getUser());
+        model.addAttribute("clubs", clubs);
+        model.addAttribute("pageTitle", "가입한 동호회");
+        return "my-club";
+    }
+
+    @GetMapping("/my-like-club") // 찜한 동호회 목록 조회
+    public String myLikeClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<ClubResponseDto> clubs = clubService.myLikeClubs(userDetails.getUser());
+        model.addAttribute("clubs", clubs);
+        model.addAttribute("pageTitle", "찜한 동호회");
+        return "my-club";
     }
 
 
@@ -69,7 +99,7 @@ public class ClubController {
         return clubService.deleteClub(clubId, userDetails.getUser());
     }
 
-    @PutMapping("clubs/{clubId}/apply") // 동호회 가입 신청
+    @PutMapping("/clubs/{clubId}/apply") // 동호회 가입 신청
     public ResponseEntity<ApiResponseDto> applyJoinClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicateActionException, NotExistResourceException, CapacityFullException {
         return clubService.joinClub(clubId, userDetails.getUser());
     }
@@ -119,7 +149,7 @@ public class ClubController {
         return clubService.readSelectInterestMinor(minorId);
     }
 
-    @GetMapping("/clubs/user-distance")
+    @GetMapping("/clubs/user-distance") // 동호회 거리순 조회
     public List<ReadInterestMajorDto> clubsByUserDistance(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return clubService.clubsByUserDistance(userDetails.getUser());
     }
@@ -145,7 +175,7 @@ public class ClubController {
     }
 
     @GetMapping("/clubs/recommend") // 유저에게 최적합 동호회 추천
-    public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails)  {
+    public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.findRecommendedClubsForUser(radius, userDetails.getUser());
     }
 }

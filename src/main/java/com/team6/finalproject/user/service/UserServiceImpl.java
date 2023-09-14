@@ -3,7 +3,7 @@ package com.team6.finalproject.user.service;
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.redis.RedisUtil;
 import com.team6.finalproject.user.dto.*;
-import com.team6.finalproject.user.email.EmailAuth;
+import com.team6.finalproject.common.email.EmailAuth;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
 import com.team6.finalproject.user.repository.UserRepository;
@@ -120,19 +120,25 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updatePassword(UpdatePasswordDto passwordDto, User user) {
+        String currentPassword = passwordDto.getCurrentPassword();
         String newPassword = passwordDto.getNewPassword();
-        String checkNewPassword = passwordDto.getCheckNewPassword();
+        String checkPassword = passwordDto.getCheckPassword();
+
         // 두번 입력한 비밀번호 비교
-        if (!newPassword.equals(checkNewPassword)) {
+        if (!newPassword.equals(checkPassword)) {
             throw new IllegalArgumentException("입력한 비밀번호가 일치하지 않습니다");
         }
         // 비밀번호에 ID 포함 불가
         if (newPassword.contains(user.getUsername())) {
             throw new IllegalArgumentException("비밀번호에 ID를 포함할 수 없습니다.");
         }
-        // 직전 비밀번호로 변경 불가
+        // 현재 비밀번호 불일치
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+        // 현재 비밀번호로 변경 불가
         if (passwordEncoder.matches(newPassword, user.getPassword())) {
-            throw new IllegalArgumentException("직전 비밀번호로 변경할 수 없습니다.");
+            throw new IllegalArgumentException("현재 비밀번호로 변경할 수 없습니다.");
         }
 
         String encodedPassword = passwordEncoder.encode(newPassword);

@@ -8,6 +8,7 @@ import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -38,7 +39,16 @@ public class Comment extends Timestamped {
     private Meeting meeting;
 
     @OneToMany(mappedBy = "comment")
-    private List<CommentLike> commentLikes;
+    private List<CommentLike> commentLikes = new ArrayList<>();
+
+    public Comment(CommentRequestDto commentRequestDto, User user, Meeting meeting) {
+        this.content = commentRequestDto.getContent();
+        this.user = user;
+        this.meeting = meeting;
+        this.nickname = user.getProfile().getNickname();
+        meeting.getMeetingComments().add(this);
+    }
+
 
     public void deleteComment() {
         this.isDeleted = true;
@@ -47,4 +57,5 @@ public class Comment extends Timestamped {
     public void update(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
     }
+
 }
