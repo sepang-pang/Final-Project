@@ -1,5 +1,4 @@
 function login() {
-    alert("버튼 클릭")
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
@@ -7,7 +6,6 @@ function login() {
         username: username,
         password: password
     };
-
     let xhr = new XMLHttpRequest();
     xhr.open("POST", "/api/login", true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");

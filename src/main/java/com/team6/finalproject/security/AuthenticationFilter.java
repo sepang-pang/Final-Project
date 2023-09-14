@@ -62,9 +62,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
-        log.info("로그인 성공 및 세션 생성");
         HttpSession session = request.getSession();
         session.setAttribute("username", authResult.getPrincipal());
+        log.info("로그인 성공 및 세션 생성");
+
+
 //
 //        UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
 //
