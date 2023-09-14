@@ -22,16 +22,68 @@ passwordInput.addEventListener("input", function () {
     }
 });
 
+function sendPhoneNumberVerification() {
+    let phoneNumber = document.getElementById("phoneNumber").value;
+
+    let data = {
+        phoneNumber: phoneNumber
+    };
+
+    fetch('/api/sms/send', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert("인증번호가 발송되었습니다.");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("인증번호 발송에 실패했습니다.");
+        });
+}
+
+function sendCodeCheck() {
+    let phoneNumber = document.getElementById("phoneNumber").value;
+    let verificationCode = document.getElementById("verification-code").value;
+    let data = {
+        phoneNumber: phoneNumber,
+        verificationCode: verificationCode
+    };
+
+    fetch('/api/sms/check', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(data => {
+            alert("인증에 성공했습니다.");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("인증에 실패했습니다.");
+        });
+
+}
+
 function signup() {
-    alert("버튼 클릭")
     let userName = document.getElementById("userName").value;
     let password = document.getElementById("password").value;
     let password_confirm = document.getElementById("password_confirm").value;
     let email = document.getElementById("email").value;
     let birth = document.getElementById("birth").value;
-    let role = document.getElementById("role").value;
+    // let role = document.getElementById("role").value;
     let phoneNumber = document.getElementById("phoneNumber").value;
-
     if (password !== password_confirm) {
         alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         return;
@@ -58,7 +110,6 @@ function signup() {
         birth: birth,
         phoneNumber : phoneNumber,
         age: ageDiff,
-        role: role
     };
 
     // 만 19세 미만의 경우 회원 가입을 막습니다.

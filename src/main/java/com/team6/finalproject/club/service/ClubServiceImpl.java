@@ -248,7 +248,7 @@ public class ClubServiceImpl implements ClubService {
     // 동호회 개설
     @Override
     @Transactional
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, MultipartFile file, User user) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
 
         // 유저 프로필 조회
         Profile profile = profileService.findProfileByUserId(user.getId());
@@ -279,7 +279,7 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
-//        String media = fileUploader.upload(multipartFile);
+        String media = fileUploader.upload(file);
 
         // 동호회 개설
         log.info("동호회 개설");
@@ -289,7 +289,7 @@ public class ClubServiceImpl implements ClubService {
                 .name(clubRequestDto.getName())
                 .description(clubRequestDto.getDescription())
                 .maxMember(clubRequestDto.getMaxMember())
-//                .media(media)
+                .media(media)
                 .minAge(clubRequestDto.getMinAge())
                 .maxAge(clubRequestDto.getMaxAge())
                 .latitude(clubRequestDto.getLatitude())

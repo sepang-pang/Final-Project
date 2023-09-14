@@ -1,171 +1,240 @@
-/* 페이지 내용을 가운데 정렬하는 스타일 */
-body {
-    background-color: #87CEEB; /* 하늘색 배경 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0; /* 페이지 바깥 여백 제거 */
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
 
-/* 컨테이너 스타일 */
+
 .container {
-    display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    border-radius: 10px;
-    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80rem;
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button,
+.button {
+    background-color: #f2f2f2;
+    color: #000 !important;
+}
+
+/* Form */
+
+form {
+    margin: 0 0 2rem 0;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+}
+
+/* Header */
+
+body {
+    background: radial-gradient(#52f6e9, #2387c5);
+    padding-top: 8rem;
+}
+
+
+@media screen and (max-width: 980px) {
+
+    body:after {
+        background-attachment: scroll;
+        background-position: top;
+        background-size: 100%;
+    }
+
+}
+
+#header {
+    color: #a6a6a6;
+    cursor: default;
+    position: relative;
     text-align: center;
-    position: fixed; /* 위치를 고정 */
-    top: 0; /* 상단에 배치 */
-    left: 0; /* 왼쪽에 배치 */
+    z-index: 10001;
 }
 
-/* 이미지 스타일 */
-.club-image {
-    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
-    max-width: 20%;
-    height: auto;
+#header > .logo {
+    margin: 0 0 4rem 0;
+    padding: 0;
 }
 
-/* 컨테이너1 스타일 */
-.container1, .container2, .container3 {
-    background-color: rgba(255, 255, 255, 0.9); /* 투명한 흰색 배경 */
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 800px; /* 컨테이너의 너비 조정 */
-    height: 700px;
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
-
-    /* 페이지 가운데에 고정 */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+#header > .logo a {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #FFF;
+    text-decoration: none;
+    line-height: 1rem;
 }
 
-/* 초기에는 숨겨진 상태*/
-.container2,
-.container3 {
-    display: none;
+#header > .logo span {
+    font-weight: 300;
+    font-size: 1rem;
+    display: block;
+    color: rgba(255, 255, 255, 0.65);
 }
 
+/* Main */
+
+#main > .inner {
+    margin: 0 auto;
+    width: 80rem;
+    max-width: 90%;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 4px;
+}
+
+.wrapper > header {
+    text-align: center;
+    background: #FFF;
+    padding: 2rem;
+    margin: 0;
+}
+.wrapper.style1 {
+    margin-top:100px;
+}
+
+.wrapper.style2 {
+    background: rgba(86, 194, 222, 0.94);
+    padding: 6rem;
+}
+
+.wrapper.style2 header {
+    background: #121315;
+    border-radius: 4px 4px 0 0;
+}
+
+.wrapper.style2 header h2 {
+    color: #FFF;
+}
+
+.wrapper.style2 header h2:after {
+    background-color: rgba(255, 255, 255, 0.125);
+}
+
+.wrapper.style2 header p {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+
+/* Footer */
+
+#footer {
+    padding: 2rem 0 0.1rem 0 ;
+    text-align: center;
+}
+
+#footer a {
+    color: rgba(255, 255, 255, 0.75);
+    display: flex;
+}
+
+#footer a:hover {
+    color: #FFF;
+}
+
+.copyright {
+    color: #bbb;
+    font-size: 0.9rem;
+    margin: 0 0 2rem 0;
+    padding: 0 1rem;
+    text-align: center;
+}
+.copyright a{
+    color: white;
+    text-decoration: none;
+}
 
 /* 텍스트 박스 스타일 */
-input[type="text"],
-select {
-    width: 60%;
-    padding: 15px; /* 세로 크기 조정 */
-    margin-bottom: 30px; /* 간격 조정 */
+input[type="text"] {
+    width: 50%;
+    height: 30px;
+    padding: 30px; /* 세로 크기 조정 */
+    margin-bottom: 10px; /* 간격 조정 */
+    margin-left: 300px;
     border: none;
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
 }
 
-/* 텍스트 박스 안에 옅은 글씨로 미리 입력된 내용 스타일 */
-input::placeholder {
-    color: #bbb;
+/* 위치 검색 버튼 스타일 */
+input[type="button"] {
+    margin-left: 300px; /* 위치 검색 버튼의 왼쪽 마진을 조정하여 위치를 변경 */
+    color: #0f67ce;
 }
 
-/* 스피너 스타일 (인원수 입력) */
 select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath d='M5 5L0 0h10L5 5zm-5-5h10L5 3.207 0 0z' fill='%2327ae60'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right center;
+    width: 50%;
+    height: 45px;
+    margin-bottom: 30px; /* 간격 조정 */
+    margin-left: 300px;
+}
+/* 텍스트 박스 안에 옅은 글씨로 미리 입력된 내용 스타일 */
+input::placeholder {
+    color: #6d6d6d;
 }
 
 label {
     display: block;
     text-align: left;
+    margin-top: 15px;
     margin-bottom: 5px;
+    margin-left: 300px;
     font-weight: bold;
+    font-size: 18px;
 }
 
+#age {
+    margin-left: 300px;
+}
 /* 버튼 스타일 */
-.age button {
+.age-button {
     background-color: #fff; /* 흰색 배경 */
-    color: #27ae60; /* 초록색 텍스트 */
+    color: rgba(42, 152, 222, 0.82);
     padding: 15px 25px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    margin-right: 30px; /* 버튼 간 간격 조정 */
+    margin-left: 30px; /* 버튼 간 간격 조정 */
     margin-bottom: 30px; /* 간격 조정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    display: inline-block; /* 텍스트를 감싸는 인라인 블록 요소로 설정 */
+    line-height: 1; /* 텍스트 수직 정렬 */
 }
+
 
 /* 버튼 클릭 시 활성화 스타일 */
-.age button.active-button {
-    background-color: #27ae60; /* 초록색 배경 */
+.age-button.selected {
+    background-color: rgba(86, 194, 222, 0.94);
     color: #fff; /* 흰색 텍스트 */
-}
-
-
-/* 메인 제목 스타일 */
-h1 {
-    font-size: 36px;
-    color: #fff; /* 흰색 텍스트 */
-    margin-bottom: 20px;
-}
-
-/* 다음 버튼 스타일 */
-#next-btn1, #next-btn2, #next-btn3 {
-    background-color: darkgray;
-    color: #fff; /* 흰색 텍스트 */
-    padding: 15px 30px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    position: fixed; /* 페이지 우측 하단에 고정 */
-    bottom: 20px;
-    right: 230px;
-}
-
-/* 다음으로 버튼 호버 효과 */
-#next-btn1:hover, #next-btn2:hover, #next-btn3:hover {
-    background-color: black; /* 호버 시 색 변경 */
-}
-
-/* 뒤로가기 버튼 스타일 */
-#goBackButton1, #goBackButton2 {
-    background-color: darkgray;
-    color: #fff; /* 흰색 텍스트 */
-    padding: 15px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    position: fixed; /* 페이지 우측 하단에 고정 */
-    bottom: 20px;
-    right: 600px;
-}
-
-/* 뒤로가기 버튼 호버 효과 */
-#goBackButton1:hover, #goBackButton2:hover {
-    background-color: black; /* 호버 시 색 변경 */
+    text-align: center; /* 텍스트 가운데 정렬 */
 }
 
 /* 버튼 스타일 */
 .topic-toggle button {
     padding: 10px 25px;
-    margin-right: 10px;
-    margin-top: 8px;
-    background-color: #338ed3;
+    margin-top: 15px;
+    margin-left: 100px;
+    background-color: #fff;
     color: #ffffff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    display: inline-block; /* 텍스트를 감싸는 인라인 블록 요소로 설정 */
+    line-height: 1; /* 텍스트 수직 정렬 */
 }
 
 .subtopics {
     display: none;
     margin-top: 10px;
+    margin-left: 100px;
 }
 
 .subtopic-button {
@@ -176,39 +245,44 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    display: inline-block; /* 텍스트를 감싸는 인라인 블록 요소로 설정 */
+    line-height: 1; /* 텍스트 수직 정렬 */
 }
 
 .topic-toggle button.active-button {
-    background-color: #156ba0;
+    background-color: rgba(236, 202, 237, 0.94);
     color: #fff;
+    text-align: center; /* 텍스트 가운데 정렬 */
+
 }
 
 .subtopics button.active-button {
-    background-color: #156ba0; /* 초록색 배경 */
+    background-color: rgba(229, 176, 232, 0.94);
     color: #fff; /* 흰색 텍스트 */
-}
-
-.hidden {
-    display: none;
+    text-align: center; /* 텍스트 가운데 정렬 */
 }
 
 /* 텍스트 박스 스타일링 */
 textarea#description {
-    width: 100%;
+    width: 50%;
     height: 300px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-left: 300px;
 
 }
 
 /* 파일 업로드 버튼 스타일링 */
 input[type="file"]#image {
-    width: 100%;
+    width: 50%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 10px; /* 파일 업로드와 텍스트 박스 사이 간격 조정 (선택사항) */
+    margin-top: 10px;
+    margin-bottom: 15px;
+    margin-left: 300px;
 }
 
 label {
@@ -216,44 +290,25 @@ label {
     margin-top: 10px; /* 라벨 위 간격 조정 (선택사항) */
 }
 
-/* 슬라이더 스타일 */
-input[type="range"] {
-    width: 80%; /* 슬라이더의 너비 조정 */
-    height: 5px; /* 슬라이더의 높이 조정 */
-    background-color: #ccc; /* 슬라이더 배경색 */
+#next-btn3 {
     border: none;
-    border-radius: 5px; /* 슬라이더 모서리 둥글게 만들기 */
-    outline: none; /* 포커스 시 테두리 제거 */
-    -webkit-appearance: none; /* 웹킷 브라우저에서 기본 스타일 제거 */
-    appearance: none; /* 브라우저 기본 스타일 제거 */
-    margin-right: 10px; /* 슬라이더와 텍스트 사이 간격 조정 */
+    padding: 15px 70px;
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    background: #ffffff;
+    color: #fff;
+    font-weight: bold;
+    text-align: center; /* 텍스트 가운데 정렬 */
+    display: inline-block; /* 텍스트를 감싸는 인라인 블록 요소로 설정 */
+    line-height: 1; /* 텍스트 수직 정렬 */
 }
 
-/* 슬라이더의 활성화 상태 스타일 (호버 효과) */
-input[type="range"]:hover {
-    background-color: #ddd; /* 호버 시 배경색 변경 */
+
+label[for="clubname"] {
+    display: block;
+    margin-top: 20px; /* 문구를 아래로 이동 */
+    font-weight: bold;
+    font-size: 18px;
 }
 
-/* 슬라이더의 실제 바 스타일 */
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; /* 웹킷 브라우저에서 기본 스타일 제거 */
-    appearance: none; /* 브라우저 기본 스타일 제거 */
-    width: 15px; /* 슬라이더 핸들의 너비 조정 */
-    height: 15px; /* 슬라이더 핸들의 높이 조정 */
-    background-color: #27ae60; /* 슬라이더 핸들의 배경색 */
-    border: none;
-    border-radius: 50%; /* 슬라이더 핸들을 원 모양으로 만들기 */
-    cursor: pointer;
-}
-
-/* 슬라이더의 활성화 상태 스타일 (호버 효과) */
-input[type="range"]::-webkit-slider-thumb:hover {
-    background-color: #219653; /* 호버 시 슬라이더 핸들 배경색 변경 */
-}
-
-/* 슬라이더 값 표시 스타일 */
-#sliderValue {
-    font-size: 16px; /* 슬라이더 값 텍스트 크기 조정 */
-    color: #333; /* 슬라이더 값 텍스트 색상 설정 */
-    margin-left: 10px; /* 슬라이더 값 텍스트와 슬라이더 사이 간격 조정 */
-}
