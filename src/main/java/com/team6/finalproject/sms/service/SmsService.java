@@ -8,6 +8,6 @@ public interface SmsService {
 
     public SingleMessageSentResponse smsSend(String phoneNumber);
 
-    public ResponseEntity<ApiResponseDto> checkSmsCertification(String phoneNumber, String key);
+    public void checkSmsCertification(String phoneNumber, String key);
 
 }

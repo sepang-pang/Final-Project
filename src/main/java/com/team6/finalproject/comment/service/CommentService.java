@@ -1,7 +1,9 @@
 package com.team6.finalproject.comment.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.advice.custom.NotLikedYetException;
 import com.team6.finalproject.advice.custom.NotOwnedByUserException;
+import com.team6.finalproject.advice.custom.SelfLikeNotAllowedException;
 import com.team6.finalproject.comment.dto.CommentRequestDto;
 import com.team6.finalproject.comment.dto.CommentResponseDto;
 import com.team6.finalproject.comment.entity.Comment;
@@ -20,5 +22,10 @@ public interface CommentService {
 
     public ResponseEntity<ApiResponseDto> deleteComment(Long commentId, User user) throws NotExistResourceException, NotOwnedByUserException;
 
+    ResponseEntity<ApiResponseDto> commentLike(Long postId, User user) throws SelfLikeNotAllowedException, NotExistResourceException;
+
+    ResponseEntity<ApiResponseDto> CommentDislike(Long commentId, User user) throws NotLikedYetException, NotOwnedByUserException;
+
     public Comment findComment(Long commentId) throws NotExistResourceException;
+
 }

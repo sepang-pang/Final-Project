@@ -206,13 +206,6 @@
                             <input type="date" id="birth" placeholder="BIRTH" required>
                         </div>
 
-                        <div class="role">
-                            <select id="role" class="form-control" required>
-                                <option value="USER">사용자</option>
-                                <option value="ADMIN">관리자</option>
-                            </select>
-                        </div>
-
                             <p>이미 계정이 있으신가요? <a href="/login">로그인 하러가기</a></p>
 
 
@@ -226,19 +219,34 @@
 </section>
 
 <script>
-    let userNameInput = document.getElementById("userName");
-    let userNameFeedback = document.getElementById("userNameFeedback");
-    let userNameRules = document.getElementById("userNameRules");
+    function sendPhoneNumberVerification() {
+        let phoneNumber = document.getElementById("phoneNumber").value;
 
-    userNameInput.addEventListener("input", function () {
-        let isValid = /^[a-z0-9]{4,10}$/.test(userNameInput.value);
-        if (!isValid) {
-            userNameFeedback.innerHTML = "양식에 맞지않습니다.";
-        } else {
-            userNameFeedback.innerHTML = "";
-        }
-    });
+        let data = {
+            phoneNumber: phoneNumber
+        };
 
+        fetch('/api/sms/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("인증번호가 발송되었습니다.");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("인증번호 발송에 실패했습니다.");
+            });
+    }
     let passwordInput = document.getElementById("password");
     let passwordFeedback = document.getElementById("passwordFeedback");
     passwordInput.addEventListener("input", function () {
@@ -277,36 +285,29 @@
             ageDiff--;
         }
 
-        let userData = {
-            username: userName,
-            password: password,
-            email: email,
-            birth: birth,
-            age: ageDiff,
-            role: role
+    function sendCodeCheck() {
+        let phoneNumber = document.getElementById("phoneNumber").value;
+        let verificationCode = document.getElementById("verification-code").value;
+
+        let data = {
+            phoneNumber: phoneNumber,
+            verificationCode: verificationCode
         };
 
-        // 만 19세 미만의 경우 회원 가입을 막습니다.
-        if (ageDiff >= 19) {
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", "/signup", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // 서버에서 성공적으로 처리되었을 경우 동작
-                        alert("회원 가입이 완료되었습니다.");
-                        window.location.href = "/login"; // 로그인 페이지로 이동
-                    } else {
-                        // 서버에서 오류가 발생한 경우 동작
-                        alert("회원 가입 중 오류가 발생했습니다.");
-                    }
-                }
-            };
-
-            xhr.send(JSON.stringify(userData));
-        }
+        fetch('/api/sms/check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(data => {
+                alert("인증에 성공했습니다.");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("인증에 실패했습니다.");
+            });
     }
 </script>
 </body>

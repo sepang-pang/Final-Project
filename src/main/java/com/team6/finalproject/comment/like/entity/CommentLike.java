@@ -14,13 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "like_comment",
-        uniqueConstraints = @UniqueConstraint(
-                name = "DuplicatedLike",
-                columnNames = {
-                        "user_id", "comment_id", "is_deleted"})
-
-)
+@Table(name = "like_comment")
 public class CommentLike extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

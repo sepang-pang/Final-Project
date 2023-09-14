@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,21 +26,42 @@ public class MeetingController {
 
     private final MeetingService meetingService;
 
+    @GetMapping("/meeting-detail/{meetingId}")
+    public String clubPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, Model model) {
+        model.addAttribute("meetingId", meetingId);
+        model.addAttribute("username", userDetails.getUsername()); // 현재 인가된 사용자의 이름
+        model.addAttribute("meetingUsername", meetingService.findMeeting(meetingId).getUser().getUsername()); // 모임 작성자의 이름
+        model.addAttribute("clubUsername", meetingService.findMeeting(meetingId).getClub().getUsername()); // 동호회 작성자의 이름
+
+        return "meeting-detail";
+    }
+
+    @GetMapping("/meeting-update/{meetingId}")
+    public String updateMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, Model model) {
+        model.addAttribute("meetingId", meetingId);
+        model.addAttribute("username", userDetails.getUsername()); // 현재 인가된 사용자의 이름
+        model.addAttribute("meetingUsername", meetingService.findMeeting(meetingId).getUser().getUsername()); // 모임 작성자의 이름
+
+        return "meeting-update";
+    }
+
     // 모임 생성.
     @PostMapping("/{clubId}")
     @ResponseBody
-    public void createMeeting(@PathVariable Long clubId, @RequestBody MeetingRequestDto meetingRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
-        meetingService.createPost(clubId, meetingRequestDto, userDetails.getUser());
+    public void createMeeting(@PathVariable Long clubId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
+        meetingService.createPost(clubId, meetingRequestDto, file, userDetails.getUser());
     }
 
     // 모임 완료
     @PatchMapping("/{meetingId}/completed")
+    @ResponseBody
     public ResponseEntity<ApiResponseDto> completedMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return meetingService.completedMeeting(meetingId, userDetails.getUser());
     }
 
     // 모임 조회.
     @GetMapping("/{meetingId}")
+    @ResponseBody
     public MeetingResponseDto getMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         return meetingService.getMeeting(meetingId,userDetails.getUser());
     }
@@ -60,12 +82,14 @@ public class MeetingController {
 
     // 모임 전체 업데이트.
     @PutMapping("/{meetingId}")
-    public void updateMeeting(@PathVariable Long meetingId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+    @ResponseBody
+    public void updateMeeting(@PathVariable Long meetingId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart(value = "file", required = false) MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         meetingService.updateMeeting(meetingId, meetingRequestDto, file,userDetails.getUser());
     }
 
     // 모임 삭제.
     @DeleteMapping("/{meetingId}")
+    @ResponseBody
     public void deleteMeeting(@PathVariable Long meetingId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         meetingService.deleteMeeting(meetingId,userDetails.getUser());
     }
