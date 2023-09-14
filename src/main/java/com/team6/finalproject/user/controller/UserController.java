@@ -31,10 +31,9 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/aa")
-    public String aa(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        log.info(userDetails.getUsername());
-        return "main";
+    @GetMapping("/api/my-page")
+    public String myPage() {
+        return "my-page";
     }
 
     @GetMapping("/api/update-password")
