@@ -1,4 +1,4 @@
-package com.team6.finalproject.user.email;
+package com.team6.finalproject.common.email;
 
 import com.team6.finalproject.common.redis.RedisUtil;
 import jakarta.mail.MessagingException;

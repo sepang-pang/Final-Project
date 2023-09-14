@@ -3,7 +3,7 @@ package com.team6.finalproject.user.service;
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.redis.RedisUtil;
 import com.team6.finalproject.user.dto.*;
-import com.team6.finalproject.user.email.EmailAuth;
+import com.team6.finalproject.common.email.EmailAuth;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
