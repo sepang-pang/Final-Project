@@ -2,12 +2,15 @@ package com.team6.finalproject.club.controller;
 
 import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
+import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
+import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
+import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.likeclub.service.LikeClubService;
@@ -34,6 +37,8 @@ public class ClubController {
 
     private final ClubService clubService;
     private final LikeClubService likeClubService;
+    private final MemberService memberService;
+    private final ApplyJoinClubService applyJoinClubService;
 
     @GetMapping("/open-club")
     public String openClub() {
@@ -46,7 +51,9 @@ public class ClubController {
         model.addAttribute("currentUsername", userDetails.getUsername());
         model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
         model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
-        return "club-detail"; // clubPage.html 혹은 clubPage.jsp 등의 뷰 이름
+        model.addAttribute("memberStatus", memberService.existJoinClub(userDetails.getUser().getId(), id));
+        model.addAttribute("applyStatus", applyJoinClubService.hasPendingApplication(userDetails.getUser().getId(), id));
+        return "club-detail";
     }
 
     @GetMapping("/my-club") // 개설한 동호회 목록 조회
@@ -88,7 +95,7 @@ public class ClubController {
         return clubService.deleteClub(clubId, userDetails.getUser());
     }
 
-    @PutMapping("clubs/{clubId}/apply") // 동호회 가입 신청
+    @PutMapping("/clubs/{clubId}/apply") // 동호회 가입 신청
     public ResponseEntity<ApiResponseDto> applyJoinClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws DuplicateActionException, NotExistResourceException, CapacityFullException {
         return clubService.joinClub(clubId, userDetails.getUser());
     }

@@ -1,16 +1,12 @@
 package com.team6.finalproject.meeting.controller;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
-import com.team6.finalproject.club.member.dto.MemberInquiryDto;
-import com.team6.finalproject.comment.like.service.CommentLikeService;
-import com.team6.finalproject.comment.service.CommentService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.meeting.dto.MeetingPlaceRequestDto;
 import com.team6.finalproject.meeting.dto.MeetingRequestDto;
 import com.team6.finalproject.meeting.dto.MeetingResponseDto;
 import com.team6.finalproject.meeting.dto.MeetingScheduleRequestDto;
 import com.team6.finalproject.meeting.service.MeetingService;
-import com.team6.finalproject.profile.dto.ProfileResponseDto;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +31,7 @@ public class MeetingController {
         model.addAttribute("meetingId", meetingId);
         model.addAttribute("username", userDetails.getUsername()); // 현재 인가된 사용자의 이름
         model.addAttribute("meetingUsername", meetingService.findMeeting(meetingId).getUser().getUsername()); // 모임 작성자의 이름
+        model.addAttribute("clubUsername", meetingService.findMeeting(meetingId).getClub().getUsername()); // 동호회 작성자의 이름
 
         return "meeting-detail";
     }
@@ -51,8 +48,8 @@ public class MeetingController {
     // 모임 생성.
     @PostMapping("/{clubId}")
     @ResponseBody
-    public void createMeeting(@PathVariable Long clubId, @RequestBody MeetingRequestDto meetingRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
-        meetingService.createPost(clubId, meetingRequestDto, userDetails.getUser());
+    public void createMeeting(@PathVariable Long clubId, @RequestPart MeetingRequestDto meetingRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, IOException {
+        meetingService.createPost(clubId, meetingRequestDto, file, userDetails.getUser());
     }
 
     // 모임 완료

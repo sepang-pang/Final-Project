@@ -49,7 +49,6 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(comment);
 
-        log.info("5");
         return new CommentResponseDto(comment);
     }
 
@@ -103,10 +102,6 @@ public class CommentServiceImpl implements CommentService {
                 .comment(comment)
                 .user(user)
                 .build();
-
-//        if (user.getId().equals(comment.getUser().getId())) {
-//            throw new SelfLikeNotAllowedException("본인 댓글엔 좋아요를 할 수 없습니다.");
-//        }
 
         commentLikeService.save(like);
 

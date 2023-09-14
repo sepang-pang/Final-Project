@@ -69,6 +69,11 @@ public class ReportServiceImpl implements ReportService {
             throw new NotExistResourceException("자신이 관리하는 동호회를 신고할 수 없습니다.");
         }
 
+        // 신고 내용 또는 신고 제목을 입력하지 않은 경우
+        if (reportRequestDto.getTitle().equals("") || reportRequestDto.getContent().equals("")) {
+            throw new NotExistResourceException("신고 내용과 신고 제목을 모두 입력해주세요.");
+        }
+
         ReportTypeEnum reportType = ReportTypeEnum.CLUB;
 
         // 신고 내용 저장

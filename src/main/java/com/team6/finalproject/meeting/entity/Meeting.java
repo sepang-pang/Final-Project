@@ -12,6 +12,7 @@ import com.team6.finalproject.meeting_user.entity.MeetingUser;
 import com.team6.finalproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,9 +69,10 @@ public class Meeting extends Timestamped {
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Comment> meetingComments = new ArrayList<>();
 
-    public Meeting(MeetingRequestDto meetingRequestDto, Club club, User user) {
+    public Meeting(MeetingRequestDto meetingRequestDto, String media, Club club, User user) {
         this.title = meetingRequestDto.getTitle();
         this.description = meetingRequestDto.getDescription();
+        this.media = media;
         this.maxMember = meetingRequestDto.getMaxMember();
         this.date = meetingRequestDto.getDate();
         this.place = meetingRequestDto.getPlace();
@@ -120,10 +122,6 @@ public class Meeting extends Timestamped {
 
     public void completed() {
         this.isCompleted = true;
-    }
-
-    public void updateImage(String media) {
-        this.media = media;
     }
 
     public void addMeetingUser(MeetingUser meetingUser) {

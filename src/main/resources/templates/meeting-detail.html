@@ -122,6 +122,7 @@
         const meetingId = [[${meetingId}]];
         const username = [[${username}]];
         const meetingUsername = [[${meetingUsername}]];
+        const clubUsername = [[${clubUsername}]];
 
         fetchData(meetingId);
         fetchMeetingUsers(meetingId);
@@ -216,17 +217,32 @@
             memberContainer.innerHTML = '';
 
             members.forEach(member => {
+                let nicknameText = member.nickname;
+
+                if (meetingUsername === member.username && clubUsername === member.username) {
+                    // 동호회장이면서 회의 주인일 경우
+                    nicknameText += " 👑 🌟";
+                } else if (meetingUsername === member.username) {
+                    // 회의 주인일 경우
+                    nicknameText += " 🌟";
+                } else if (clubUsername === member.username) {
+                    // 동호회장일 경우
+                    nicknameText += " 👑";
+                }
+
                 const memberCardHTML = `
            <div class="member-card" data-user-id="${member.userId}">
                 <img src="${member.profileImage}" alt="프로필 사진">
-                <p>${member.nickname}</p>
+                <p>${nicknameText}</p>
             </div>
-        `;
+                    `;
 
                 memberContainer.innerHTML += memberCardHTML;
             });
 
-            // 모든 member-card에 클릭 이벤트를 추가합니다.
+
+
+        // 모든 member-card에 클릭 이벤트를 추가합니다.
             document.querySelectorAll('.member-card').forEach(card => {
                 card.addEventListener('click', function() {
                     // 카드의 data-user-id 값을 가져와서 URL을 생성합니다.
