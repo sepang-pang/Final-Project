@@ -72,17 +72,23 @@ header {
 }
 
 .photo-box {
-    width: 50%; /* 사진 박스의 너비 */
-    height: 300px; /* 사진 박스의 높이 */
-    border: 1px solid #ccc; /* 테두리 */
-    overflow: hidden; /* 이미지가 박스를 벗어나면 숨김 */
-    margin: 0 auto; /* 중앙 정렬 */
+    width: 50%;
+    padding-bottom: 28.125%; /* 16:9 비율에 따른 높이 */
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
 }
 
 .photo-box img {
-    width: 100%; /* 이미지의 너비를 100%로 설정하여 박스를 꽉 채움 */
-    height: auto; /* 이미지의 높이는 원본 비율에 따라 자동 조정 */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 이미지를 정중앙에 위치시킵니다. */
 }
+
 
 /* === club intro article === */
 .club-intro-article {
