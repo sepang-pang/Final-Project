@@ -37,6 +37,7 @@ header {
 
 /* 버튼 스타일 */
 .btn-profile,
+.btn-interests,
 .btn-join-club,
 .btn-my-club,
 .btn-like-club,
@@ -57,6 +58,7 @@ header {
 }
 /* 선택 버튼 컬러 지정 */
 .btn-profile,
+.btn-interests,
 .btn-join-club,
 .btn-my-club,
 .btn-like-club,
@@ -64,16 +66,20 @@ header {
 .btn-inquiry {
     background-color: #ff9f43;
 }
-
-/* 버튼 호버 효과 */
+/* 선택 버튼 호버 효과 */
 .btn-profile:hover,
+.btn-interests:hover,
 .btn-join-club:hover,
 .btn-my-club:hover,
 .btn-like-club:hover,
 .btn-update-password:hover,
-.btn-inquiry:hover,
+.btn-inquiry:hover {
+    background-color: #ffd180;
+}
+
+/* 뒤로,메인 버튼 호버 효과 */
 #goBackButton:hover,
-#btn-main:hover{
+#btn-main:hover {
     background-color: black; /* 호버 시 색 변경 */
 }
 
