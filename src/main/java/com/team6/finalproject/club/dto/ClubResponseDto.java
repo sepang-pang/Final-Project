@@ -22,6 +22,7 @@ public class ClubResponseDto {
     private String minor;
     private int minAge;
     private int maxAge;
+    private int activityScore;
 
     public ClubResponseDto(Club club) {
         this.clubId = club.getId();
@@ -32,6 +33,7 @@ public class ClubResponseDto {
         this.media = club.getMedia();
         this.trialAvailable = club.isTrialAvailable();
         this.activityType = club.getActivityType().getActivity();
+        this.activityScore = club.getActivityScore();
         this.joinType = club.getJoinType().getJoin();
         this.locate = club.getLocate();
         this.maxMember = club.getMaxMember();

@@ -18,7 +18,7 @@ import java.util.List;
 public interface MeetingService {
 
     // 모임 생성.
-    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, User user) throws NotExistResourceException, IOException;
+    public void createPost(Long clubId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws NotExistResourceException, IOException;
 
     // 모임 완료
     public ResponseEntity<ApiResponseDto> completedMeeting(Long meetingId, User user);

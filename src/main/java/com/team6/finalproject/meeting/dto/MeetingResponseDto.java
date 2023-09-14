@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.common.entity.DateConstants;
 import com.team6.finalproject.meeting.entity.Meeting;
 import lombok.Getter;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 public class MeetingResponseDto {
 
+    private Long meetingId;
     private String title;
     private String description;
     private String media;
@@ -27,7 +25,7 @@ public class MeetingResponseDto {
     private Boolean isDeleted;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
-    private int commentCount;
+    private Long commentCount;
 
     @JsonSerialize(using = DateSerializer.class)
     private LocalDateTime date;
@@ -38,7 +36,8 @@ public class MeetingResponseDto {
     @JsonSerialize(using = DateDetailSerializer.class)
     private LocalDateTime dateDetail;
 
-    public MeetingResponseDto(Meeting meeting , int count) {
+    public MeetingResponseDto(Meeting meeting , int userCount, Long commentCount) {
+        this.meetingId = meeting.getId();
         this.title = meeting.getTitle();
         this.description = meeting.getDescription();
         this.media = meeting.getMedia();
@@ -51,8 +50,8 @@ public class MeetingResponseDto {
         this.isDeleted = meeting.getIsDeleted();
         this.createAt = meeting.getCreatedAt();
         this.modifiedAt = meeting.getModifiedAt();
-        this.commentCount = meeting.getMeetingComments().size();
-        this.memberCount = count;
+        this.commentCount = commentCount;
+        this.memberCount = userCount;
 
     }
 
