@@ -163,7 +163,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
         if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
 
         // 작성자만 수정 가능하게 예외처리.

@@ -566,6 +566,16 @@
                 });
         });
 
+        // -------------- 수정 페이지로 이동  -------------- //
+        document.addEventListener("DOMContentLoaded", function() {
+            const editButton = document.getElementById("edit-btn");
+            const meetingId = [[${meetingId}]]; // Thymeleaf로부터 받아온 meetingId
+
+            editButton.addEventListener("click", function() {
+                // meetingId를 사용하여 원하는 URL로 리디렉션합니다.
+                window.location.href = `/meeting-update/${meetingId}`;
+            });
+        });
 
     };
 </script>
