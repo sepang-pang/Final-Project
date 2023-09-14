@@ -1,10 +1,7 @@
 package com.team6.finalproject.club.repository;
 
-import com.querydsl.core.types.Expression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.team6.finalproject.club.entity.Club;
-import com.team6.finalproject.club.entity.QClub;
-import com.team6.finalproject.profile.entity.Profile;
 import com.team6.finalproject.profile.profileinterest.entity.ProfileInterest;
 import com.team6.finalproject.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -148,6 +145,15 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                 .where(club.isDeleted.eq(false)
                         .and(club.username.eq(user.getUsername())))
                 .orderBy(club.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Club> findJoinClubs(User user) {
+        return jpaQueryFactory.selectFrom(club)
+                .innerJoin(club.members, member)
+                .where(member.user.id.eq(user.getId())
+                        .and(club.isDeleted.eq(false)))
                 .fetch();
     }
 }

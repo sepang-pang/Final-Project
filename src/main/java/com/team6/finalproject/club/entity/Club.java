@@ -4,6 +4,7 @@ import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.enums.ActivityTypeEnum;
 import com.team6.finalproject.club.enums.JoinTypeEnum;
 import com.team6.finalproject.club.interest.entity.InterestMinor;
+import com.team6.finalproject.club.member.entity.Member;
 import com.team6.finalproject.common.entity.Timestamped;
 import com.team6.finalproject.meeting.entity.Meeting;
 import jakarta.persistence.*;
@@ -78,6 +79,9 @@ public class Club extends Timestamped {
 
     @OneToMany(mappedBy ="club", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Meeting> meetings;
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Member> members = new ArrayList<>();
 
     public void deleteClub() {
         this.isDeleted = true;

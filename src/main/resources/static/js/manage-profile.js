@@ -1,7 +1,5 @@
-let main = "http://localhost:8081/main"
-
 function back() {
-    window.location.href = main
+    window.location.href = "/main"
 }
 
 var fileInput = document.getElementById('file');

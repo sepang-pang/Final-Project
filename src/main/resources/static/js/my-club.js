@@ -7,5 +7,5 @@ function back() {
 var btnCreate = document.getElementById('btn-create');
 btnCreate.addEventListener('click', create);
 function create() {
-    window.location.href = "http://localhost:8081/api/open-club";
+    window.location.href = "/api/open-club";
 }

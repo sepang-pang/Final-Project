@@ -5,7 +5,6 @@ import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
-import com.team6.finalproject.club.entity.Club;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
@@ -51,10 +50,17 @@ public class ClubController {
     }
 
     @GetMapping("/my-club") // 개설한 동호회 목록 조회
-    public String myClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+    public String myClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<ClubResponseDto> myClubs = clubService.myClubs(userDetails.getUser());
         model.addAttribute("myClubs", myClubs);
         return "my-club";
+    }
+
+    @GetMapping("/my-join-club") // 가입한 동호회 목록 조회
+    public String myJoinClubs(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<ClubResponseDto> joinClubs = clubService.myJoinClubs(userDetails.getUser());
+        model.addAttribute("joinClubs", joinClubs);
+        return "my-join-club";
     }
 
     @PostMapping("/clubs") // 동호회 개설
@@ -148,7 +154,7 @@ public class ClubController {
     }
 
     @GetMapping("/clubs/recommend") // 유저에게 최적합 동호회 추천
-    public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails)  {
+    public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.findRecommendedClubsForUser(radius, userDetails.getUser());
     }
 }

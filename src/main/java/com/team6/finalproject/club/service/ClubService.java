@@ -73,5 +73,7 @@ public interface ClubService {
 
     // 내가 개설한 동호회 조회
     List<ClubResponseDto> myClubs(User user);
+    // 가입한 동호회 조회
+    List<ClubResponseDto> myJoinClubs(User user);
 }
 

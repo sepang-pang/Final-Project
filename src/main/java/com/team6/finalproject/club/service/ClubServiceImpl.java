@@ -227,6 +227,13 @@ public class ClubServiceImpl implements ClubService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true) // 가입한 동호회 조회
+    public List<ClubResponseDto> myJoinClubs(User user) {
+        return clubRepository.findJoinClubs(user).stream().map(ClubResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
     // 동호회 개설
     @Override
     @Transactional

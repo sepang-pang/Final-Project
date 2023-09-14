@@ -28,7 +28,7 @@ header {
     margin-right: 10px;
 }
 
-/* === inquiry-body === */
+/* === club-body === */
 .club-body {
     min-height: calc(100vh - 80px); /* 페이지 아래 여백을 고려하여 최소 높이 설정 */
     padding-top: 40px; /* footer 아래 여백을 추가 */
@@ -45,15 +45,18 @@ header {
     text-align: center; /* 가운데 정렬 */
 }
 
+.all-club thead {
+    height: 50px; /* 높이 설정 */
+    font-size: 25px;
+}
+
 .all-club th {
     padding: 10px;
     background-color: #f0f0f0;
 }
-
 .all-club td {
     padding: 10px;
     height: 100%;
-    border: 1px solid #ccc;
 }
 
 /* 링크의 기본 스타일 재정의 */
@@ -66,7 +69,7 @@ a {
 .btn-club {
     display: flex; /* 내부 요소들을 가로로 배치하기 위해 flex 사용 */
     align-items: center; /* 요소들을 세로 가운데 정렬 */
-    width: 40%; /* 버튼의 너비 조절 */
+    width: 30%; /* 버튼의 너비 조절 */
     margin: 20px auto; /* 가운데 정렬 및 위아래 여백 조절 */
     padding: 20px;
     background-color: #f0f0f0;
@@ -120,7 +123,8 @@ a {
 
 /* 버튼 그룹 */
 .btn-group {
-    margin-top: 50px;
+    margin-top: 20px;
+    margin-bottom: 60px;
     text-align: center; /* 버튼 그룹을 오른쪽으로 정렬 */
 }
 /* 확인 버튼 스타일 */
