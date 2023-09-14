@@ -159,26 +159,45 @@ public class MeetingServiceImpl implements MeetingService {
     @Transactional // 모임 수정
     public void updateMeeting(Long meetingId, MeetingRequestDto meetingRequestDto, MultipartFile file, User user) throws IOException {
 
+        log.info("updateMeeting 1");
+
         Meeting meeting = findMeeting(meetingId);
 
+        log.info("updateMeeting 2");
+
         // 작성자가 해당하는 동호회에 포함 돼 있는지 확인.
-        if (memberRepository.findActiveUserAndClub(meeting.getClub().getId(), user.getId()).isEmpty()) {
+        if (memberRepository.findActiveUserAndClub(user.getId(), meeting.getClub().getId()).isEmpty()) {
             throw new IllegalArgumentException("해당 동호회에 가입되어 있지 않습니다.");
         }
 
+        log.info("updateMeeting 3");
+
         // 작성자만 수정 가능하게 예외처리.
         if (!meeting.getUser().getId().equals(user.getId())) {
-            throw new RejectedExecutionException();
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
         }
 
-        // 수정 시 기존 객체 버킷에서 삭제
-        if (meeting.getMedia() != null) {
-            fileUploader.deleteFile(meeting.getMedia());
+        log.info("updateMeeting 4");
+
+
+        String media;
+
+        // 파일 검사 및 처리
+        if (file == null || file.isEmpty()) {
+            media = meeting.getMedia();
+        } else {
+            // 수정 시 기존 객체 버킷에서 삭제
+            if (meeting.getMedia() != null) {
+                fileUploader.deleteFile(meeting.getMedia());
+            }
+            media = fileUploader.upload(file);
         }
 
-        String media = fileUploader.upload(file);
+        log.info("updateMeeting 6");
 
         meeting.update(meetingRequestDto, media);
+
+        log.info("updateMeeting 7");
     }
 
     @Override
