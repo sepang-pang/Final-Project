@@ -292,16 +292,16 @@
             });
         });
 
-
-
         let heartClicked = false;
 
         heartBtn.addEventListener('click', () => {
             heartClicked = !heartClicked;
             if (heartClicked) {
                 heartBtn.classList.add('clicked');
+                heartBtn.style.backgroundImage = "url('/images/heart-red.png')";
             } else {
                 heartBtn.classList.remove('clicked');
+                heartBtn.style.backgroundImage = "url('/images/heart-white.png')";
             }
         });
 

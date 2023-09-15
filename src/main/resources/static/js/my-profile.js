@@ -1,3 +1,4 @@
+
 function back() {
     window.history.back()
 }
@@ -8,3 +9,5 @@ btnUpdate.addEventListener('click', update);
 function update() {
     window.location.href = "/api/profile/update"
 }
+
+

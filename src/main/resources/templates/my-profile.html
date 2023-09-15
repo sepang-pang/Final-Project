@@ -19,52 +19,78 @@
 </head>
 
 <body>
-<div class="container">
-    <header>
-        <img alt="동호회 이미지" class="club-image" src="/images/meets_logo.png">
-        <h1>내 프로필</h1>
-    </header>
-</div>
 <div class="center-container" id="center-container">
     <!-- 이미지와 프로필 디테일 영역 -->
     <div class="image-and-details">
         <!-- 프로필 이미지 -->
         <div class="profile-image">
-            <img alt="프로필 이미지" id="profile-image" name="profileImage" src="/images/meets_logo.png"
+            <img alt="프로필 이미지" id="profile-image" src="/images/meets_logo.png"
                  th:src="${profileDto.getProfileImage()}">
         </div>
         <!-- 닉네임, 소개글, 위치 -->
-        <div class="profile-details">
+        <div class="form-group">
+            <input id="nickname" name="nickname" placeholder="이름" readonly="readonly"
+                   th:value="${profileDto.getNickname()}"
+                   type="text">
+            <button class="btn btn-primary" id="btn-update" type="update">수정하기</button>
+        </div>
+
+
             <div class="form-group">
-                <input id="nickname" name="nickname" placeholder="이름" readonly="readonly"
-                       th:value="${profileDto.getNickname()}"
-                       type="text">
-            </div>
-            <div class="form-group">
+                <label for="introduction">한줄소개</label>
                 <input id="introduction" name="introduction" placeholder="소개글" readonly="readonly"
                        th:value="${profileDto.getIntroduction()}"
                        type="text">
             </div>
-            <div class="form-group">
-                <input id="locate" name="locate" placeholder="위치" readonly="readonly"
-                       th:value="${profileDto.getLocate()}"
-                       type="text">
+
+
+        <div class="form-group">
+            <label for="locate">주소</label>
+            <input id="locate" name="locate" placeholder="위치" readonly="readonly"
+                   th:value="${profileDto.getLocate()}"
+                   type="text">
+        </div>
+
+        <!-- 관심사 -->
+        <div class="form-group">
+            <label for="interest">내 관심사</label>
+            <div class="interests">
+                <div th:each="interest : ${profileDto.profileInterestNames}">
+                    <input class="tag" id="interest" readonly="readonly" th:value="${interest}">
+                </div>
             </div>
         </div>
+
     </div>
-    <!-- 관심사 -->
-    <div class="interests">
-        <div th:each="interest : ${profileDto.profileInterestNames}">
-            <input id="interest" readonly="readonly" th:value="${interest}" type="text">
-        </div>
-    </div>
+
 
     <!-- 버튼 -->
     <div class="btn-group">
         <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
-        <button class="btn btn-primary" id="btn-update" type="update">수정하기</button>
+
     </div>
 </div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
 <!--load JS-->
 <script src="/js/my-profile.js"></script>
 </body>
