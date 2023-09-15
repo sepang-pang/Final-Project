@@ -18,7 +18,7 @@
 
     <!-- Normalize -->
     <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <!--load CSS-->
     <link rel="stylesheet" href="/css/club-detail.css"> <!-- 서버 돌릴 떄는 ../static 빼야됨 -->
 
@@ -37,8 +37,12 @@
             <span class="tag3">동호회 활동점수</span>
         </div>
         <div class="button-group">
-            <button class="btn btn-siren" aria-label="신고">신고하기</button> <!-- 신고 아이콘 예시 -->
-            <button class="btn btn-heart" aria-label="찜">찜</button> <!-- 하트 아이콘 예시 -->
+            <button class="btn btn-siren" aria-label="신고">
+                <i class="fas fa-exclamation-triangle"></i> <!-- 신고 아이콘 -->
+                신고하기</button>
+            <button class="btn btn-heart" aria-label="찜">
+                <i class="far fa-heart"></i> <!-- 빈 하트 아이콘 -->
+                찜</button>
         </div>
     </header>
 </div>
@@ -47,7 +51,7 @@
 <section>
     <header class="club-intro-header">
         <div class="photo-box">
-            <img src="../images/sample.jpg" alt="동호회 사진"/>
+            <img src="../static/images/sample.jpg" alt="동호회 사진"/>
         </div>
     </header>
     <article class="club-intro-article">
@@ -64,6 +68,8 @@
             가족 같은 분위기에서 축구의 열정을 나누고 싶다면, 지금 바로 저희 [축구싶냐]에 가입하세요! 🎉</p>
     </article>
 </section>
+
+<hr class="section-divider">
 
 <!-- section : 일정 -->
 <section class="time-table">
@@ -122,16 +128,16 @@
         <div class="detail-info content-section" style="display: none;">
             <div class="club-details">
                 <div class="detail">
-                    <p>동호회장</p> <span class="leader-name"></span>
+                    <p>동호회장: </p> <span class="leader-name"></span>
                 </div>
                 <div class="detail">
-                    <p>최대 인원 수</p> <span class="max-members"></span>
+                    <p>최대 인원 수: </p> <span class="max-members"></span>
                 </div>
                 <div class="detail">
-                    <p>활동방식</p> <span class="activity-method"></span>
+                    <p>활동방식: </p> <span class="activity-method"></span>
                 </div>
                 <div class="detail">
-                    <p>가입절차</p> <span class="join-method"></span>
+                    <p>가입절차: </p> <span class="join-method"></span>
                 </div>
             </div>
         </div>
@@ -279,6 +285,29 @@
         const heartBtn = document.querySelector(".btn-heart");
         const sirenBtn = document.querySelector(".btn-siren");
         const joinButton = document.querySelector('.join-button'); // 가입하기 버튼 선택
+        const clubButtons = document.querySelectorAll('.club-btn');
+
+        clubButtons.forEach(button => {
+            button.addEventListener('click',() => {
+                // 모든 버튼의 활성 상태 초기화
+                clubButtons.forEach(btn => btn.classList.remove('active'));
+                // 현재 클릭된 버튼만 활성 상태로 설정
+                button.classList.add('active');
+            });
+        });
+
+
+
+        let heartClicked = false;
+
+        heartBtn.addEventListener('click', () => {
+            heartClicked = !heartClicked;
+            if (heartClicked) {
+                heartBtn.classList.add('clicked');
+            } else {
+                heartBtn.classList.remove('clicked');
+            }
+        });
 
         // ============== 동호회 관심 목록 담기 설정 ============== //
         let isLiked = likeStatus; // likeStatus 값을 기반으로 isLiked 초기화
@@ -291,16 +320,6 @@
             }
             isLiked = !isLiked; // 상태 전환
         });
-
-        // ============== 회원, 비회원 버튼 설정 ============== //
-        if (!memberStatus) {
-            joinButton.style.display = 'block'; // 비회원일 경우 가입하기 버튼을 보여줍니다.
-            createMeetingBtn.style.display = 'none'; // 비회원일 경우 모임 생성 버튼을 숨깁니다.
-        } else {
-            joinButton.style.display = 'none'; // 회원일 경우 가입하기 버튼을 숨깁니다.
-            createMeetingBtn.style.display = 'block'; // 회원일 경우 모임 생성 버튼을 보여줍니다.
-        }
-
 
                 // ============== 내 프로필 가기 ============== //
         document.querySelector('.profile-btn').addEventListener('click', function () {
@@ -446,6 +465,14 @@
                 console.error("There was a problem with the fetch operation:", error.message);
             });
 
+        // ============== 회원, 비회원 버튼 설정 ============== //
+        if (!memberStatus) {
+            joinButton.style.display = 'block'; // 비회원일 경우 가입하기 버튼을 보여줍니다.
+            createMeetingBtn.style.display = 'none'; // 비회원일 경우 모임 생성 버튼을 숨깁니다.
+        } else {
+            joinButton.style.display = 'none'; // 회원일 경우 가입하기 버튼을 숨깁니다.
+            createMeetingBtn.style.display = 'block'; // 회원일 경우 모임 생성 버튼을 보여줍니다.
+        }
 
 
         // 가입하기 버튼 클릭 이벤트
