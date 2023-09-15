@@ -13,13 +13,13 @@ on:
   pull_request:
     branches: [ "develop" ]
 
-    env:
-      S3_BUCKET_NAME: meets-github-actions
-      CODE_DEPLOY_APPLICATION_NAME: meets-codedeploy-app
-      CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: meets-codedeploy-deployment-group
+env:
+  S3_BUCKET_NAME: meets-github-actions
+  CODE_DEPLOY_APPLICATION_NAME: meets-codedeploy-app
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: meets-codedeploy-deployment-group
 
 
-    continue-on-error: true
+  continue-on-error: true
 
 permissions:
   contents: read
