@@ -27,52 +27,56 @@
     </header>
 </div>
 <section class="btn-group">
-    <section>
-        <a class="btn-profile" href='/api/my-profile'>
-            <sapn class="my-profile" type="text">내 프로필</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-interests" href='/api/profile/interests'>
-            <sapn class="manage-interests" type="text">관심사 관리</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-join-club" href='/api/my-join-club'>
-            <sapn class="join-club" type="text">가입한 동호회</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-my-club" href='/api/my-club'>
-            <sapn class="my-club" type="text">개설한 동호회</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-like-club" href='/api/my-like-club'>
-            <sapn class="my-like-club" type="text">찜한 동호회</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-inquiry" href='/api/all-inquiry'>
-            <sapn class="all-inquiry" type="text">문의하기</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-update-password" href='/api/update-password'>
-            <sapn class="update-password" type="text">비밀번호 변경</sapn>
-        </a>
-    </section>
-    <section>
-        <a class="btn-withdrawal" href='/withdrawal'>
-            <sapn class="all-inquiry" type="text">회원탈퇴</sapn>
-        </a>
-    </section>
-    <!-- 버튼 -->
-    <section class="btn-group">
-        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
-        <button class="btn btn-primary" id="btn-main" type="button">메인</button>
-    </section>
+    <div>
+        <div class="btn-wrapper">
+            <a class="btn-circle profile" href='/api/my-profile'></a>
+            <p>내 프로필</p>
+        </div>
+
+        <div class="btn-wrapper">
+            <a class="btn-circle interests" href='/api/profile/interests'></a>
+            <p>관심사 관리</p>
+        </div>
+
+        <div class="btn-wrapper">
+            <a class="btn-circle join-club" href='/api/my-join-club'></a>
+            <p>가입한 동호회</p>
+        </div>
+
+        <div class="btn-wrapper">
+            <a class="btn-circle my-club" href='/api/my-club'></a>
+            <p>개설한 동호회</p>
+        </div>
+    </div>
+    <div>
+        <div class="btn-wrapper">
+            <a class="btn-circle like-club" href='/api/my-like-club'></a>
+            <p>찜한 동호회</p>
+        </div>
+
+        <div class="btn-wrapper">
+            <a class="btn-circle inquiry" href='/api/all-inquiry'></a>
+            <p>문의하기</p>
+        </div>
+
+        <div class="btn-wrapper">
+            <a class="btn-circle update-password" href='/api/update-password'></a>
+            <p>비밀번호 변경</p>
+        </div>
+
+        <div class="btn-wrapper">
+            <a class="btn-circle withdrawal" href='/withdrawal'></a>
+            <p>회원탈퇴</p>
+        </div>
+    </div>
+
 </section>
+<!-- 버튼 -->
+<section class="btn-group">
+    <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">뒤로</button>
+    <button class="btn btn-primary" id="btn-main" type="button">메인</button>
+</section>
+
 <!-- Footer Section -->
 <footer>
     <div class="footer-content">
