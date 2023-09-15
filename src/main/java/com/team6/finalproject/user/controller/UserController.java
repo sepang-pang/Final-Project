@@ -96,8 +96,9 @@ public class UserController {
         session.invalidate();
     }
 
-    @GetMapping("/withdrawal")
-    public String withdrawal() {
-        return "withdrawal";
+    @ResponseBody
+    @PostMapping("/user/withdrawal")
+    public void withdrawal(@AuthenticationPrincipal UserDetailsImpl userDetails ,@RequestBody WithdrawalRequestDto withdrawalRequestDto) {
+        userService.withdrawal(userDetails.getUser(),withdrawalRequestDto);
     }
 }
