@@ -18,7 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @Slf4j(topic = "user 컨트롤러입니다.")
 public class UserController {
@@ -96,6 +96,7 @@ public class UserController {
         session.invalidate();
     }
 
+    @ResponseBody
     @PostMapping("/user/withdrawal")
     public void withdrawal(@AuthenticationPrincipal UserDetailsImpl userDetails ,@RequestBody WithdrawalRequestDto withdrawalRequestDto) {
         userService.withdrawal(userDetails.getUser(),withdrawalRequestDto);
