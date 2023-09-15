@@ -46,4 +46,9 @@ public class controller {
     public String withdrawal() {
         return "withdrawal";
     }
+
+    @GetMapping("/api/resetpassword")
+    public String resetPassword() {
+        return "resetpassword";
+    }
 }

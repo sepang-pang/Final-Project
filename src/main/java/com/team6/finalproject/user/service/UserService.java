@@ -30,4 +30,8 @@ public interface UserService {
     public User findByUser(Long id) throws NotExistResourceException;
 
     void withdrawal(User user, WithdrawalRequestDto withdrawalRequestDto);
+
+    public User findByUsername(String username) throws NotExistResourceException;
+
+    public void resetPassword(ResetPasswordDto resetPasswordDto) throws NotExistResourceException;
 }
