@@ -148,6 +148,33 @@ public class UserServiceImpl implements UserService {
         user.updatePassword(encodedPassword);
         userRepository.save(user);
     }
+
+    @Override
+    @Transactional
+    public void resetPassword(ResetPasswordDto resetPasswordDto) throws NotExistResourceException{
+        User user = findByUsername(resetPasswordDto.getUsername());
+        String newPassword = resetPasswordDto.getNewPassword();
+        String checkPassword = resetPasswordDto.getCheckPassword();
+
+        // 두번 입력한 비밀번호 비교
+        if (!newPassword.equals(checkPassword)) {
+            throw new IllegalArgumentException("입력한 비밀번호가 일치하지 않습니다");
+        }
+        // 비밀번호에 ID 포함 불가
+        if (newPassword.contains(user.getUsername())) {
+            throw new IllegalArgumentException("비밀번호에 ID를 포함할 수 없습니다.");
+        }
+        // 현재 비밀번호로 변경 불가
+        if (passwordEncoder.matches(newPassword, user.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호로 변경할 수 없습니다.");
+        }
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.updatePassword(encodedPassword);
+        userRepository.save(user);
+    }
+
+    //비밀번호 찾기.
     @Override
     @Transactional
     public void withdrawal(User user, WithdrawalRequestDto withdrawalRequestDto) {
@@ -174,6 +201,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUser(Long id) throws NotExistResourceException {
         return userRepository.findByActiveId(id).orElseThrow(
+                () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
+    }
+
+    @Override
+    public User findByUsername(String username) throws NotExistResourceException {
+        return userRepository.findByUsername(username).orElseThrow(
                 () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
     }
 

@@ -89,6 +89,12 @@ public class UserController {
         throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
     }
 
+    @PostMapping("/api/users/resetpassword") // 비밀번호 재설정
+    @ResponseBody
+    public void updatePassword(@RequestBody ResetPasswordDto resetPasswordDto) throws NotExistResourceException{
+        userService.resetPassword(resetPasswordDto);
+    }
+
     @PostMapping("/logout")
     public void logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
