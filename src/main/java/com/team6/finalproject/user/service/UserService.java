@@ -1,6 +1,7 @@
 package com.team6.finalproject.user.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
+import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.user.entity.User;
 import jakarta.mail.MessagingException;
@@ -27,4 +28,6 @@ public interface UserService {
 
     // Id로 유저 찾기
     public User findByUser(Long id) throws NotExistResourceException;
+
+    void withdrawal(User user, WithdrawalRequestDto withdrawalRequestDto);
 }

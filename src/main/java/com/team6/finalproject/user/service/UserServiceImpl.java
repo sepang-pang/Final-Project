@@ -2,6 +2,7 @@ package com.team6.finalproject.user.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
 import com.team6.finalproject.common.redis.RedisUtil;
+import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.common.email.EmailAuth;
 import com.team6.finalproject.user.entity.User;
@@ -9,6 +10,7 @@ import com.team6.finalproject.user.entity.UserRoleEnum;
 import com.team6.finalproject.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -145,6 +148,22 @@ public class UserServiceImpl implements UserService {
         user.updatePassword(encodedPassword);
         userRepository.save(user);
     }
+    @Override
+    @Transactional
+    public void withdrawal(User user, WithdrawalRequestDto withdrawalRequestDto) {
+        log.info(user.getUsername());
+
+        log.info(withdrawalRequestDto.getPassword());
+        if (!passwordEncoder.matches(withdrawalRequestDto.getPassword(),user.getPassword())) {
+            throw new IllegalArgumentException("입력한 비밀번호가 일치하지 않습니다");
+        }
+
+        log.info("변경");
+        user.deletedUser();
+        log.info("변경 후");
+
+        userRepository.save(user);
+    }
 
     @Override
     public User findByEmail(String email) throws NotExistResourceException {
@@ -157,4 +176,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByActiveId(id).orElseThrow(
                 () -> new NotExistResourceException("유저를 찾을 수 없습니다."));
     }
+
 }

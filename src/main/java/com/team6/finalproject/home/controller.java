@@ -41,4 +41,9 @@ public class controller {
     public String findPassword() {
         return "findPassword";
     }
+
+    @GetMapping("/withdrawal")
+    public String withdrawal() {
+        return "withdrawal";
+    }
 }
