@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title> 동호회 상세 조회 페이지 </title>
+
+    <!--사이트 기본설정-->
+    <meta name="description" content="서브 메인">
+    <meta name="keywords" content="동호회">
+    <meta name="author" content="오세창">
+
+    <!--Viewport-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0">
+
+    <!--(IE10)-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Normalize -->
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
+
+    <!--load CSS-->
+    <link rel="stylesheet" href="/css/sub-main.css">
+
+</head>
+<body>
+<!-- 헤더 영역: 로그아웃, 프로필 버튼 포함 -->
+<header class="header">
+    <button class="logout-btn">로그아웃</button>
+    <button class="profile-btn">내 프로필</button>
+</header>
+
+<div class="body-container">
+
+    <!-- 첫 번째 섹션 시작 -->
+    <section id="first-section">
+        <!-- 헤더 시작 -->
+        <section class="section-header">
+            <!-- 주제 버튼들 -->
+            <button type="button" id="topicButton1">문화 · 예술</button>
+            <button type="button" id="topicButton2">액티비티</button>
+            <button type="button" id="topicButton3">푸드 · 드링크</button>
+            <button type="button" id="topicButton4">취미</button>
+            <button type="button" id="topicButton5">파티 · 소개팅</button>
+            <button type="button" id="topicButton6">여행 · 동행</button>
+            <button type="button" id="topicButton7">자기계발</button>
+            <button type="button" id="topicButton8">동네 · 친목</button>
+            <button type="button" id="topicButton9">재테크</button>
+            <button type="button" id="topicButton10">외국어</button>
+        </section>
+        <!-- 헤더 끝 -->
+
+        <!-- article 시작 -->
+        <section class="section-article">
+            <div class="subtopics" id="subtopics1">
+                <button type="button" class="subtopic-button" data-topic="1">전시</button>
+                <button type="button" class="subtopic-button" data-topic="2">영화</button>
+                <button type="button" class="subtopic-button" data-topic="3">페스티벌</button>
+                <button type="button" class="subtopic-button" data-topic="4">공연</button>
+                <button type="button" class="subtopic-button" data-topic="5">콘서트</button>
+                <button type="button" class="subtopic-button" data-topic="6">뮤지컬</button>
+                <button type="button" class="subtopic-button" data-topic="7">연극</button>
+                <button type="button" class="subtopic-button" data-topic="8">연주회</button>
+            </div>
+            <div class="subtopics" id="subtopics2">
+                <button type="button" class="subtopic-button" data-topic="9">등산</button>
+                <button type="button" class="subtopic-button" data-topic="10">러닝</button>
+                <button type="button" class="subtopic-button" data-topic="11">산책</button>
+                <button type="button" class="subtopic-button" data-topic="12">야구</button>
+                <button type="button" class="subtopic-button" data-topic="13">배드민턴</button>
+                <button type="button" class="subtopic-button" data-topic="14">클라이밍</button>
+                <button type="button" class="subtopic-button" data-topic="15">헬스</button>
+                <button type="button" class="subtopic-button" data-topic="16">요가</button>
+                <button type="button" class="subtopic-button" data-topic="17">수영</button>
+                <button type="button" class="subtopic-button" data-topic="18">볼링</button>
+                <button type="button" class="subtopic-button" data-topic="19">서핑</button>
+                <button type="button" class="subtopic-button" data-topic="20">풋살</button>
+                <button type="button" class="subtopic-button" data-topic="21">다이어트</button>
+                <button type="button" class="subtopic-button" data-topic="22">자전거</button>
+                <button type="button" class="subtopic-button" data-topic="23">플로깅</button>
+                <button type="button" class="subtopic-button" data-topic="24">필라테스</button>
+                <button type="button" class="subtopic-button" data-topic="25">다이빙</button>
+                <button type="button" class="subtopic-button" data-topic="26">골프</button>
+                <button type="button" class="subtopic-button" data-topic="27">농구</button>
+                <button type="button" class="subtopic-button" data-topic="28">축구</button>
+            </div>
+            <div class="subtopics" id="subtopics3">
+                <button type="button" class="subtopic-button" data-topic="29">맛집투어</button>
+                <button type="button" class="subtopic-button" data-topic="30">카페</button>
+                <button type="button" class="subtopic-button" data-topic="31">와인</button>
+                <button type="button" class="subtopic-button" data-topic="32">맥주</button>
+                <button type="button" class="subtopic-button" data-topic="33">요리</button>
+                <button type="button" class="subtopic-button" data-topic="34">위스키</button>
+                <button type="button" class="subtopic-button" data-topic="35">칵테일</button>
+                <button type="button" class="subtopic-button" data-topic="36">커피</button>
+                <button type="button" class="subtopic-button" data-topic="37">디저트</button>
+                <button type="button" class="subtopic-button" data-topic="38">전통주</button>
+                <button type="button" class="subtopic-button" data-topic="39">티룸</button>
+                <button type="button" class="subtopic-button" data-topic="40">파인다이닝</button>
+                <button type="button" class="subtopic-button" data-topic="41">비건</button>
+                <button type="button" class="subtopic-button" data-topic="42">페어링</button>
+            </div>
+            <div class="subtopics" id="subtopics4">
+                <button type="button" class="subtopic-button" data-topic="43">사진</button>
+                <button type="button" class="subtopic-button" data-topic="44">보드게임</button>
+                <button type="button" class="subtopic-button" data-topic="45">공예</button>
+                <button type="button" class="subtopic-button" data-topic="46">드로잉</button>
+                <button type="button" class="subtopic-button" data-topic="47">댄스</button>
+                <button type="button" class="subtopic-button" data-topic="48">노래</button>
+                <button type="button" class="subtopic-button" data-topic="49">글쓰기</button>
+                <button type="button" class="subtopic-button" data-topic="50">봉사활동</button>
+                <button type="button" class="subtopic-button" data-topic="51">악기연주</button>
+                <button type="button" class="subtopic-button" data-topic="52">방탈출</button>
+                <button type="button" class="subtopic-button" data-topic="53">음악감상</button>
+                <button type="button" class="subtopic-button" data-topic="54">만화</button>
+                <button type="button" class="subtopic-button" data-topic="55">게임</button>
+                <button type="button" class="subtopic-button" data-topic="56">명상</button>
+                <button type="button" class="subtopic-button" data-topic="57">반려동물</button>
+                <button type="button" class="subtopic-button" data-topic=58>캘리그라피</button>
+            </div>
+            <div class="subtopics" id="subtopics5">
+                <button type="button" class="subtopic-button" data-topic="59">소개팅</button>
+                <button type="button" class="subtopic-button" data-topic="60">파티</button>
+            </div>
+            <div class="subtopics" id="subtopics6">
+                <button type="button" class="subtopic-button" data-topic="61">국내여행</button>
+                <button type="button" class="subtopic-button" data-topic="62">해외여행</button>
+                <button type="button" class="subtopic-button" data-topic="63">캠핑</button>
+                <button type="button" class="subtopic-button" data-topic="64">드라이브</button>
+                <button type="button" class="subtopic-button" data-topic="65">피크닉</button>
+                <button type="button" class="subtopic-button" data-topic="66">테마파크</button>
+                <button type="button" class="subtopic-button" data-topic="67">복합문화공간</button>
+            </div>
+            <div class="subtopics" id="subtopics7">
+                <button type="button" class="subtopic-button" data-topic="68">독서</button>
+                <button type="button" class="subtopic-button" data-topic="69">스터디</button>
+                <button type="button" class="subtopic-button" data-topic="70">대화</button>
+                <button type="button" class="subtopic-button" data-topic="71">사이드 프로젝트</button>
+                <button type="button" class="subtopic-button" data-topic="72">커리어</button>
+                <button type="button" class="subtopic-button" data-topic="73">브렌딩</button>
+                <button type="button" class="subtopic-button" data-topic="74">창작</button>
+            </div>
+            <div class="subtopics" id="subtopics8">
+                <button type="button" class="subtopic-button" data-topic="75">동네</button>
+                <button type="button" class="subtopic-button" data-topic="76">관심사</button>
+                <button type="button" class="subtopic-button" data-topic="77">또래</button>
+            </div>
+            <div class="subtopics" id="subtopics9">
+                <button type="button" class="subtopic-button" data-topic="78">N잡</button>
+                <button type="button" class="subtopic-button" data-topic="79">재테크</button>
+                <button type="button" class="subtopic-button" data-topic="80">부동산</button>
+                <button type="button" class="subtopic-button" data-topic="81">창업</button>
+                <button type="button" class="subtopic-button" data-topic="82">주식</button>
+            </div>
+            <div class="subtopics" id="subtopics10">
+                <button type="button" class="subtopic-button" data-topic="83">영어</button>
+                <button type="button" class="subtopic-button" data-topic="84">일본어</button>
+                <button type="button" class="subtopic-button" data-topic="85">중국어</button>
+                <button type="button" class="subtopic-button" data-topic="86">언어교환</button>
+            </div>
+        </section>
+        <!-- article 끝 -->
+    </section>
+    <!-- 첫 번째 섹션 끝 -->
+
+    <!-- 두 번째 섹션 시작 -->
+    <section id="second-section">
+        <!-- second-section-header 시작 -->
+        <div class="second-section-header">
+            <h2 class="major-interest">[대주제 이름]</h2>
+            <h2 class="minor-interest">[소주제 이름]</h2>
+        </div>
+
+        <!-- section-article 시작 (동호회 소개 카드) -->
+        <div class="second-section-article">
+            <div class="initial-message">
+                <h2>동호회를 선택해주세요!</h2>
+            </div>
+        </div>
+    </section>
+    <!-- second-section 끝 -->
+
+    <!-- 세 번째 섹션 시작 -->
+    <section id="third-section">
+        <!-- third-section-header 시작 -->
+        <div class="third-section-header">
+            <h2 class="major-interest">인기 급상승 동호회</h2>
+        </div>
+        <!-- section-article 시작 (동호회 소개 카드) -->
+        <div class="third-section-article">
+            <h2>서비스 준비중입니다.</h2>
+            <!--            <div class="card">-->
+            <!--                <img src="path_to_image1.jpg" alt="Image description">-->
+            <!--                <div class="card-content">-->
+            <!--                    &lt;!&ndash; JS 356 ~ 378 에 해당 양식 있음 &ndash;&gt;-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div> <!-- third-article 끝 -->
+    </section>
+    <!-- third-section 끝 -->
+
+
+    <!-- 네 번째 섹션 시작 -->
+    <section id="fourth-section">
+        <!-- fourth-section-header 시작 -->
+        <div class="fourth-section-header">
+            <h2 class="major-interest">새로 생긴 동호회</h2>
+        </div>
+        <!-- fourth-article 시작 (동호회 소개 카드) -->
+        <div class="fourth-section-article">
+            <div class="card">
+                <img src="path_to_image1.jpg" alt="Image description">
+                <div class="card-content">
+                    <!-- JS 356 ~ 378 에 해당 양식 있음 -->
+                </div>
+            </div>
+        </div> <!-- fourth-article 끝 -->
+    </section>
+    <!-- fourth-section 끝 -->
+
+    <!-- 다섯 번째 섹션 시작 -->
+    <section id="fifth-section">
+
+        <!-- fifth-section-header 시작 -->
+        <div class="fifth-section-header">
+            <h2 class="major-interest">동호회 추천</h2>
+        </div>
+
+        <!-- fifth-article 시작 (동호회 소개 카드) -->
+        <div class="fifth-section-article">
+            <div class="unauthenticated-message">
+                회원만 이용가능한 서비스입니다.
+            </div>
+            <div class="slider-container">
+                <h2>범위를 지정해주세요 !</h2>
+                <div class="range-radius">
+                    <input type="range" min="5" max="15" value="5" id="distance-slider">
+                    <span id="slider-value">5Km</span>
+                </div>
+            </div>
+            <div class="cards-container"> <!-- 여기에 카드가 동적으로 추가됩니다 -->
+                <!-- JS 356 ~ 378 에 해당 양식 있음 -->
+            </div>
+        </div> <!-- fifth-article 끝 -->
+    </section>
+    <!-- fifth-section 끝 -->
+</div>
+
+<!-- 푸터 영역: 주관, 팀, 멤버, 연락처 정보 포함 -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
+
+<script>
+
+
+    // -------------- 내 프로필 페이지로 이동  -------------- //
+    document.querySelector('.profile-btn').addEventListener('click', function () {
+        window.location.href = "/api/my-profile";
+    });
+
+    function displayCards(clubs, containerElement) {
+        const initialMessage = containerElement.querySelector('.initial-message');
+        if (initialMessage) {
+            initialMessage.remove();
+        }
+        containerElement.innerHTML = "";  // Clear existing cards
+
+        // If containerElement is not inside fifth-section, display the empty notice
+        if (clubs.length === 0) {
+            containerElement.innerHTML = '<div class="empty-club-notice"><h2>아직 개설된 동호회가 없어요.</h2></div>';
+            return;
+        }
+
+        if (clubs[0]) {
+            document.querySelector(".major-interest").textContent = clubs[0].major;
+            document.querySelector(".minor-interest").textContent = clubs[0].minor;
+        }
+
+        containerElement.innerHTML = clubs.map(club => `
+            <div class="card" data-club-id="${club.clubId}">
+                <img src="${club.media}" alt="${club.description}">
+                <div class="card-content">
+                    <h3 class="title">${club.name}</h3>
+                    <p class="intro">${club.description}</p>
+                    <div class="activity-score-div">
+                        <p class="activity-score-icon" style="margin-right: 10px;">🔥 활동점수 </p>
+                        <p class="activity-score">${club.activityScore}</p>
+                    </div>
+                    <div class="location-div">
+                        <p class="location-icon" style="margin-right: 10px;">🌏 지역 </p>
+                        <p class="location">${club.locate}</p>
+                    </div>
+                    <div class="member-count-div">
+                        <p class="member-count-icon" style="margin-right: 10px;">👥 인원 </p>
+                        <p class="member-count">${club.maxMember}</p>
+                    </div>
+                    <div class="topics">
+                        <span class="topic-tag">${club.major}</span>
+                        <span class="topic-tag">${club.minor}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        containerElement.addEventListener('click', function (e) {
+            const cardElement = e.target.closest('.card');
+            if (cardElement) {
+                const clubId = cardElement.getAttribute('data-club-id');
+                if (clubId) {
+                    fetch(`/api/club-detail/${clubId}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                        .then(response => {
+                            if (response.status === 401) {
+                                return response.json().then(data => {
+                                    alert("로그인이 필요한 서비스입니다.");
+                                    window.location.href = "/login";
+                                });
+                            } else if (response.ok) {
+                                // 정상적인 응답인 경우 페이지를 이동시킨다.
+                                window.location.href = `/api/club-detail/${clubId}`;
+                            } else {
+                                // 다른 에러 처리
+                                return response.text().then(text => {
+                                    console.error(text);
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            }
+        });
+
+    }
+
+    function fetchRecommendedClubs(radius) {
+        fetch(`/api/clubs/recommend?radius=${radius}`)
+            .then(response => response.json())
+            .then(clubs => {
+                displayCards(clubs, document.querySelector(".cards-container"));
+            })
+            .catch(error => {
+                console.error('Error fetching recommended clubs:', error);
+            });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // 로그인 여부 확인
+        fetch('/api/isAuthenticated')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.isAuthenticated) {
+                    // 로그인되지 않은 상태
+                    document.querySelector('.slider-container').style.display = 'none';
+                    document.querySelector('.cards-container').style.display = 'none';
+                    document.querySelector('.profile-btn').style.display = 'none';
+                    document.querySelector('.unauthenticated-message').style.display = 'flex';
+
+                    // 로그아웃 버튼을 로그인 버튼으로 변경
+                    const logoutBtn = document.querySelector('.logout-btn');
+                    logoutBtn.textContent = '로그인';
+                    logoutBtn.style.marginRight = '50px';
+
+                    // 클릭 이벤트를 리다이렉트 기능으로 변경
+                    logoutBtn.removeEventListener('click', logoutFunc);  // 기존 로그아웃 함수 제거 (옵션)
+                    logoutBtn.addEventListener('click', function () {
+                        window.location.href = '/login';
+                    });
+                } else {
+                    // 로그인된 상태
+                    document.querySelector('.logout-btn').addEventListener('click', logoutFunc);
+                }
+            });
+
+        // 로그아웃 기능 함수
+        function logoutFunc() {
+            fetch('/logout', {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('로그아웃 되었습니다.');
+                        window.location.href = "/login";
+                    } else {
+                        alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                    alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+                });
+        }
+
+
+
+        const slider = document.getElementById("distance-slider");
+        const sliderValue = document.getElementById("slider-value");
+
+        slider.addEventListener("input", function () {
+            sliderValue.textContent = `${slider.value}Km`;
+
+            // 슬라이더 값이 변경될 때마다 API 호출
+            fetchRecommendedClubs(slider.value);  // 해당 함수는 아래에서 정의됩니다.
+        });
+
+
+        fetch("/api/clubs/get/recent")
+            .then(response => response.json())
+            .then(clubs => {
+                displayCards(clubs, document.querySelector(".fourth-section-article"));
+            });
+
+        const headerButtons = document.querySelectorAll('.section-header button');
+        const subtopicButtons = document.querySelectorAll('.subtopics button');
+
+        headerButtons.forEach((button, index) => {
+            button.addEventListener('click', function () {
+                handleSubtopicActivation(index);
+                handleButtonSelection(button, headerButtons);
+            });
+        });
+
+        subtopicButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const minorIdString = button.getAttribute("data-topic");
+                const minorId = parseInt(minorIdString, 10);
+                fetchClubData(minorId);
+                handleButtonSelection(button, subtopicButtons);
+            });
+        });
+
+        function handleSubtopicActivation(index) {
+            const subtopics = document.querySelectorAll('.subtopics');
+            subtopics.forEach(subtopic => subtopic.classList.remove('active'));
+            document.getElementById('subtopics' + (index + 1)).classList.add('active');
+        }
+
+        function handleButtonSelection(clickedButton, buttonGroup) {
+            buttonGroup.forEach(button => button.classList.remove('selected-button'));
+            clickedButton.classList.add('selected-button');
+        }
+
+        function fetchClubData(minorId) {
+            fetch(`/api/clubs/get/interest-minor/${minorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayCards(data, document.querySelector(".second-section-article"));
+                })
+                .catch(error => {
+                    console.error("Error fetching club data: ", error);
+                });
+        }
+
+        const initialSliderValue = document.getElementById("distance-slider").value;
+        fetchRecommendedClubs(initialSliderValue);
+    });
+</script>
+
+
+</body>
+</html>

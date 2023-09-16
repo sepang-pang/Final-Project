@@ -104,9 +104,9 @@ public class ClubServiceImpl implements ClubService {
     // 소주제 별 조회
     @Override
     @Transactional(readOnly = true)
-    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException {
+    public List<ClubResponseDto> readSelectInterestMinor(Long minorId) {
         List<Club> clubs = clubRepository.findByActiveInterestMinor(minorId);
-        return readInterestClubs(clubs);
+        return clubs.stream().map(ClubResponseDto::new).toList();
     }
 
     // 거리순 조회
@@ -155,28 +155,24 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional(readOnly = true)
     public List<ClubResponseDto> clubsByRecent() {
+        log.info("최근 개설된 동호회 조회");
 
         List<Club> clubs = clubRepository.findClubsByRecent();
-
+        log.info("최근 개설된 동호회 조회 결과: {}", clubs);
         return clubs.stream()
-                .map(club -> new ClubResponseDto(club))
+                .map(ClubResponseDto::new)
                 .toList();
     }
 
-    // 인기 급상승 동호회 조회
+    // 인기 급상승 동호회 조회 (로직 수정 필요)
     @Override
     @Transactional(readOnly = true)
-    public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException {
+    public List<ClubResponseDto> clubsByPopularity() {
 
         List<Club> clubs = clubRepository.findPopularClubs();
 
-        // 존재하지 않을 경우 예외 발생
-        if (clubs.isEmpty()) {
-            throw new NotExistResourceException("존재하지 않는 동호회입니다.");
-        }
-
         return clubs.stream()
-                .map(club -> new ClubResponseDto(club))
+                .map(ClubResponseDto::new)
                 .toList();
     }
 
@@ -184,13 +180,17 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional(readOnly = true)
     public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user) {
+        log.info("거리, 연령대, 관심사가 모두 부합하는 동호회 조회 1");
         List<Club> clubs = clubRepository.findRecommendedClubs(user);
+        log.info("거리, 연령대, 관심사가 모두 부합하는 동호회 조회 결과: {}", clubs);
 
+        log.info("거리, 연령대, 관심사가 모두 부합하는 동호회 조회 2");
         // radius 의 최소값은 5km 며, 이를 충족하지 못했을시 예외 발생
         if (radius < 5) {
             throw new IllegalArgumentException("최소 반경은 5km 이상이어야 합니다.");
         }
 
+        log.info("거리, 연령대, 관심사가 모두 부합하는 동호회 조회 3");
         // radius 내에 존재하는 동호회를 조회하면서 가까운 순으로 정렬
         clubs = clubs.stream()
                 .filter(club -> {
@@ -203,8 +203,10 @@ public class ClubServiceImpl implements ClubService {
                 }))
                 .toList();
 
+        log.info("거리, 연령대, 관심사가 모두 부합하는 동호회 조회 4");
+
         return clubs.stream()
-                .map(club -> new ClubResponseDto(club))
+                .map(ClubResponseDto::new)
                 .toList();
     }
 
@@ -399,19 +401,27 @@ public class ClubServiceImpl implements ClubService {
         // 가입 대상 동호회 조회
         Club targetClub = findClub(clubId);
 
+        log.info("apply 1");
+
         if (targetClub.getMaxMember() < memberService.findMembers(targetClub.getId()).size()) {
             throw new CapacityFullException("정원이 가득찼습니다");
         }
+
+        log.info("apply 2");
 
         // 거주지 입력 여부 판단
         if(profileService.existValidLocate(user.getId())){
             throw new IllegalArgumentException("거주지를 입력해주세요");
         }
 
-        // 관심사 등록 여부 판단
-        if(profileService.existValidInterest(user.getId())) {
-            throw new IllegalArgumentException("관심사를 등록해주세요");
-        }
+        log.info("apply 3");
+
+//        // 관심사 등록 여부 판단
+//        if(profileService.existValidInterest(user.getId())) {
+//            throw new IllegalArgumentException("관심사를 등록해주세요");
+//        }
+
+        log.info("apply 4");
 
         // ======== 즉시 가입 동호회 ======== //
         if (targetClub.getJoinType() == (JoinTypeEnum.IMMEDIATE)) {
@@ -423,6 +433,8 @@ public class ClubServiceImpl implements ClubService {
             return ResponseEntity.ok().body(new ApiResponseDto("동호회 가입 성공", 200));
         }
 
+        log.info("apply 5");
+
 
         // ======== 가입 승인 동호회 ======== //
         // 가입여부 확인
@@ -430,10 +442,14 @@ public class ClubServiceImpl implements ClubService {
             throw new DuplicateActionException("이미 소속된 동호회입니다.");
         }
 
+        log.info("apply 6");
+
         // 신청여부 확인
         if (applyJoinClubService.hasPendingApplication(user.getId(), clubId)) {
             throw new DuplicateActionException("이미 가입 신청한 상태입니다.");
         }
+
+        log.info("apply 7");
 
         // 가입 신청서 제출
         ApplyJoinClub application = ApplyJoinClub.builder()

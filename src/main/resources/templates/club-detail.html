@@ -292,15 +292,6 @@
             isLiked = !isLiked; // 상태 전환
         });
 
-        // ============== 회원, 비회원 버튼 설정 ============== //
-        if (!memberStatus) {
-            joinButton.style.display = 'block'; // 비회원일 경우 가입하기 버튼을 보여줍니다.
-            createMeetingBtn.style.display = 'none'; // 비회원일 경우 모임 생성 버튼을 숨깁니다.
-        } else {
-            joinButton.style.display = 'none'; // 회원일 경우 가입하기 버튼을 숨깁니다.
-            createMeetingBtn.style.display = 'block'; // 회원일 경우 모임 생성 버튼을 보여줍니다.
-        }
-
 
                 // ============== 내 프로필 가기 ============== //
         document.querySelector('.profile-btn').addEventListener('click', function () {
@@ -447,6 +438,15 @@
             });
 
 
+
+        // ============== 회원, 비회원 버튼 설정 ============== //
+        if (!memberStatus) {
+            joinButton.style.display = 'block'; // 비회원일 경우 가입하기 버튼을 보여줍니다.
+            createMeetingBtn.style.display = 'none'; // 비회원일 경우 모임 생성 버튼을 숨깁니다.
+        } else {
+            joinButton.style.display = 'none'; // 회원일 경우 가입하기 버튼을 숨깁니다.
+            createMeetingBtn.style.display = 'block'; // 회원일 경우 모임 생성 버튼을 보여줍니다.
+        }
 
         // 가입하기 버튼 클릭 이벤트
         joinButton.addEventListener('click', function() {

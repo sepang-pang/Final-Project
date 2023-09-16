@@ -152,7 +152,7 @@
 
         let isMeetingCompleted = false;  // 모임이 마감되었는지 여부를 저장하는 변수
 
-
+        // -------------- 프로필 버튼 클릭 시 이벤트 리스너  -------------- //
         document.querySelector('.profile-btn').addEventListener('click', function () {
             window.location.href = "/api/my-profile";
         });
@@ -557,7 +557,7 @@
                 .then(response => {
                     if (response.ok) {
                         alert('모임이 삭제되었습니다.');
-                        window.location.href = "/main";
+                        window.location.href = "/sub-main";
 
                     } else {
                         return response.json().then(err => {

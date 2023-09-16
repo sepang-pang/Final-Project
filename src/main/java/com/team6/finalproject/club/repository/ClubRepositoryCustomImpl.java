@@ -116,7 +116,8 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
                                 club.activityScore.goe(60)
                                         .and(club.maxMember.multiply(0.3).loe(jpaQueryFactory.select(member.count())
                                                 .from(member)
-                                                .where(member.club.eq(club)
+                                                .where(member.club.id.eq(club.id)
+                                                        .and(member.isDeleted.eq(false))
                                                         .and(member.createdAt.between(startOfDay, endOfDay)))))
                         )
                         .groupBy(club.id)
@@ -129,12 +130,12 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
     public List<Club> findRecommendedClubs(User user) {
         return jpaQueryFactory.selectFrom(club)
                 .where(
-                        club.isDeleted.eq(false), // 삭제되지 않은 동호회만 조회
-                        club.minAge.loe(user.getAge()), // 최소 연령
-                        club.maxAge.goe(user.getAge()), // 최대 연령
+                        club.isDeleted.eq(false),
+                        club.minAge.loe(user.getAge()),
+                        club.maxAge.goe(user.getAge()),
                         club.minor.in(user.getProfile().getProfileInterests().stream()
                                 .map(ProfileInterest::getInterestMinor)
-                                .collect(Collectors.toList()))   // 관심사 일치
+                                .collect(Collectors.toList()))
                 )
                 .fetch();
     }

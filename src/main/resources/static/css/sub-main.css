@@ -1,0 +1,296 @@
+/* ===== 기본 설정 ===== */
+body {
+    font-size: 14px; /* 기본 폰트 크기 설정 */
+}
+
+/* ===== 메인 컨테이너 설정 ===== */
+.body-container {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 40px;
+}
+
+/* ===== 헤더 설정 ===== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+/* 헤더 내 버튼 설정 */
+.logout-btn, .profile-btn {
+    margin-right: 10px;
+}
+
+.profile-btn {
+    margin-right: 30px;
+}
+
+/* ===== 섹션 헤더 설정 ===== */
+.section-header {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* ===== 섹션 내용 설정 ===== */
+.section-article {
+    margin-top: 20px;
+}
+
+/* ===== 하위 주제 설정 ===== */
+.subtopics {
+    display: none; /* 기본적으로 하위 주제는 숨겨진 상태로 설정. JavaScript로 제어 */
+    flex-wrap: wrap;
+    gap: 12.5px;
+}
+
+.subtopics.active {
+    display: flex;
+}
+
+/* ===== 버튼 스타일 설정 ===== */
+.section-header button, .subtopic-button {
+    flex: 0 0 calc(20% - 10px);
+    box-sizing: border-box;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 버튼 호버 스타일 */
+.section-header button:hover, .subtopic-button:hover {
+    background-color: #ddd;
+}
+
+/* 선택된 버튼 스타일 */
+.selected-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* ===== 주제별 카드 설정 ===== */
+
+
+.major-interest, .minor-interest {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.second-section-article, .third-section-article, .fourth-section-article, .fifth-section-article{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 9.2%;
+}
+
+.cards-container {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 9.2%;
+}
+
+.card {
+    width: 27%;
+    display: flex;
+    flex-direction: column; /* 세로로 요소들을 정렬 */
+    height: 420px; /* 높이를 자동으로 조절 */
+    align-items: center; /* 센터 정렬 */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.card img {
+    width: 95%; /* 이미지의 너비를 90%로 설정 */
+    height: 50%; /* 이미지의 높이를 .card의 40%로 설정 */
+    aspect-ratio: 1;
+    margin-top: 10px; /* 이미지 상단 간격 추가 */
+    margin-left: 0; /* margin-left 제거 */
+    margin-bottom: 10px; /* 이미지와 컨텐츠 간의 간격 추가 */
+    background-color: black;
+    object-fit: cover; /* 이미지가 너비/높이를 초과할 경우 잘라내기 */
+    object-position: center; /* 이미지 중앙 정렬 */
+    border-radius: 10px;
+}
+
+
+.card-content {
+    width: 100%; /* 컨텐츠의 너비 조절 */
+    margin-left: 10px;
+    max-height: none; /* 제한을 풀어줍니다. */
+}
+
+.title {
+    margin-top: 10px; /* 이 값을 조절하여 원하는 간격을 얻을 수 있습니다. */
+}
+
+.title, .intro {
+    margin-left: 10px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.activity-score-icon, .location-icon, .member-count-icon {
+    color: gray;
+}
+
+.title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.topics, .activity-score-div, .location-div, .member-count-div {
+    display: flex;
+    justify-content: flex-start;
+    margin-right: 10px;
+}
+
+.activity-score-div p, .location-div p, .member-count-div p {
+    margin: 5px; /* p 태그의 margin을 초기화합니다. */
+}
+
+.topic-tag:last-child {
+    margin-right: 0;
+}
+
+.topic-tag {
+    display: inline-block;
+    margin: 5px 8px 0 5px; /* top, right, bottom, left 순서로 마진 값을 설정 */
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    font-size: 0.9em;
+}
+
+.major-interest, .minor-interest {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    font-size: 1.3em;
+}
+
+/* 슬라이더 컨테이너를 가운데에 정렬 */
+.slider-container {
+    width: 100%;
+    text-align: center;
+    justify-content: center; /* 가로축에서 중앙 정렬 */
+    align-items: center;     /* 세로축에서 중앙 정렬 */
+    margin-bottom: 5%;     /* 슬라이더와 카드 사이의 간격 */
+    margin-top: 5%;
+}
+
+/* 슬라이더의 길이 */
+#distance-slider {
+    width: 70%;
+    margin-right: 1%;
+    margin-top: 1%;
+}
+
+/* 슬라이더 스타일링 */
+.range-radius {
+    display: flex;
+    align-items: center;  /* 세로축에서 중앙 정렬 */
+    justify-content: center; /* 가로축에서 중앙 정렬 */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    cursor: pointer;
+}
+
+
+/* 비회원 메시지 */
+.unauthenticated-message {
+    display: none; /* 기본적으로 숨겨져 있음 */
+    width: 100%;
+    height: 150px;
+    background-image: radial-gradient(ellipse at center, rgba(128, 128, 128, 0.2), rgba(128, 128, 128, 0));
+    z-index: 100; /* 다른 요소 위에 표시 */
+    text-align: center;
+    font-size: 20px;
+    color: #333;
+
+    /* Flexbox를 사용하여 내용 중앙 정렬 */
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+/* ================================= footer ================================= */
+/* Footer Styles */
+footer {
+    margin-top: 5%;
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+/* ================================= footer ================================= */
+
+
+
+
