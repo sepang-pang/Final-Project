@@ -21,6 +21,9 @@
 
     <!--load CSS-->
     <link rel="stylesheet" href="/css/sub-main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
 
 </head>
 <body>
@@ -160,15 +163,22 @@
             </div>
         </section>
         <!-- article 끝 -->
+        <!-- 네비게이터 추가 -->
+        <div class="nav-prompt">
+            <p>직접 동호회를 만들어보세요 !</p>
+            <div class="floating-arrow">&#8595;</div> <!-- This is a downward pointing arrow -->
+            <button class="create-group-btn">동호회 생성하기</button>
+        </div>
     </section>
+
     <!-- 첫 번째 섹션 끝 -->
 
     <!-- 두 번째 섹션 시작 -->
     <section id="second-section">
         <!-- second-section-header 시작 -->
         <div class="second-section-header">
-            <h2 class="major-interest">[대주제 이름]</h2>
-            <h2 class="minor-interest">[소주제 이름]</h2>
+            <h2 class="major-interest">대주제 이름</h2>
+            <h2 class="minor-interest">소주제 이름</h2>
         </div>
 
         <!-- section-article 시작 (동호회 소개 카드) -->
@@ -313,8 +323,8 @@
                         <p class="member-count">${club.maxMember}</p>
                     </div>
                     <div class="topics">
-                        <span class="topic-tag">${club.major}</span>
-                        <span class="topic-tag">${club.minor}</span>
+                        <span class="tag1">${club.major}</span>
+                        <span class="tag2">${club.minor}</span>
                     </div>
                 </div>
             </div>
@@ -417,6 +427,36 @@
         }
 
 
+        document.querySelector(".create-group-btn").addEventListener("click", function() {
+            fetch('/api/open-club', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.status === 401) {
+                        // 401 status code인 경우
+                        return response.json().then(data => {
+                            alert("로그인이 필요한 서비스입니다.");
+                            window.location.href = "/login";
+                        });
+                    } else if (response.ok) {
+                        // 요청이 성공적으로 수행된 경우
+                        window.location.href = '/api/open-club';
+                    } else {
+                        // 다른 상태 코드에 대한 처리
+                        console.error("Unexpected response:", response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+
+
 
         const slider = document.getElementById("distance-slider");
         const sliderValue = document.getElementById("slider-value");
@@ -442,6 +482,14 @@
             button.addEventListener('click', function () {
                 handleSubtopicActivation(index);
                 handleButtonSelection(button, headerButtons);
+
+                // 대주제 텍스트 설정
+                let majorInterest = document.querySelector(".major-interest");
+                majorInterest.textContent = button.textContent;
+
+                // 소주제 텍스트 초기화
+                let minorInterest = document.querySelector(".minor-interest");
+                minorInterest.textContent = "소주제";
             });
         });
 
@@ -451,8 +499,13 @@
                 const minorId = parseInt(minorIdString, 10);
                 fetchClubData(minorId);
                 handleButtonSelection(button, subtopicButtons);
+
+                // 소주제 텍스트 설정
+                let minorInterest = document.querySelector(".minor-interest");
+                minorInterest.textContent = button.textContent;
             });
         });
+
 
         function handleSubtopicActivation(index) {
             const subtopics = document.querySelectorAll('.subtopics');
