@@ -1,6 +1,7 @@
 function back() {
-    window.location.href = "/main"
+    window.history.back()
 }
+
 
 var fileInput = document.getElementById('file');
 // 파일 미리보기 엘리먼트
@@ -132,7 +133,6 @@ function submit() {
         return response.json();
     }).then(data => {
         alert("프로필이 변경되었습니다.");
-        window.location.href = "/sub-main";
         back();
     }).catch(error => {
         alert(error);
