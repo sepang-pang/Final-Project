@@ -45,6 +45,7 @@ reportForm.addEventListener('submit', function (event) {
         .then(data => {
             alert("신고 완료");
             reportModal.style.display = 'none';
+            window.location.href = "/sub-main";
         })
         .catch(error => {
             console.error('Error:', error);

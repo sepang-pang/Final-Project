@@ -129,6 +129,7 @@ function submit(){
         body: formData
     }).then(data => {
         console.log(data);
+        window.location.href = "/sub-main";
         alert("동호회가 개설되었습니다.");
     }).catch(error => {
         alert(error);

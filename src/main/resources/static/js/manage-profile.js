@@ -132,6 +132,7 @@ function submit() {
         return response.json();
     }).then(data => {
         alert("프로필이 변경되었습니다.");
+        window.location.href = "/sub-main";
         back();
     }).catch(error => {
         alert(error);
