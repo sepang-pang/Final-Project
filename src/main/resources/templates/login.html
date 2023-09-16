@@ -180,7 +180,7 @@
     <div class="login_box">
         <div class="left">
             <div class="contact">
-                <form action="">
+                <form id="loginForm" action="/api/login" method="post">
                     <h3>LOG IN</h3>
                     <input type="text" id="username" placeholder="ID">
                     <input type="password" id="password" placeholder="PASSWORD" required>
@@ -192,7 +192,7 @@
                         <p><a href="/api/findid">아이디 찾기</a> / <a href="/api/findpassword">비밀번호 찾기</a></p>
                         <p>계정이 없으신가요? <a href="/signup">회원 가입</a></p>
                     </div>
-                    <button class="submit" onclick="login()">Log In</button>
+                    <button class="submit" type="submit">Log In</button>
                 </form>
             </div>
         </div>
@@ -206,6 +206,7 @@
         </div>
     </div>
 </section>
-<script src="/js/login.js"></script>
+<script src="/js/sub-main.js">
+</script>
 </body>
 </html>
