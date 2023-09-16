@@ -53,17 +53,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write("{\"message\": \"로그인이 필요한 페이지입니다.\"}");
-                response.sendRedirect("/login");
             }
         }
     }
 
 
-
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms","/api/findid","/api/findpassword","/api/users/id-auth",
-                "/api/users/id-inquiry","/api/resetpassword","/api/users/resetpassword", "/sub-main", "/api/clubs/get"};
-
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms", "/sub-main", "/main" ,"/api/clubs/get/"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }

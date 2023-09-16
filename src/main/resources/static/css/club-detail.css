@@ -168,6 +168,18 @@ header {
     text-indent: -9999px; /* 버튼 텍스트 숨김 */
 }
 
+.btn-heart:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+
+.btn-heart {
+    transition: background-image 0.3s;
+}
+
+
+
+
 /* ================================= club intro =================================  */
 /* === club intro header - header === */
 .club-intro-header {
