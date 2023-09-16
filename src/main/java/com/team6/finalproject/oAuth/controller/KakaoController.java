@@ -21,7 +21,7 @@ public class KakaoController {
     public String kakaoCallback(@RequestParam String code, HttpServletResponse httpServletResponse, Model model){
         if (kakaoService.check(code,httpServletResponse)) {
             model.addAttribute("email",httpServletResponse.getHeader("email"));
-            return "main";
+            return "sub-main";
         }else {
             model.addAttribute("email",httpServletResponse.getHeader("email"));
             return "oAuthSignup";
