@@ -69,7 +69,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms","/api/findid","/api/findpassword","/api/users/id-auth",
-                "/api/users/id-inquiry","/api/resetpassword","/api/users/resetpassword"};
+                "/api/users/id-inquiry","/api/resetpassword","/api/users/resetpassword", "/sub-main", "/api가/clubs/get"};
 
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
