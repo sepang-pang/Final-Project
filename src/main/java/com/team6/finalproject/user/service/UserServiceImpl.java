@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("중복된 이름입니다.");
         }
 
-//        if(!redisUtil.isVerified(signupRequestDto.getPhoneNumber())){
-//            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
-//        }
+        if(!redisUtil.isVerified(signupRequestDto.getPhoneNumber())){
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
+        }
 
         UserRoleEnum role = UserRoleEnum.USER;
 

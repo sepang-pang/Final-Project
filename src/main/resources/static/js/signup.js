@@ -14,7 +14,7 @@ userNameInput.addEventListener("input", function () {
 let passwordInput = document.getElementById("password");
 let passwordFeedback = document.getElementById("passwordFeedback");
 passwordInput.addEventListener("input", function () {
-    let isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/.test(passwordInput.value);
+    let isValid = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/.test(passwordInput.value);
     if (!isValid) {
         passwordFeedback.innerHTML = "양식에 맞지않습니다.";
     } else {
