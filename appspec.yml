@@ -1,3 +1,4 @@
+# Code Depley 설정
 version: 0.0
 os: linux
 
@@ -16,8 +17,8 @@ hooks:
   AfterInstall:
     - location: scripts/stop.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
   ApplicationStart:
     - location: scripts/start.sh
       timeout: 60
-      runas: ubuntu
+      runas: root
