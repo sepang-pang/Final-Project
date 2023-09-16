@@ -41,7 +41,7 @@ jobs:
           cd ./src/main/resources
           touch ./application.properties
           echo "${{secrets.APPLICATION_PROPERTIES}}" > ./application.properties
-          touch ./application-s3.properties
+          touch ./application-oauth.properties
           echo "${{secrets.APPLICATION_OAUTH_PROPERTIES}}" > ./application-oauth.properties
           shell: bash
 
