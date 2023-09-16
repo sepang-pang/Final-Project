@@ -32,8 +32,8 @@ jobs:
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
+        distribution: 'temurin'
         java-version: '17'
-        distribution: 'adopt'
 
     # (+++) application.properties 생성
     - name: make application.properties
@@ -51,7 +51,7 @@ jobs:
 
     # Gradle build (Test 포함)
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
         arguments: clean build
 
