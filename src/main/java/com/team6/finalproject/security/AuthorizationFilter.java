@@ -11,15 +11,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 @Slf4j(topic = "authorizationFilter 입니다.")
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -60,9 +61,21 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String[] excludePath = {"/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms", "/sub-main", "/main" ,"/api/clubs/get/"};
+        String[] excludePath = {
+                "/", "/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms",
+                "/sub-main", "/main", "/api/clubs/get/recent", "/api/clubs/get/popularity",
+                "/api/clubs/get/interest-minor/{minorId}"
+        };
+
         String path = request.getRequestURI();
-        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+
+        for (String pattern : excludePath) {
+            if (pathMatcher.match(pattern, path)) {
+                return true; // 요청 경로가 제외 경로 중 하나와 일치하면 필터링하지 않음
+            }
+        }
+
+        return false; // 제외 경로와 일치하지 않는 경우 필터링 수행
     }
 
     private void setAuthentication(String username) {

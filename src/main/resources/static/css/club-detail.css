@@ -89,6 +89,10 @@ header {
     font-size: 0.9em; /* 글자 크기를 조정합니다. 필요에 따라 변경 가능합니다. */
 }
 
+.score {
+    margin-right: 5px;
+}
+
 .button-group {
     display: inline-flex;
     align-items: center;

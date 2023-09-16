@@ -52,6 +52,7 @@ public class WebSecurityConfig{
                                 .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/images/**", "/js/**", "/webjars/**", "/css/**").permitAll()
                                 .anyRequest().permitAll()
+
                 );
 
 
