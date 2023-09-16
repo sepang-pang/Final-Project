@@ -220,7 +220,7 @@ public class ClubServiceImpl implements ClubService {
         }
 
         return applyJoinClubs.stream()
-                .map(applyJoinClub -> new ClubAppliesResponseDto(applyJoinClub))
+                .map(ClubAppliesResponseDto::new)
                 .toList();
     }
 
@@ -416,10 +416,10 @@ public class ClubServiceImpl implements ClubService {
 
         log.info("apply 3");
 
-//        // 관심사 등록 여부 판단
-//        if(profileService.existValidInterest(user.getId())) {
-//            throw new IllegalArgumentException("관심사를 등록해주세요");
-//        }
+        // 관심사 등록 여부 판단
+        if(profileService.existValidInterest(user.getId())) {
+            throw new IllegalArgumentException("관심사를 등록해주세요");
+        }
 
         log.info("apply 4");
 
