@@ -30,7 +30,7 @@
 <!-- 헤더 영역: 로그아웃, 프로필 버튼 포함 -->
 <header class="header">
     <button class="logout-btn">로그아웃</button>
-    <button class="profile-btn">내 프로필</button>
+    <button class="profile-btn">마이페이지</button>
 </header>
 
 <div class="body-container">
@@ -283,7 +283,7 @@
 
     // -------------- 내 프로필 페이지로 이동  -------------- //
     document.querySelector('.profile-btn').addEventListener('click', function () {
-        window.location.href = "/api/my-profile";
+        window.location.href = "/api/my-page";
     });
 
     function displayCards(clubs, containerElement) {
