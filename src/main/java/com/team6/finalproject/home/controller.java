@@ -34,7 +34,7 @@ public class controller {
         return "main";
     }
 
-    @GetMapping("/sub-main")
+    @GetMapping("/")
     public String subMain() {
         return "sub-main";
     }
