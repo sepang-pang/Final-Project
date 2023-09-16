@@ -1,149 +1,184 @@
-/* 페이지 내용을 가운데 정렬하는 스타일 */
-body {
-    background-color: #87CEEB; /* 하늘색 배경 */
+/* 가운데 컨테이너 설정 */
+#center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+/* 프로필 이미지를 동그랗게 만들고 가운데 정렬 */
+.profile-image {
+    border-radius: 50%;
+    width: 150px; /* 이미지 크기 조절 */
+    height: 150px;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0; /* 페이지 바깥 여백 제거 */
-    font-family: Arial, sans-serif;
-    text-align: center;
+    margin-bottom: 20px; /* 이미지 아래 간격 조절 */
+    margin-left: 40%;
 }
 
-/* 컨테이너 스타일 */
-.container {
-    display: flex;
-    position: fixed; /* 위치를 고정 */
-    top: 0; /* 상단에 배치 */
-    left: 0; /* 왼쪽에 배치 */
+.profile-image img {
+    width: 100%; /* 이미지가 부모 요소에 맞게 가득 채우도록 설정 */
+    height: 100%; /* 이미지가 부모 요소에 맞게 가득 채우도록 설정 */
+    object-fit: cover; /* 이미지의 가로세로 비율을 유지한 채로 부모 요소에 맞추고 잘린 부분은 숨깁니다. */
 }
 
-header {
+/* 닉네임 설정 */
+#nickname {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px; /* 닉네임 아래 간격 조절 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    border: none; /* 테두리 제거 */
+    outline: none; /* 포커스 효과 제거 */
+    background: transparent; /* 배경 투명으로 설정 */
+    flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    margin-right: 10px; /* 이름 입력란과 버튼 사이의 간격 조절 */
+}
+
+/* 소개글 및 위치 정보 설정 */
+.details {
     display: flex;
-    flex-direction: row; /* 가로 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-between;
+    margin: 50px 0; /* 소개글과 위치 정보 간격 조절 */
+}
+
+#introduction {
+    width: 500px; /* 원하는 가로 크기로 조절 */
+    height: 100px; /* 가로 크기와 동일한 높이로 설정하여 정사각형 모양으로 만듭니다 */
+    border-radius: 10px; /* 모서리를 둥글게 만듭니다 */
+    border: 2px solid #ccc; /* 테두리를 두껍게 만들고 회색으로 설정합니다 */
+    padding: 10px; /* 텍스트와 테두리 사이의 간격을 조절합니다 */
+    background-color: white; /* 배경색을 하얀색으로 설정합니다 */
+    font-size: 16px; /* 글꼴 크기 설정 */
+    color: #333; /* 텍스트 색상 설정 */
+}
+리
+#locate {
+    width: 500px; /* 원하는 가로 크기로 조절 */
+    height: 100px; /* 가로 크기와 동일한 높이로 설정하여 정사각형 모양으로 만듭니다 */
+    border-radius: 10px; /* 모서리를 둥글게 만듭니다 */
+    border: 2px solid #ccc; /* 테두리를 두껍게 만들고 회색으로 설정합니다 */
+    padding: 10px; /* 텍스트와 테두리 사이의 간격을 조절합니다 */
+    background-color: white; /* 배경색을 하얀색으로 설정합니다 */
+    font-size: 16px; /* 글꼴 크기 설정 */
+    color: #333; /* 텍스트 색상 설정 */
+}
+
+label {
+    margin-right: 450px;
+    display: block; /* 라벨을 블록 레벨 요소로 설정하여 아래로 이동 */
+    margin-bottom: 10px; /* 라벨 아래 간격 조절 */
+    margin-top: 20px;
+    font-size: 16px; /* 라벨의 글꼴 크기 설정 */
+    font-weight: bold; /* 라벨의 텍스트 두껍게 설정 */
+}
+
+#locate {
+    flex: 1;
     width: 500px;
-    margin-bottom: 20px; /* 이미지와 텍스트 사이의 간격 조정 */
-}
-
-/* 이미지 스타일 */
-.club-image {
-    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
-    max-width: 20%;
-    height: auto;
-}
-
-/* 메인 제목 스타일 */
-h1 {
-    font-size: 36px;
-    color: #fff; /* 흰색 텍스트 */
-}
-
-/* 컨테이너1 스타일 */
-.center-container {
-    background-color: rgba(255, 255, 255, 0.9); /* 투명한 흰색 배경 */
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    width: 800px; /* 컨테이너의 너비 조정 */
-    text-align: left; /* 텍스트를 왼쪽 정렬 */
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%); /* 가운데 정렬 */
-    max-height: 70%; /* 최대 높이 설정 */
-    overflow-y: auto; /* 스크롤 가능하도록 설정 */
-    transition: height 0.3s ease; /* 높이 변경에 트랜지션을 추가합니다. */
-}
-
-/* 이미지와 프로필 디테일 영역 */
-.image-and-details {
-    display: flex;
-}
-
-/* 프로필 이미지 스타일 */
-#profile-image {
-    flex: none; /* 이미지 크기를 고정 */
-    width: 300px; /* 이미지의 폭을 원하는 크기로 지정 */
-    text-align: center; /* 이미지를 가운데 정렬 */
-}
-
-/* 프로필 디테일 영역 스타일 */
-.profile-details {
-    flex: 1; /* 남은 공간을 모두 사용 */
-}
-
-/* 텍스트 박스 스타일 */
-input[type="text"],
-select {
-    width: 100%;
-    padding: 20px; /* 세로 크기 조정 */
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 10px; /* 간격 조정 */
-    border: none;
-    border-radius: 5px;
+    height: 30px;
     text-align: center;
-    box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
+    font-size: 16px;
+}
+.interests{
+    display: flex; /* 가로로 나열하기 위한 스타일 추가 */
+    flex-wrap: wrap; /* 넘치면 다음 줄로 넘어가도록 설정 */
+    margin-bottom: 20px
 }
 
-/* 관심사 영역 스타일 */
-.interests {
-    margin-top: 20px; /* 위쪽 여백 조정 */
-    display: flex; /* 가로로 배치 */
-    flex-wrap: wrap; /* 필요한 경우 요소를 여러 줄로 래핑 */
-    justify-content: space-between; /* 내부 요소 사이에 공간을 균등하게 배분 */
-}
-
-/* 각 관심사 요소 스타일 */
-.interests input[type="text"] {
-    width: auto;
-    padding: 20px; /* 세로 크기 조정 */
-    margin-top: 10px;
-    margin-right: 10px; /* 오른쪽 간격 추가 */
-    margin-bottom: 10px; /* 아래쪽 간격 추가 */
-    border: none;
-    border-radius: 5px;
+.tag {
+    display: inline-block; /* span 태그를 인라인-블록으로 설정하여 박스 형태를 만듭니다. */
+    margin-right: 8px; /* 오른쪽 마진을 추가하여 span 태그 사이에 간격을 줍니다. */
+    padding: 15px 20px; /* 태그 안에 텍스트에 패딩을 추가하여 더 읽기 좋게 만듭니다. */
+    border: 1px solid #82ab9a; /* 연한 회색의 테두리를 추가합니다. */
+    border-radius: 4px; /* 태그의 모서리를 둥글게 만듭니다. */
+    background-color: rgba(173, 237, 210, 0.86);
+    font-size: 1.1em; /* 글자 크기를 조정합니다. 필요에 따라 변경 가능합니다. */
     text-align: center;
-    box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
+    color: black;
+
 }
 
-/* 이름, 소개글, 위치 입력 필드에 커서 스타일 변경 */
-#nickname, #introduction, #locate, #interest {
-    cursor: auto;
-}
 
-.btn-group {
-    margin-top: 20px;
-    margin-bottom: 50px;
-    text-align: right; /* 버튼 그룹을 오른쪽으로 정렬 */
-}
 
-/* 수정하기 버튼 스타일 */
+/* 수정하기 버튼 위치 설정 */
 #btn-update {
-    background-color: darkgray;
-    color: #fff; /* 흰색 텍스트 */
-    padding: 15px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    position: relative;
-    margin-left: 10px; /* 버튼 사이 간격 조정 */
+    background-image: url('https://cdn-icons-png.flaticon.com/128/3597/3597075.png'); /* 이미지 경로를 설정하세요 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    background-color: transparent; /* 배경색 제거 */
+    background-size: cover;
+    max-width: 20px;
+    max-height: 20px;
+    border: none; /* 테두리 제거 */
+    width: 20px; /* 버튼 너비 조정 */
+    height: 20px; /* 버튼 높이 조정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+    text-indent: -9999px; /* 버튼 텍스트 숨김 */
 }
 
-/* 메인 버튼 스타일 */
+/* 뒤로 가기 버튼 위치 설정 */
 #goBackButton {
-    background-color: darkgray;
-    color: #fff; /* 흰색 텍스트 */
-    padding: 15px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
-    position: relative;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-image: url('https://cdn-icons-png.flaticon.com/128/1286/1286956.png'); /* 이미지 경로를 설정하세요 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    background-color: transparent; /* 배경색 제거 */
+    background-size: cover;
+    max-width: 50px;
+    max-height: 50px;
+    border: none; /* 테두리 제거 */
+    width: 50px; /* 버튼 너비 조정 */
+    height: 50px; /* 버튼 높이 조정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    margin-right: 10px; /* 오른쪽 여백 추가 */
+    text-indent: -9999px; /* 버튼 텍스트 숨김 */
 }
 
-/* 버튼 호버 효과 */
-#goBackButton:hover, #btn-update:hover {
-    background-color: black; /* 호버 시 색 변경 */
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
 }

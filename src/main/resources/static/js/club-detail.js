@@ -16,18 +16,7 @@ window.onload = function () {
         }, 100);  // 클릭 후 0.1초 지나면 원래 위치로 돌아옴
     }
 
-    heartBtn.addEventListener("click", function () {
-        if (heartBtn.style.backgroundImage.includes('/images/heart-white.png')) {
-            heartBtn.style.backgroundImage = "url('/images/heart-red.png')";
-        } else {
-            heartBtn.style.backgroundImage = "url('/images/heart-white.png')";
-        }
-        animateButton(heartBtn);  // 애니메이션 적용
-    });
 
-    sirenBtn.addEventListener("click", function () {
-        animateButton(sirenBtn);  // 애니메이션 적용
-    });
 
     // ================================================== //
     // 버튼 클릭 시 섹션을 보여주는 함수
