@@ -24,13 +24,30 @@ header {
     padding: 10px;
 }
 
-/* 헤더 내 버튼 설정 */
 .logout-btn, .profile-btn {
-    margin-right: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px; /* 옆으로 긴 둥근 모양 */
+    background-color: #a3d9a5; /* 연한 초록색 배경 */
+    color: #fff; /* 흰색 텍스트 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s; /* 호버 효과 */
+    margin-right: 30px;
 }
 
 .profile-btn {
     margin-right: 30px;
+}
+
+/* 로그아웃 버튼 스타일 */
+.logout-btn:hover {
+    background-color: #77bf78; /* 호버 시 더 진한 초록색 */
+}
+
+/* 내 프로필 버튼 스타일 */
+.profile-btn:hover {
+    background-color: #77bf78; /* 호버 시 더 진한 초록색 */
 }
 
 /* ===== 섹션 헤더 설정 ===== */
@@ -41,6 +58,60 @@ header {
     justify-content: space-between;
     gap: 10px;
 }
+
+
+.nav-prompt {
+    position: fixed;
+    right: 10%;
+    top: 20%;
+    text-align: center;
+    flex-direction: column;  /* 자식 요소를 수직으로 배열 */
+    display: flex;  /* Flexbox를 사용 */
+    align-items: center;  /* 수평 가운데 정렬 */
+    justify-content: center;  /* 수직 가운데 정렬 */
+    font-family: 'Nanum Myeongjo', serif;
+    transform: translateY(-50%); /* 화살표의 중앙에 위치하도록 조정 */
+}
+
+.floating-arrow {
+    font-size: 24px;
+    animation: floatArrow 1s infinite alternate;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.create-group-btn {
+    display: block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #006400;
+    background-color: #98FB98;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.1), inset 0px 0px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s, background-color 0.3s;
+    text-align: center;
+    cursor: pointer;
+}
+
+.create-group-btn:hover {
+    background-color: #7CCD7C;
+    transform: translateY(-3px);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15), inset 0px 0px 8px rgba(0,0,0,0.15);
+}
+
+.create-group-btn:active {
+    background-color: #50A050;
+    transform: translateY(1px);
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2), inset 0px 0px 5px rgba(0,0,0,0.2);
+}
+
+@keyframes floatArrow {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(10px); }
+}
+
+
 
 /* ===== 섹션 내용 설정 ===== */
 .section-article {
@@ -64,22 +135,46 @@ header {
     box-sizing: border-box;
     padding: 5px;
     text-align: center;
-    border: 1px solid #ccc;
-    background-color: #f5f5f5;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.5s, color 0.5s, border-color 0.5s, box-shadow 0.5s;
 }
 
-/* 버튼 호버 스타일 */
-.section-header button:hover, .subtopic-button:hover {
-    background-color: #ddd;
+/* 헤더 버튼 스타일 */
+.section-header button {
+    background-color: #FFEBEE;
 }
 
-/* 선택된 버튼 스타일 */
-.selected-button {
-    background-color: #4CAF50;
-    color: white;
+.section-header button:hover {
+    background-color: #FFCDD2;
+    border-color: #EF9A9A;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
+
+.section-header button.selected-button {
+    color: #D32F2F;
+}
+
+/* 서브토픽 버튼 스타일 */
+.subtopic-button {
+    background-color: #E8EAF6;
+}
+
+.subtopic-button:hover {
+    background-color: #C5CAE9;
+    border-color: #9FA8DA;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.subtopic-button.selected-button {
+    background-color: #BBDEFB;
+    border-color: #90CAF9;
+    color: #303F9F;
+}
+
+
 
 /* ===== 주제별 카드 설정 ===== */
 
@@ -174,19 +269,28 @@ header {
     margin: 5px; /* p 태그의 margin을 초기화합니다. */
 }
 
-.topic-tag:last-child {
-    margin-right: 0;
+.tag1 {
+    display: inline-block; /* span 태그를 인라인-블록으로 설정하여 박스 형태를 만듭니다. */
+    margin-top: 2px;
+    margin-right: 8px; /* 오른쪽 마진을 추가하여 span 태그 사이에 간격을 줍니다. */
+    padding: 4px 8px; /* 태그 안에 텍스트에 패딩을 추가하여 더 읽기 좋게 만듭니다. */
+    border: 1px solid #cdfaaf; /* 연한 회색의 테두리를 추가합니다. */
+    border-radius: 4px; /* 태그의 모서리를 둥글게 만듭니다. */
+    background-color: #defdc5; /* 연한 회색의 배경색을 추가합니다. */
+    font-size: 0.9em; /* 글자 크기를 조정합니다. 필요에 따라 변경 가능합니다. */
 }
 
-.topic-tag {
-    display: inline-block;
-    margin: 5px 8px 0 5px; /* top, right, bottom, left 순서로 마진 값을 설정 */
-    padding: 4px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f5f5f5;
-    font-size: 0.9em;
+.tag2 {
+    display: inline-block; /* span 태그를 인라인-블록으로 설정하여 박스 형태를 만듭니다. */
+    margin-top: 2px;
+    margin-right: 8px; /* 오른쪽 마진을 추가하여 span 태그 사이에 간격을 줍니다. */
+    padding: 4px 8px; /* 태그 안에 텍스트에 패딩을 추가하여 더 읽기 좋게 만듭니다. */
+    border: 1px solid #75cde6; /* 연한 회색의 테두리를 추가합니다. */
+    border-radius: 4px; /* 태그의 모서리를 둥글게 만듭니다. */
+    background-color: #a0def1; /* 연한 회색의 배경색을 추가합니다. */
+    font-size: 0.9em; /* 글자 크기를 조정합니다. 필요에 따라 변경 가능합니다. */
 }
+
 
 .major-interest, .minor-interest {
     display: inline-block;
