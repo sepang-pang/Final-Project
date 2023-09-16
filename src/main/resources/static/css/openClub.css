@@ -1,5 +1,3 @@
-
-
 .container {
     margin-left: auto;
     margin-right: auto;
@@ -31,47 +29,36 @@ label {
 /* Header */
 
 body {
-    background: radial-gradient(#52f6e9, #2387c5);
+    background: white;
     padding-top: 8rem;
 }
 
 
-@media screen and (max-width: 980px) {
-
-    body:after {
-        background-attachment: scroll;
-        background-position: top;
-        background-size: 100%;
-    }
-
-}
-
-#header {
-    color: #a6a6a6;
+.logo {
     cursor: default;
     position: relative;
     text-align: center;
     z-index: 10001;
 }
 
-#header > .logo {
+.logo {
     margin: 0 0 4rem 0;
     padding: 0;
 }
 
-#header > .logo a {
+.logo a {
     font-size: 4rem;
     font-weight: 700;
-    color: #FFF;
+    color: #000000;
     text-decoration: none;
     line-height: 1rem;
 }
 
-#header > .logo span {
+.logo span {
     font-weight: 300;
     font-size: 1rem;
     display: block;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgb(255, 255, 255);
 }
 
 /* Main */
@@ -95,11 +82,12 @@ body {
     margin: 0;
 }
 .wrapper.style1 {
+    background:white;
     margin-top:100px;
 }
 
 .wrapper.style2 {
-    background: rgba(86, 194, 222, 0.94);
+    background:rgba(86, 194, 222, 0.94);
     padding: 6rem;
 }
 
@@ -120,21 +108,46 @@ body {
     color: rgba(255, 255, 255, 0.25);
 }
 
-
-/* Footer */
-
-#footer {
-    padding: 2rem 0 0.1rem 0 ;
-    text-align: center;
-}
-
-#footer a {
-    color: rgba(255, 255, 255, 0.75);
+/* ================================= footer ================================= */
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 20px 0;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#footer a:hover {
-    color: #FFF;
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
 }
 
 .copyright {
@@ -156,7 +169,7 @@ input[type="text"] {
     padding: 30px; /* 세로 크기 조정 */
     margin-bottom: 10px; /* 간격 조정 */
     margin-left: 300px;
-    border: none;
+    border: 1px solid #b2b2b2; /* 테두리 스타일 및 색상 지정 */
     border-radius: 5px;
     text-align: center;
     box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
@@ -197,7 +210,7 @@ label {
     background-color: #fff; /* 흰색 배경 */
     color: rgba(42, 152, 222, 0.82);
     padding: 15px 25px;
-    border: none;
+    border: 1px solid #b2b2b2; /* 테두리 스타일 및 색상 지정 */
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
@@ -265,10 +278,11 @@ label {
 
 /* 텍스트 박스 스타일링 */
 textarea#description {
+
     width: 50%;
     height: 300px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #8e8e8e;
     border-radius: 5px;
     margin-left: 300px;
 
@@ -278,7 +292,7 @@ textarea#description {
 input[type="file"]#image {
     width: 50%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #8e8e8e;
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 15px;
@@ -294,14 +308,21 @@ label {
     border: none;
     padding: 15px 70px;
     border-radius: 8px;
+    margin-left: 40%;
     margin-top: 20px;
     margin-bottom: 40px;
-    background: #ffffff;
-    color: #fff;
+    background-color: rgba(86, 194, 222, 0.94);
+    color: rgba(86, 194, 222, 0.94);
     font-weight: bold;
     text-align: center; /* 텍스트 가운데 정렬 */
     display: inline-block; /* 텍스트를 감싸는 인라인 블록 요소로 설정 */
     line-height: 1; /* 텍스트 수직 정렬 */
+    display: flex; /* 플렉스 컨테이너로 설정하여 수직 가운데 정렬 적용 */
+    align-items: center; /* 수직 가운데 정렬 적용 */
+}
+
+#next-btn3:hover {
+    background-color: rgba(156, 234, 255, 0.94);
 }
 
 

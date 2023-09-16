@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>처음페이지</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+</head>
+
+<style>
+    /* 추가 스타일링 */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    #header {
+        background-color: rgba(0, 0, 0, 0.5); /* 헤더 배경색과 투명도 설정 */
+        text-align: center;
+        padding: 100px 0;
+    }
+
+    #header h1 {
+        font-size: 36px;
+        color: white;
+        margin: 0;
+    }
+
+    #header h2 {
+        font-size: 24px;
+        color: white;
+        margin: 20px 0;
+    }
+
+    #main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        padding: 20px;
+    }
+
+    .image {
+        flex: 0 0 calc(33.3333% - 20px); /* 이미지 컬럼의 너비 설정 */
+        margin: 10px;
+    }
+
+    .image img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+</style>
+<body>
+<!-- Header -->
+<header id="header">
+    <div class="inner">
+        <h1>MEETS</h1>
+        <h2>"미쯔 홈페이지에 온 것을 환영합니다!"
+            <br>
+            "로그인 하려면 이 버튼을 누르세요"</h2>
+        <a href="#" class="button big alt">
+            <span>Let's Go</span>
+        </a>
+    </div>
+</header>
+<!-- Main -->
+<div id="main">
+    <div class="inner">
+        <div class="columns">
+            <div class="image fit">
+                <img src="/images/club-photo/1.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/2.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/3.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/4.jpg" alt>
+            </div>
+
+            <div class="image fit">
+                <img src="/images/club-photo/5.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/6.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/7.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/8.jpg" alt>
+            </div>
+
+            <div class="image fit">
+                <img src="/images/club-photo/9.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/10.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/11.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/12.jpg" alt>
+            </div>
+
+            <div class="image fit">
+                <img src="/images/club-photo/13.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/14.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/15.jpg" alt>
+            </div>
+            <div class="image fit">
+                <img src="/images/club-photo/16.jpg" alt>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function ($) {
+
+        skel.breakpoints({
+            xlarge: '(max-width: 1680px)',
+            large: '(max-width: 1280px)',
+            medium: '(max-width: 980px)',
+            small: '(max-width: 736px)',
+            xsmall: '(max-width: 480px)'
+        });
+
+        $(function () {
+
+            var $window = $(window),
+                $body = $('body'),
+                $header = $('#header'),
+                $footer = $('#footer');
+
+            // Disable animations/transitions until the page has loaded.
+            $body.addClass('is-loading');
+
+            $window.on('load', function () {
+                window.setTimeout(function () {
+                    $body.removeClass('is-loading');
+                }, 100);
+            });
+
+            // Fix: Placeholder polyfill.
+            $('form').placeholder();
+
+            // Prioritize "important" elements on medium.
+            skel.on('+medium -medium', function () {
+                $.prioritize(
+                    '.important\\28 medium\\29',
+                    skel.breakpoint('medium').active
+                );
+            });
+
+            // Header.
+            $header.each(function () {
+
+                var t = jQuery(this),
+                    button = t.find('.button');
+
+                button.click(function (e) {
+
+                    t.toggleClass('hide');
+
+                    if (t.hasClass('preview')) {
+                        return true;
+                    } else {
+                        e.preventDefault();
+                    }
+
+                });
+
+            });
+        });
+
+    })(jQuery);
+</script>
+</body>
+</html>

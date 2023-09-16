@@ -32,18 +32,95 @@ header {
 .btn-group {
     margin-top: 50px;
     margin-bottom: 50px;
-    text-align: center; /* 버튼 그룹을 오른쪽으로 정렬 */
+    text-align: center; /* 버튼 그룹을 가운데 정렬 */
 }
 
+.btn-wrapper {
+    display: inline-block;
+    vertical-align: top; /* 버튼 컨테이너를 위쪽 정렬 */
+    margin: 0 10px; /* 버튼 간격 조절 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+}
+
+.btn-circle {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border: 2px;
+    border-radius: 50%;
+    background-size: contain; /* 배경 이미지가 버튼 내에서 모두 보이도록 설정 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    margin: 50px; /* 버튼 간격 조절 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+.btn-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 증가 */
+}
+
+/* 버튼 텍스트 스타일 */
+.btn-txt {
+    display: block; /* 텍스트를 블록 레벨 요소로 설정하여 아래로 이동 */
+    font-size: 12px; /* 원하는 글꼴 크기로 설정 */
+    color: black; /* 텍스트 색상을 검정색으로 설정 */
+    text-decoration: none; /* 텍스트에 밑줄 제거 */
+}
+
+/* 버튼 텍스트 스타일 */
+.btn-txt {
+    display: block; /* 텍스트를 블록 레벨 요소로 설정하여 아래로 이동 */
+    margin-top: 5px; /* 텍스트와 버튼 사이의 간격 조절 */
+    font-size: 12px; /* 원하는 글꼴 크기로 설정 */
+    color: black; /* 텍스트 색상을 검정색으로 설정 */
+    text-decoration: none; /* 텍스트에 밑줄 제거 */
+}
+
+.profile {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/3106/3106773.png");
+    background-size: 60%;
+}
+
+
+.interests {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/4850/4850929.png");
+    background-size: 60%;
+}
+
+
+.join-club {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/2799/2799166.png");
+    background-size: 60%;
+}
+
+.my-club {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/329/329739.png");
+    background-size: 60%;
+}
+
+.like-club {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/1077/1077035.png");
+    background-size: 60%;
+}
+
+.inquiry {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/7611/7611002.png");
+    background-size: 60%;
+}
+
+.update-password {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/10480/10480728.png");
+    background-size: 60%;
+}
+
+.withdrawal {
+    background-image: url("https://cdn-icons-png.flaticon.com/128/8669/8669763.png");
+    background-size: 60%;
+}
 /* 버튼 스타일 */
-.btn-profile,
-.btn-interests,
-.btn-join-club,
-.btn-my-club,
-.btn-like-club,
-.btn-inquiry,
-.btn-update-password,
-.btn-withdrawal,
 #goBackButton,
 #btn-main {
     display: inline-block; /* 인라인 블록 요소로 변경 */
@@ -56,28 +133,6 @@ header {
     position: relative;
     margin: 15px; /* 간격 조정 */
     text-decoration: none; /* 밑줄 제거 */
-}
-/* 선택 버튼 컬러 지정 */
-.btn-profile,
-.btn-interests,
-.btn-join-club,
-.btn-my-club,
-.btn-like-club,
-.btn-inquiry,
-.btn-update-password,
-.btn-withdrawal {
-    background-color: #ff9f43;
-}
-/* 선택 버튼 호버 효과 */
-.btn-profile:hover,
-.btn-interests:hover,
-.btn-join-club:hover,
-.btn-my-club:hover,
-.btn-like-club:hover,
-.btn-inquiry:hover,
-.btn-update-password:hover,
-.btn-withdrawal:hover {
-    background-color: #ffd180;
 }
 
 /* 뒤로,메인 버튼 호버 효과 */

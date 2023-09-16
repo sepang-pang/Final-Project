@@ -10,36 +10,36 @@
 <form id="withdrawForm">
     <label for="password">비밀번호:</label>
     <input type="password" id="password" name="password" required>
-    <button type="button" id="withdrawButton">회원 탈퇴</button>
+    <button type="button" id="withdrawButton" onclick="checkPassword()">회원 탈퇴</button>
 </form>
 
 <script>
-    document.getElementById("withdrawButton").addEventListener("click", function () {
-        var password = document.getElementById("password").value;
+    function checkPassword() {
+        let password = document.getElementById("password").value;
 
-        window.location.href = "/login"; // 로그인 페이지로 이동
+        fetch('/user/withdrawal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({password: password}),
+        })
 
-        // 서버에 비밀번호를 전송하여 회원 탈퇴 처리하는 로직 추가
-        // 이 곳에 AJAX 등을 이용한 서버 통신 로직을 작성하면 됩니다.
-        // 예를 들어, 비밀번호 검증 후 회원 탈퇴를 수행하는 API를 호출할 수 있습니다.
-        // 자세한 내용은 백엔드 로직과 통신하는 방식에 따라 다를 수 있습니다.
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/withdrawal", true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    // 서버에서 성공적으로 처리되었을 경우 동작
-                    alert("회원 가입이 완료되었습니다.");
-                    window.location.href = "/login"; // 로그인 페이지로 이동
+            .then(function (response) {
+                if (response.ok) {
+                    alert("회원탈퇴가 완료되었습니다.");
+                    window.location.href = "/main";
                 } else {
-                    // 서버에서 오류가 발생한 경우 동작
-                    alert("회원 가입 중 오류가 발생했습니다.");
+                    response.json().then(function (data) {
+                        if (data.errorMessage) {
+                            alert(data.errorMessage);
+                        } else {
+                            alert("회원탈퇴에 실패했습니다.");
+                        }
+                    });
                 }
-            }
-        };
-    });
+            })
+    }
 </script>
 </body>
 </html>

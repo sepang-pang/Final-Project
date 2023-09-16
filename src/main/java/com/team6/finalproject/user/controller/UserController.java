@@ -89,6 +89,12 @@ public class UserController {
         throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
     }
 
+    @PostMapping("/api/users/resetpassword") // 비밀번호 재설정
+    @ResponseBody
+    public void updatePassword(@RequestBody ResetPasswordDto resetPasswordDto) throws NotExistResourceException{
+        userService.resetPassword(resetPasswordDto);
+    }
+
     @PostMapping("/logout")
     public void logout(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
@@ -96,8 +102,9 @@ public class UserController {
         session.invalidate();
     }
 
-    @GetMapping("/withdrawal")
-    public String withdrawal() {
-        return "withdrawal";
+    @ResponseBody
+    @PostMapping("/user/withdrawal")
+    public void withdrawal(@AuthenticationPrincipal UserDetailsImpl userDetails ,@RequestBody WithdrawalRequestDto withdrawalRequestDto) {
+        userService.withdrawal(userDetails.getUser(),withdrawalRequestDto);
     }
 }
