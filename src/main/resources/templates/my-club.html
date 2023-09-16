@@ -79,6 +79,34 @@
     </div>
 </footer>
 <!--load JS-->
-<script src="/js/my-club.js"></script>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (response.status === 200) {
+                alert(data.message);
+                window.location.href = "/sub-main";
+            } else {
+                alert("로그인 실패: " + data.message);
+            }
+        } catch (error) {
+            console.error('There was an error during the login process:', error);
+        }
+    });
+</script>
 </body>
 </html>
