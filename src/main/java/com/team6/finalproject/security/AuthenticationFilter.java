@@ -65,6 +65,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         HttpSession session = request.getSession();
         session.setAttribute("username", authResult.getPrincipal());
         log.info("로그인 성공 및 세션 생성");
+        response.setStatus(HttpServletResponse.SC_OK);  // 200 상태 코드 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"message\": \"로그인 성공\"}");
 
 
 //

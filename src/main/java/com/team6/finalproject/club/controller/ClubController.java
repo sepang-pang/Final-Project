@@ -9,6 +9,7 @@ import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
+import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.service.ClubService;
@@ -144,38 +145,28 @@ public class ClubController {
         return clubService.readSelectInterestMajor(majorId);
     }
 
-    @GetMapping("clubs/interest-minor/{minorId}") // 동호회 소주제 별 조회
-    public List<ReadInterestMajorDto> readSelectInterestMinor(@PathVariable Long minorId) throws NotExistResourceException {
+    @GetMapping("clubs/get/interest-minor/{minorId}") // 동호회 소주제 별 조회
+    @ResponseBody
+    public List<ClubResponseDto> readSelectInterestMinor(@PathVariable Long minorId) throws NotExistResourceException {
         return clubService.readSelectInterestMinor(minorId);
     }
 
-    @GetMapping("/clubs/user-distance") // 동호회 거리순 조회
-    public List<ReadInterestMajorDto> clubsByUserDistance(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return clubService.clubsByUserDistance(userDetails.getUser());
-    }
-
-    @GetMapping("/clubs/user-interest") // 동호회 관심사 별 조회
-    public List<ReadInterestMajorDto> clubsByUserInterest(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return clubService.clubsByUserInterest(userDetails.getUser());
-    }
-
-    @GetMapping("/clubs/user-age") // 동호회 연령대 별 조회
-    public List<ReadInterestMajorDto> clubsByUserAge(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        return clubService.clubsByUserAge(userDetails.getUser());
-    }
-
-    @GetMapping("/clubs/recent") // 최근 개설된 동호회 추천
+    @GetMapping("/clubs/get/recent") // 최근 개설된 동호회 추천
+    @ResponseBody
     public List<ClubResponseDto> clubsByRecent() {
         return clubService.clubsByRecent();
     }
 
-    @GetMapping("/clubs/popularity") // 인기 급상승 동호회 추천
+    @GetMapping("/clubs/get/popularity") // 인기 급상승 동호회 추천
+    @ResponseBody
     public List<ClubResponseDto> clubsByPopularity() throws NotExistResourceException {
         return clubService.clubsByPopularity();
     }
 
     @GetMapping("/clubs/recommend") // 유저에게 최적합 동호회 추천
+    @ResponseBody
     public List<ClubResponseDto> recommendClubs(@RequestParam("radius") double radius, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return clubService.findRecommendedClubsForUser(radius, userDetails.getUser());
     }
+
 }

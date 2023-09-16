@@ -50,7 +50,7 @@ public interface ClubService {
     public List<ReadInterestMajorDto> readSelectInterestMajor(Long majorId) throws NotExistResourceException;
 
     // 동호회 소주제 별 조회
-    public List<ReadInterestMajorDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException;
+    public List<ClubResponseDto> readSelectInterestMinor(Long minorId) throws NotExistResourceException;
 
     // 유저 기준 거리순 동호회 조회
     List<ReadInterestMajorDto> clubsByUserDistance(User user)throws NotExistResourceException;
@@ -69,6 +69,8 @@ public interface ClubService {
 
     // 거리, 연령대, 관심사가 모두 부합하는 동호회 조회
     public List<ClubResponseDto> findRecommendedClubsForUser(double radius, User user);
+
+    // 동호회 가입 신청 조회
     public List<ClubAppliesResponseDto> readClubApplies(Long clubId, User user) throws NotExistResourceException;
 
     // 개설한 동호회 목록 조회
