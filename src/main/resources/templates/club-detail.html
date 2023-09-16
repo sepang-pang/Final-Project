@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title> 동호회 상세 조회 페이지 </title>
+
+    <!--사이트 기본설정-->
+    <meta name="description" content="동호회 상세 페이지">
+    <meta name="keywords" content="동호회">
+    <meta name="author" content="오세창">
+
+    <!--Viewport-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0">
+
+    <!--(IE10)-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Normalize -->
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <!--load CSS-->
+    <link rel="stylesheet" href="/css/club-detail.css"> <!-- 서버 돌릴 떄는 ../static 빼야됨 -->
+
+</head>
+<body>
+<div class="container">
+    <div class="header-top">
+        <button class="logout-btn">로그아웃</button>
+        <button class="profile-btn">내 프로필</button>
+    </div>
+    <header>
+        <div class="title-group">
+            <h1>글 제목</h1>
+            <span class="tag1" title="동호회 대주제">동호회 대주제</span>
+            <span class="tag2" title="동호회 소주제">동호회 소주제</span>
+            <span class="score" title="활동점수">🔥</span> <span class="tag3">동호회 활동점수</span>
+        </div>
+        <div class="button-group">
+            <button class="btn btn-siren" title="신고하기" id="siren">신고하기</button>
+            <button class="btn-heart" title="찜" id="heart">찜</button>
+        </div>
+    </header>
+</div>
+
+<!-- section : 본문 내용 -->
+<section>
+    <header class="club-intro-header">
+        <div class="photo-box">
+            <img src="../static/images/sample.jpg" alt="동호회 사진"/>
+        </div>
+    </header>
+    <article class="club-intro-article">
+        <p class="article-content">안녕하세요! 열정이 넘치는 축구 애호가들의 모임, [축구싶냐]입니다. ⚽️
+            함께 땀을 흘리며, 좋은 추억을 쌓아가는 저희 동호회는 모든 연령대의 회원을 환영합니다. 뛰어난 실력보다는 서로의 열정과 축구에 대한 사랑을 가장 중요하게 생각해요.
+
+            우리 동호회의 특징:
+
+            주 1회 정기 모임 및 연습
+            여러 동호회와의 친선 경기
+            신입 회원 및 초보자 지원 프로그램
+            누구든지, 어디서든지 축구의 즐거움을 느낄 수 있는 그런 동호회를 꿈꿉니다. 저희와 함께 축구의 즐거움을 나누고 싶다면 언제든 연락주세요! 함께 행복한 순간을 만들어 가요! ⭐️
+
+            가족 같은 분위기에서 축구의 열정을 나누고 싶다면, 지금 바로 저희 [축구싶냐]에 가입하세요! 🎉</p>
+    </article>
+</section>
+
+<hr class="section-divider">
+
+<!-- section : 일정 -->
+<section class="time-table">
+    <header class="time-table-header">
+        <h2>일정</h2>
+        <!-- 모임 생성 버튼 -->
+        <button id="createMeetingBtn">모임 생성</button>
+    </header>
+    <article class="time-table-article">
+        <div class="no-schedule-message">
+            <h3>일정이 없습니다</h3>
+        </div>
+        <div class="cards-container">
+            <!-- 카드가 들어갈 자리 -->
+            <!-- JS 496 ~ 506 번째 줄-->
+        </div>
+    </article>
+</section>
+
+
+<!-- section : club-info -->
+<section class="club-info">
+    <header class="club-info-header">
+        <!-- 버튼 그룹 -->
+        <div class="club-info-btn-group">
+            <button class="club-btn">멤버</button>
+            <button class="club-btn">세부정보</button>
+            <button class="club-btn">모임기록</button>
+            <button class="club-btn">활동지역</button>
+            <button class="club-btn" onclick="showAlert()">채팅방</button>
+        </div>
+    </header>
+
+    <article class="club-info-article">
+        <!-- 동호회장용 article -->
+        <div class="club-leader-view content-section" style="display: none;"> <!-- 초기에 숨김 처리. 필요에 따라 표시하게 됩니다. -->
+            <div class="applicant-list">
+                <!-- 신청자 목록 -->
+                <!-- JS 571 ~ 579 -->
+            </div>
+            <!-- 멤버 목록 -->
+            <!-- JS 597 ~ 601 -->
+            <div class="member-list">
+            </div>
+        </div>
+
+        <!-- 일반 유저용 article -->
+        <div class="regular-user-view content-section" style="display: none;"> <!-- 초기에 숨김 처리. 필요에 따라 표시하게 됩니다. -->
+            <!-- 멤버 목록 -->
+            <!-- JS 597 ~ 601 -->
+            <div class="member-list">
+            </div>
+        </div>
+
+        <!-- 세부정보 section -->
+        <div class="detail-info content-section" style="display: none;">
+            <div class="club-details">
+                <div class="detail">
+                    <p>동호회장: </p> <span class="leader-name"></span>
+                </div>
+                <div class="detail">
+                    <p>최대 인원 수: </p> <span class="max-members"></span>
+                </div>
+                <div class="detail">
+                    <p>활동방식: </p> <span class="activity-method"></span>
+                </div>
+                <div class="detail">
+                    <p>가입절차: </p> <span class="join-method"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모임기록 section -->
+        <div class="meeting-record content-section" style="display: none;">
+            <div class="completed-meetings-list">
+                <!-- 여기에 완료된 모임 내용이 추가됩니다. -->
+                <!-- JS 540 ~ 544 -->
+            </div>
+        </div>
+
+        <!-- 활동지역 section -->
+        <div class="activity-area content-section" style="display: none;">
+            <div id="map" style="width:100%;height:350px;"></div>
+        </div>
+        <!--        &lt;!&ndash; 채팅방 section &ndash;&gt;-->
+        <!--        <div class="chat-room content-section" style="display: none;">-->
+        <!--            <H1> 채팅방 </H1>-->
+        <!--        </div>-->
+    </article>
+    <nav class="apply">
+        <button class="join-button">가입하기</button>
+    </nav>
+</section>
+
+<!-- Footer Section -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
+
+<!-- Create Meeting Modal -->
+<div id="createMeetingModal" class="modal">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <span class="close">&times;</span>
+        </div>
+
+        <!-- Modal Body - Page 1 -->
+        <div class="modal-body-page1">
+            <!-- Top section -->
+            <section>
+                <input type="text" id="title" placeholder="모임의 이름을 작성해주세요 (필수)">
+            </section>
+
+            <!-- Mid section -->
+            <section>
+                <div>
+                    <input type="text" id="imageLink" placeholder="활동 사진을 올려보세요 ! (선택)">
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+            </section>
+
+            <!-- Bottom section -->
+            <section>
+                <textarea id="description" placeholder="모임 내용을 작성해주세요 (필수)"></textarea>
+            </section>
+        </div>
+
+        <!-- Modal Body - Page 2 -->
+        <div class="modal-body-page2">
+            <!-- Top section -->
+            <section>
+                <label for="maxMember">몇 명이서 모일까요 ? (필수)</label>
+                <input type="range" id="maxMember" min="5" max="30" step="1" value="5">
+                <output for="maxMember">5명</output>
+            </section>
+
+            <!-- Middle section -->
+            <section class="date-section">
+                <!-- Header section -->
+                <header class="date-section-header">
+                    <label for="date">언제 만날까요 ? (필수)</label>
+                </header>
+
+                <!-- Article section -->
+                <article class="date-section-article">
+                    <div class="datetime-inputs">
+                        <input type="date" id="date">
+                        <select id="ampm">
+                            <option value="오전">오전</option>
+                            <option value="오후">오후</option>
+                        </select>
+                        <input type="number" id="hour" min="0" max="12" placeholder="hh">
+                        <input type="number" id="minute" min="0" max="59" placeholder="mm">
+                    </div>
+                </article>
+            </section>
+
+            <!-- Bottom section -->
+            <section>
+                <label for="place">어디서 만날까요 ? (필수)</label>
+                <input type="text" id="place" placeholder="주소 입력">
+            </section>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+            <button id="prevButton">이전</button>
+            <button id="nextButton">다음</button>
+            <button id="submitButton">완료</button>
+        </div>
+    </div>
+</div>
+
+<!-- 신고창 모달 -->
+<div id="reportModal" class="report-modal">
+    <div class="report-modal-content">
+        <span class="close-report-modal">&times;</span>
+        <h2>신고하기</h2>
+        <input type="text" id="reportTitle" placeholder="신고 제목을 입력하세요" required>
+        <textarea id="reportContent" rows="4" placeholder="신고 내용을 입력하세요" required></textarea>
+        <button id="submitReport">신고 제출</button>
+    </div>
+</div>
+
+
+<!----------------------------------------JS ---------------------------------------->
+<script th:inline="javascript">
+    window.onload = function () {
+        const clubId = [[${clubId}]]; // club의 아이디를 PathVariable로 받아옴.
+        const currentUsername = [[${currentUsername}]];
+        const clubUsername = [[${clubUsername}]];
+        const likeStatus = [[${likeStatus}]]; // 동호회 찜 상태
+        const memberStatus = [[${memberStatus}]]; // 동호회 가입 상태
+        const applyStatus = [[${applyStatus}]]; // 동호회 가입 신청 상태
+        const heartBtn = document.getElementById('heart');
+        const sirenBtn = document.querySelector(".btn-siren");
+        const joinButton = document.querySelector('.join-button'); // 가입하기 버튼 선택
+        const clubButtons = document.querySelectorAll('.club-btn');
+
+        clubButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 모든 버튼의 활성 상태 초기화
+                clubButtons.forEach(btn => btn.classList.remove('active'));
+                // 현재 클릭된 버튼만 활성 상태로 설정
+                button.classList.add('active');
+            });
+        });
+
+
+        // ============== 동호회 관심 목록 담기 설정 ============== //
+        let isLiked = likeStatus; // likeStatus 값을 기반으로 isLiked 초기화
+
+        // 페이지 로드시 찜 상태에 따라 스타일 적용
+        if (isLiked) {
+            heartBtn.classList.add("clicked"); // 클릭된 스타일 추가
+        } else {
+            heartBtn.classList.remove("clicked"); // 클릭된 스타일 제거
+        }
+
+        heartBtn.addEventListener('click', function () {
+            if (isLiked) {
+                heartBtn.classList.remove("clicked"); // 클릭된 스타일 제거
+                deleteLikeClub(clubId); // 관심 동호회 취소 API 호출
+            } else {
+                heartBtn.classList.add("clicked"); // 클릭된 스타일 추가
+                addLikeClub(clubId); // 동호회 찜 담기 API 호출
+            }
+            isLiked = !isLiked; // 상태 전환
+        });
+
+        // ============== 내 프로필 가기 ============== //
+        document.querySelector('.profile-btn').addEventListener('click', function () {
+            window.location.href = "/api/my-profile";
+        });
+
+        // ============== 로그아웃 기능  ============== //
+        document.querySelector('.logout-btn').addEventListener('click', function () {
+            fetch('/logout', {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('로그아웃 되었습니다.');
+                        window.location.href = "/login";
+                    } else {
+                        alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                    alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+                });
+        });
+
+        // ============== 주소 선택 창 ============== //
+        document.getElementById('place').addEventListener('click', function () {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 결과값에서 주소 정보 가져와서 input에 표시
+                    document.getElementById('place').value = data.roadAddress;
+                }
+            }).open();
+        });
+        // ======================================== //
+
+
+        // 버튼 클릭 시 섹션을 보여주는 함수
+        const buttonToSectionMapping = {
+            "세부정보": "detail-info",
+            "모임기록": "meeting-record",
+            "활동지역": "activity-area",
+            "채팅방": "chat-room"
+        };
+
+        // 모든 섹션을 가져옵니다.
+        let sections = document.querySelectorAll('.content-section');
+
+        document.querySelector('.club-info-btn-group').addEventListener('click', function (e) {
+            if (e.target.classList.contains('club-btn')) {
+                // 모든 섹션을 숨깁니다.
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // 채팅방을 눌렀을 때 경고창을 띄웁니다.
+                if (e.target.textContent === "채팅방") {
+                    alert("채팅방은 준비 중입니다.");
+                }
+
+                if (e.target.textContent === "멤버") {
+                    if (currentUsername === clubUsername) {
+                        document.querySelector('.club-leader-view').style.display = 'block';
+                    } else {
+                        document.querySelector('.regular-user-view').style.display = 'block';
+                    }
+                } else {
+                    // 클릭된 버튼에 해당하는 섹션만 보여줍니다.
+                    let sectionToShow = buttonToSectionMapping[e.target.textContent];
+                    if (sectionToShow) {
+                        document.querySelector(`.${sectionToShow}`).style.display = 'block';
+                    }
+                }
+            }
+        });
+
+        // 동호회장인지 일반 유저인지에 따라 화면을 다르게 표시
+        const clubLeaderView = document.querySelector('.club-leader-view');
+        const regularUserView = document.querySelector('.regular-user-view');
+
+        if (currentUsername === clubUsername) {
+            clubLeaderView.style.display = 'block';
+            regularUserView.style.display = 'none';
+        } else {
+            clubLeaderView.style.display = 'none';
+            regularUserView.style.display = 'block';
+        }
+
+        // ================================================== //
+
+        // API 호출
+        fetch(`/api/clubs/${clubId}`) // 타임리프로 받아온 Id 값을 주입 후 API 호출
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 받아온 DTO 의 필드값을 화면에 출력
+                document.querySelector('h1').textContent = data.name; // 동호회 이름
+                document.querySelector('.tag1').textContent = data.major; // 동호회 대주제
+                document.querySelector('.tag2').textContent = data.minor; // 동호회 소주제
+                document.querySelector('.tag3').textContent = data.activityScore; // 동호회 활동점수
+                document.querySelector('.photo-box img').src = data.media; // 동호회 사진
+                document.querySelector('.article-content').textContent = data.description; // 동호회 소개글
+                document.querySelector('.leader-name').textContent = data.nickName; // 동호회장 이름
+                document.querySelector('.max-members').textContent = data.maxMember; // 최대 인원 수
+                document.querySelector('.activity-method').textContent = data.activityType; // 활동 방식
+                document.querySelector('.join-method').textContent = data.joinType; // 가입 방식
+
+                // 가입 방식에 따라 버튼 텍스트 변경
+                if (applyStatus === true) {
+                    joinButton.textContent = "승인 심사중";
+                    joinButton.disabled = true; // 버튼 비활성화
+                } else if (data.joinType === "즉시 가입") {
+                    joinButton.textContent = "가입하기";
+                } else if (data.joinType === "가입 승인") {
+                    joinButton.textContent = "가입 신청";
+                }
+
+                // 지도를 생성합니다
+                const mapContainer = document.getElementById('map');
+                const mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 우선 임시로 중심 좌표를 설정
+                    level: 3
+                };
+                const map = new kakao.maps.Map(mapContainer, mapOption);
+
+                // 주소-좌표 변환 객체 생성
+                const geocoder = new kakao.maps.services.Geocoder();
+
+                // 주소로 좌표를 검색
+                geocoder.addressSearch(data.locate, function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        map.setCenter(new kakao.maps.LatLng(result[0].y, result[0].x)); // 지도의 중심 좌표를 검색 결과 좌표로 설정
+                    } else {
+                        console.log('검색 결과가 없습니다.');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("There was a problem with the fetch operation:", error.message);
+            });
+
+        // ============== 회원, 비회원 버튼 설정 ============== //
+        if (!memberStatus) {
+            joinButton.style.display = 'block'; // 비회원일 경우 가입하기 버튼을 보여줍니다.
+            createMeetingBtn.style.display = 'none'; // 비회원일 경우 모임 생성 버튼을 숨깁니다.
+        } else {
+            joinButton.style.display = 'none'; // 회원일 경우 가입하기 버튼을 숨깁니다.
+            createMeetingBtn.style.display = 'block'; // 회원일 경우 모임 생성 버튼을 보여줍니다.
+        }
+
+
+        // ============== 회원, 비회원 버튼 설정 ============== //
+        if (!memberStatus) {
+            joinButton.style.display = 'block'; // 비회원일 경우 가입하기 버튼을 보여줍니다.
+            createMeetingBtn.style.display = 'none'; // 비회원일 경우 모임 생성 버튼을 숨깁니다.
+        } else {
+            joinButton.style.display = 'none'; // 회원일 경우 가입하기 버튼을 숨깁니다.
+            createMeetingBtn.style.display = 'block'; // 회원일 경우 모임 생성 버튼을 보여줍니다.
+        }
+
+        // 가입하기 버튼 클릭 이벤트
+        joinButton.addEventListener('click', function () {
+            fetch(`/api/clubs/${clubId}/apply`, {
+                method: 'PUT'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    // "가입 하기" 버튼을 눌렀을 때
+                    if (joinButton.textContent === "가입하기") {
+                        alert("가입이 되었습니다.");
+                        location.reload();
+                    }
+                    // "가입 신청" 버튼을 눌렀을 때
+                    else if (joinButton.textContent === "가입 신청") {
+                        alert("가입 신청이 완료되었습니다.");
+                        window.locat기ion.href = "/main";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during club join:", error);
+                    alert('프로필 작성을 완료해주세요 (거주지, 관심사)');
+                });
+        });
+
+
+        // /{clubId}/uncompleted API 호출
+        fetch(`/api/meetings/${clubId}/uncompleted`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(meetings => {
+                const cardsContainer = document.querySelector('.cards-container');
+                const noScheduleMessage = document.querySelector('.no-schedule-message');
+
+                if (meetings.length === 0) {
+                    noScheduleMessage.style.display = 'flex'; // 여기서 메시지를 보여줍니다.
+                } else {
+                    noScheduleMessage.style.display = 'none'; // 메시지를 숨깁니다.
+                    meetings.forEach(meeting => {
+                        const meetingCardHTML = `
+                    <div class="card" data-meeting-id="${meeting.meetingId}">
+                        <div class="card-title-section">
+                            <h3 class="card-date">${meeting.date}</h3>
+                            <h4 class="card-title">${meeting.title}</h4>
+                        </div>
+                        <div class="card-info-section">
+                            <p>일시 <span class="card-time">${meeting.dateDetail}</span></p>
+                            <p>위치 <span class="card-location">${meeting.place}</span></p>
+                            <p>참여인원 <span class="card-participants">${meeting.memberCount} / ${meeting.maxMember}</span></p>
+                        </div>
+                    </div>
+                `;
+                        cardsContainer.innerHTML += meetingCardHTML;
+                    });
+
+                    // 카드 클릭 이벤트 추가
+                    const cards = document.querySelectorAll('.card');
+                    cards.forEach(card => {
+                        card.addEventListener('click', function () {
+                            // 데이터 속성에서 모임 ID 가져오기
+                            const meetingId = card.getAttribute('data-meeting-id');
+                            window.location.href = `/api/meetings/meeting-detail/${meetingId}`;  // 상세 페이지로 이동
+                        });
+
+                        card.style.cursor = 'pointer';  // 커서 모양 변경
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("There was a problem with the fetch operation:", error.message);
+            });
+        fetch(`/api/meetings/${clubId}/completed`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(completedMeetings => {
+                const completedMeetingsList = document.querySelector('.completed-meetings-list');
+
+                completedMeetings.forEach(meeting => {
+                    const meetingItemHTML = `
+                        <div class="completed-meeting-item" data-meeting-id="${meeting.meetingId}">
+                            <h4>${meeting.description}</h4>
+                            <p>날짜: ${meeting.date}</p>
+                            <p>댓글 수: ${meeting.commentCount}</p>
+                        </div>`;
+                    completedMeetingsList.innerHTML += meetingItemHTML;
+                });
+            })
+            .catch(error => {
+                console.error("There was a problem with the fetch operation:", error.message);
+            });
+
+        document.body.addEventListener('click', function (event) {
+            if (event.target.classList.contains('completed-meeting-item')) {
+                if (memberStatus === false) {
+                    alert("동호회 회원만 확인 할 수 있습니다.");
+                } else {
+                    const meetingId = event.target.getAttribute('data-meeting-id');
+                    window.location.href = `/api/meetings/meeting-detail/${meetingId}`;
+                }
+            }
+        });
+
+
+        fetch(`/api/clubs/${clubId}/applies`) // 신청자 목록을 호출
+            .then(response => response.json())
+            .then(applies => {
+                const applicantList = document.querySelector('.applicant-list');
+                applies.forEach(apply => {
+                    const applicantHTML = `
+                        <div class="applicant" data-user-id="${apply.id}">
+                            <img src="${apply.media}" alt="프로필 사진">
+                            <div class="nickname">${apply.nickName}</div>
+                            <div class="action-buttons">
+                                <button class="accept-btn" data-apply-id="${apply.id}">승인</button>
+                                <button class="reject-btn" data-apply-id="${apply.id}">거절</button>
+                            </div>
+                        </div>
+                    `;
+                    applicantList.innerHTML += applicantHTML;
+                });
+            });
+
+        // 멤버 목록 불러오기
+        fetch(`/api/clubs/${clubId}/members`)
+            .then(response => response.json())
+            .then(members => {
+                const memberList = document.querySelectorAll('.member-list');
+                members.forEach(member => {
+                    // 동호회장 여부에 따라 텍스트를 변경합니다.
+                    let nicknameText = member.nickName;
+                    if (member.username === clubUsername) {
+                        nicknameText += " 👑"; // 동호회장 아이콘
+                    }
+                    const memberHTML = `
+                    <div class="member" data-user-id="${member.id}">
+                        <img src="${member.media}" alt="프로필 사진">
+                        <div class="nickname">${nicknameText}</div>
+                    </div>
+                    `;
+
+                    memberList.forEach(list => list.innerHTML += memberHTML);
+                });
+            });
+
+        document.body.addEventListener('click', function (event) {
+            if (event.target.classList.contains('accept-btn')) {
+                const applyId = event.target.getAttribute('data-apply-id');
+
+                fetch(`/api/clubs/applies/${applyId}/approve`, {
+                    method: 'PUT'
+                }).then(response => {
+                    if (response.ok) {
+                        alert('가입 승인 완료!');
+                        event.target.parentElement.parentElement.remove();  // 신청자 항목 제거
+                    } else {
+                        alert('오류 발생. 다시 시도하세요.');
+                    }
+                });
+            } else if (event.target.classList.contains('reject-btn')) {
+                const applyId = event.target.getAttribute('data-apply-id');
+
+                fetch(`/api/clubs/applies/${applyId}/refuse`, {
+                    method: 'PUT'
+                }).then(response => {
+                    if (response.ok) {
+                        alert('가입 거절 완료!');
+                        event.target.parentElement.parentElement.remove();  // 신청자 항목 제거
+                    } else {
+                        alert('오류 발생. 다시 시도하세요.');
+                    }
+                });
+            } else if (event.target.classList.contains('applicant') || event.target.classList.contains('member')) {
+                const userId = event.target.getAttribute('data-user-id');
+                window.location.href = `/api/profile/${userId}`;
+            }
+        });
+
+
+        // ===================== 동호회 찜 등록  ===================== //
+        function addLikeClub(clubId) {
+            // 요청 데이터 설정
+            const requestData = {
+                clubId: clubId
+            };
+
+            // fetch API 사용하여 API 호출
+            fetch('/api/profile/like-club', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // ========================================================== //
+
+        // ===================== 동호회 찜 해제  ===================== //
+        function deleteLikeClub(clubId) {
+            // fetch API 사용하여 '관심 동호회 취소' API 호출
+            fetch(`/api/profile/like-club/${clubId}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        // ========================================================== //
+
+        // ===================== 모임 생성 모달창 ===================== //
+        let modal = document.getElementById("createMeetingModal");
+        let btn = document.getElementById("createMeetingBtn");
+        let span = document.getElementsByClassName("close")[0];
+        let nextButton = document.getElementById("nextButton");
+        let prevButton = document.getElementById("prevButton");
+        let submitButton = document.getElementById("submitButton");
+        let slider = document.getElementById("maxMember");
+        let output = document.querySelector("output[for='maxMember']");
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+            document.querySelector(".modal-body-page1").style.display = "block";
+            document.querySelector(".modal-body-page2").style.display = "none";
+            nextButton.style.display = "block";
+            prevButton.style.display = "none";
+            submitButton.style.display = "none";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        nextButton.onclick = function () {
+            document.querySelector(".modal-body-page1").style.display = "none";
+            document.querySelector(".modal-body-page2").style.display = "block";
+            nextButton.style.display = "none";
+            prevButton.style.display = "block";
+            submitButton.style.display = "block";
+        }
+
+        prevButton.onclick = function () {
+            document.querySelector(".modal-body-page1").style.display = "block";
+            document.querySelector(".modal-body-page2").style.display = "none";
+            nextButton.style.display = "block";
+            prevButton.style.display = "none";
+            submitButton.style.display = "none";
+        }
+
+        // ===================== 슬라이더 인원 수 변화 ===================== //
+        slider.oninput = function () {
+            output.textContent = this.value + "명";
+        }
+        // ============================================================= //
+
+        // Update imageLink input when a file is selected
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                document.getElementById("imageLink").value = fileName;
+            }
+        });
+        // Submit form and create meeting
+        submitButton.onclick = function () {
+            let title = document.getElementById("title").value;
+            let description = document.getElementById("description").value;
+            let maxMember = document.getElementById("maxMember").value;
+            let date = document.getElementById("date").value;
+            let ampm = document.getElementById("ampm").value;
+            let hour = document.getElementById("hour").value;
+            let minute = document.getElementById("minute").value;
+            let place = document.getElementById("place").value;
+
+            // 값 검사
+            if (!title || !description || !maxMember || !date || !ampm || !hour || !minute || !place) {
+                alert('필수 값을 채워주세요.');
+                return; // 종료하고 이후의 코드를 실행하지 않습니다.
+            }
+
+            // Format date and time
+            if (ampm === "오후" && hour !== "12") {
+                hour = parseInt(hour) + 12;
+            }
+            let formattedDate = `${date} ${hour}:${minute}`;
+
+            const meetingRequestDto = {
+                title: title,
+                description: description,
+                maxMember: maxMember,
+                place: place,
+                date: formattedDate
+            };
+
+            const formData = new FormData();
+            formData.append('meetingRequestDto', new Blob([JSON.stringify(meetingRequestDto)], {type: 'application/json'}));
+
+            let fileInput = document.getElementById("imageUpload");
+            let file = fileInput.files[0];
+
+            // If no file is selected, create an empty one
+            if (!file) {
+                file = new File([], "empty", {type: "image/png"});
+            }
+            formData.append('file', file);
+
+            // ===================== 모임 생성 API 호출 ===================== //
+            fetch(`/api/meetings/${clubId}`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('모임이 생성되었습니다.');
+                        window.location.reload();
+                    } else {
+                        alert('오류 발생. 다시 시도하세요.');
+                    }
+                });
+
+        }
+
+        const reportModal = document.getElementById('reportModal');
+        const closeBtn = document.querySelector('.close-report-modal');
+        const submitReportBtn = document.getElementById('submitReport');
+
+        // 모달을 띄우는 이벤트
+        sirenBtn.addEventListener('click', function () {
+            reportModal.style.display = 'block';
+        });
+
+        // 모달 닫기 이벤트
+        closeBtn.addEventListener('click', function () {
+            reportModal.style.display = 'none';
+        });
+
+        // 신고 제출 이벤트
+        submitReportBtn.addEventListener('click', function () {
+            const title = document.getElementById('reportTitle').value;
+            const content = document.getElementById('reportContent').value;
+
+            const reportData = {
+                targetId: clubId, // 이미 clubId를 가져왔기 때문에 사용 가능
+                title: title,
+                content: content
+            };
+
+            fetch("/api/report/club", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(reportData)
+            })
+                .then(response => {
+                    if (response.ok) { // response 상태가 ok인지 확인
+                        return response.json(); // 응답을 json 형태로 반환
+                    } else {
+                        throw new Error('신고 중 오류가 발생했습니다.고');
+                    }
+                })
+                .then(data => {
+                    alert("신고가 완료되었습니다.");
+                    reportModal.style.display = 'none'; // 모달 닫기
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        });
+
+        let activeModalContent = null; // 현재 활성화된 모달의 content
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        // 모달 드래그 시작
+        function startDrag(event) {
+            isDragging = true;
+
+            // 현재 .modal-content의 위치를 가져옵니다.
+            const currentLeft = parseFloat(getComputedStyle(activeModalContent).left) || 0;
+            const currentTop = parseFloat(getComputedStyle(activeModalContent).top) || 0;
+
+            // 현재 위치와 마우스 포인터의 차이를 오프셋으로 설정합니다.
+            offsetX = event.clientX - currentLeft;
+            offsetY = event.clientY - currentTop;
+        }
+
+        // 모달 드래그 중
+        function doDrag(event) {
+            if (isDragging) {
+                activeModalContent.style.left = event.clientX - offsetX + 'px';
+                activeModalContent.style.top = event.clientY - offsetY + 'px';
+            }
+        }
+
+        // 모달 드래그 종료
+        function endDrag() {
+            isDragging = false;
+        }
+
+        // 기본 모달에 대한 이벤트 리스너 설정
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.querySelector('.modal-header').addEventListener('mousedown', function (event) {
+                activeModalContent = modal.querySelector('.modal-content'); // .modal-content로 변경
+                startDrag(event);
+            });
+        });
+
+        // 신고 모달에 대한 이벤트 리스너 설정
+        document.querySelectorAll('.report-modal').forEach(reportModal => {
+            reportModal.addEventListener('mousedown', function (event) {
+                activeModalContent = reportModal.querySelector('.report-modal-content');
+                startDrag(event);
+            });
+        });
+
+        // 전체 문서에 대한 mousemove 및 mouseup 이벤트 리스너 설정
+        document.addEventListener('mousemove', doDrag);
+        document.addEventListener('mouseup', endDrag);
+
+
+    }
+</script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d5cbf2c7b1151b1ca7e03a028094c2&libraries=services"></script>
+</body>
+</html>

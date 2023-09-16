@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title> 모임 상세 조회 페이지 </title>
+
+    <!--사이트 기본설정-->
+    <meta name="description" content="모임 상세 페이지">
+    <meta name="keywords" content="모임">
+    <meta name="author" content="오세창">
+
+    <!--Viewport-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0">
+
+    <!--(IE10)-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Normalize -->
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
+
+    <!--load CSS-->
+    <link rel="stylesheet" href="/css/meeting-detail.css"> <!-- 서버 돌릴 떄는 ../static 빼야됨 -->
+</head>
+
+<body>
+<div class="body-container">
+    <!-- 헤더 영역: 로그아웃, 프로필 버튼 포함 -->
+    <div class="header">
+        <button class="logout-btn">로그아웃</button>
+        <button class="profile-btn">내 프로필</button>
+    </div>
+
+    <!-- 상세 정보 영역: 모임 정보, 수정/삭제 버튼 등 포함 -->
+    <div class="container">
+
+        <!-- 모임 상세 정보 -->
+        <div class="left-content">
+            <article class="detail-info">
+                <h1 id="meeting-title">모임 타이틀</h1>
+                <p>일시 <span id="meeting-date"></span></p>
+                <p>장소 <span id="meeting-place"></span></p>
+                <p>상태 <span id="meeting-status"></span></p>
+                <p>인원 <span id="meeting-members"></span> / <span id="max-members"></span></p>
+                <button id="participate-btn">참여하기</button>
+                <button id="close-btn" style="display:none;">마감하기</button>
+            </article>
+        </div>
+
+        <!-- 모임 수정 및 삭제 버튼 -->
+        <div class="right-content">
+            <button id="edit-btn">수정하기</button>
+            <button id="delete-btn">삭제하기</button>
+        </div>
+    </div>
+
+
+    <!-- 참여 멤버 정보 영역: 참여한 멤버의 프로필 사진 및 이름 -->
+    <article class="member-info">
+        <div class="member-card">
+            <img src="profile.jpg" alt="프로필 사진">
+            <p>유저의 이름</p>
+        </div>
+        <!-- 추가 멤버 카드가 이 위치에 삽입될 예정 -->
+        <!-- JS 218 ~ 221 라인에 양식이 있음 -->
+    </article>
+
+    <!-- 모임 내용 정보 영역: 모임 관련 사진 및 상세 내용 -->
+    <article class="content-info">
+        <div class="photo">
+            <img src="이미지_링크" alt="이미지 설명">
+        </div>
+        <div class="description">모임의 상세지 내용</div>
+    </article>
+
+    <!-- 댓글 영역: 댓글 카운트, 댓글 입력란 및 댓글 리스트 -->
+    <article class="comments-info">
+        <div class="comments-header">
+            <span class="comments-count-text">댓글</span> <span class="comments-count">0</span>
+        </div>
+
+        <!-- 댓글 입력 섹션 -->
+        <div class="input-section" id="comment-form">
+            <textarea placeholder="댓글을 입력하세요"></textarea>
+            <button id="submit-comment-btn">등록</button>
+        </div>
+
+        <!-- 댓글 리스트 -->
+        <div class="comments-list">
+            <!-- 댓글이 이 위치에 삽입될 예정 -->
+            <!-- JS 300 ~ 312 라인에 양식이 있음 -->
+        </div>
+    </article>
+</div>
+
+<!-- 푸터 영역: 주관, 팀, 멤버, 연락처 정보 포함 -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
+
+<script th:inline="javascript">
+    window.onload = function () {
+
+        // -------------- 데이터 초기화  -------------- //
+        const meetingId = [[${meetingId}]];
+        const username = [[${username}]];
+        const meetingUsername = [[${meetingUsername}]];
+        const clubUsername = [[${clubUsername}]];
+
+        fetchData(meetingId);
+        fetchMeetingUsers(meetingId);
+        checkAttendStatus(); // 체크 참석 상태
+
+        // "마감하기" 버튼 처리
+        if (username === meetingUsername) {
+            document.getElementById('close-btn').style.display = "inline-block"; // 모임 작성자라면 "마감하기" 버튼 표시
+        }
+
+        // "수정하기"와 "삭제하기" 버튼 처리
+        const editButton = document.getElementById('edit-btn');
+        const deleteButton = document.getElementById('delete-btn');
+        if (username === meetingUsername) {
+            editButton.style.display = "inline-block"; // 모임 작성자라면 "수정하기"와 "삭제하기" 버튼을 표시합니다.
+            deleteButton.style.display = "inline-block";
+        } else {
+            editButton.style.display = "none"; // 모임 작성자가 아니라면 "수정하기"와 "삭제하기" 버튼을 숨깁니다.
+            deleteButton.style.display = "none";
+        }
+
+        // "수정하기" 버튼 이벤트 리스너
+        document.getElementById("edit-btn").addEventListener("click", function() {
+            // 페이지 이동
+            window.location.href = `/api/meetings/meeting-update/${meetingId}`;
+        });
+
+        let isMeetingCompleted = false;  // 모임이 마감되었는지 여부를 저장하는 변수
+
+        // -------------- 프로필 버튼 클릭 시 이벤트 리스너  -------------- //
+        document.querySelector('.profile-btn').addEventListener('click', function () {
+            window.location.href = "/api/my-profile";
+        });
+
+
+        // -------------- 모임 데이터 가져오기  -------------- //
+        function fetchData(meetingId) {
+            fetch(`/api/meetings/${meetingId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayData(data);
+                    fetchComments();
+
+                    isMeetingCompleted = data.isCompleted; // 값을 전역 변수에 저장
+
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error.message);
+                });
+        }
+
+
+        // -------------- 모임 데이터 표시  -------------- //
+        function displayData(data) {
+            document.getElementById('meeting-title').textContent = data.title;
+            document.getElementById('meeting-date').textContent = data.dateDetail;
+            document.getElementById('meeting-place').textContent = data.place;
+            document.getElementById('meeting-members').textContent = data.memberCount;
+            document.getElementById('max-members').textContent = data.maxMember;
+            document.getElementById('meeting-status').textContent = data.isCompleted ? "마감" : "모집중";
+            document.querySelector('.description').textContent = data.description;
+            document.querySelector('.photo img').src = data.media;
+        }
+
+        document.getElementById("submit-comment-btn").addEventListener("click", submitComment);
+
+
+        function fetchMeetingUsers(meetingId) {
+            fetch(`/api/meetings/${meetingId}/members`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch meeting members");
+                    }
+                    return response.json();
+                })
+                .then(members => {
+                    displayMeetingUsers(members);
+                })
+                .catch(error => {
+                    console.error("Error fetching meeting members:", error);
+                });
+        }
+
+        function displayMeetingUsers(members) {
+            const memberContainer = document.querySelector('.member-info');
+            // 기존의 member-card를 삭제합니다 (기존에 있는 member-card가 있다면).
+            memberContainer.innerHTML = '';
+
+            members.forEach(member => {
+                let nicknameText = member.nickname;
+
+                if (meetingUsername === member.username && clubUsername === member.username) {
+                    // 동호회장이면서 회의 주인일 경우
+                    nicknameText += " 👑 🌟";
+                } else if (meetingUsername === member.username) {
+                    // 회의 주인일 경우
+                    nicknameText += " 🌟";
+                } else if (clubUsername === member.username) {
+                    // 동호회장일 경우
+                    nicknameText += " 👑";
+                }
+
+                const memberCardHTML = `
+           <div class="member-card" data-user-id="${member.userId}">
+                <img src="${member.profileImage}" alt="프로필 사진">
+                <p>${nicknameText}</p>
+            </div>
+                    `;
+
+                memberContainer.innerHTML += memberCardHTML;
+            });
+
+
+
+        // 모든 member-card에 클릭 이벤트를 추가합니다.
+            document.querySelectorAll('.member-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // 카드의 data-user-id 값을 가져와서 URL을 생성합니다.
+                    const userId = this.getAttribute('data-user-id');
+                    window.location.href = `/api/profile/${userId}`;
+                });
+            });
+
+        }
+
+        // -------------- 댓글 제출 기능  -------------- //
+        function submitComment() {
+            const commentForm = document.getElementById("comment-form");
+            const content = commentForm.querySelector("textarea").value;
+
+            if (content.trim() === "") {
+                alert("입력된 댓글이 없습니다.");
+                return;
+            }
+
+            const commentRequestDto = {
+                meetingId: meetingId,
+                content: content
+            };
+
+            fetch('/api/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(commentRequestDto)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to submit comment");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert("댓글을 작성하였습니다.");
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('댓글 작성 중 오류가 발생했습니다. 다시 시도해주세요.');
+                });
+        }
+
+        // -------------- 댓글 가져오기  -------------- //
+        function fetchComments() {
+            fetch(`/api/meetings/${meetingId}/comments`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch comments");
+                    }
+                    return response.json();
+                })
+                .then(comments => {
+                    displayComments(comments);
+                })
+                .catch(error => {
+                    console.error("Error fetching comments:", error);
+                });
+        }
+
+        // -------------- 댓글 요소 생성  -------------- //
+        function createCommentElement(comment) {
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.dataset.commentId = comment.commentId;
+            const commentHTML = `
+        <div class="comment-text">
+            <p class="original-comment-text">${comment.content}</p>
+            <textarea class="edit-textarea" style="display: none;"></textarea>
+            <span class="username">${comment.nickname}</span>
+            <span class="create_time">${new Date(comment.createAt).toLocaleString()}</span>
+        </div>
+        <div class="comment-buttons">
+            <button class="edit-button">수정</button>
+            <button class="save-edit-button" style="display: none;">완료</button>
+            <button class="cancel-edit-button" style="display: none;">취소</button>
+            <button class="delete-button">삭제</button>
+            <button class="like-button">좋아요 (${comment.likesCount || 0})</button>
+        </div>
+    `;
+            commentElement.innerHTML = commentHTML;
+            commentElement.querySelector('.edit-button').addEventListener('click', function () {
+                showEditCommentForm(commentElement, comment);
+            });
+            return commentElement;
+        }
+
+        // -------------- 댓글 수정 폼 표시  -------------- //
+        function showEditCommentForm(commentElement, comment) {
+            const originalCommentElements = commentElement.querySelectorAll('.original-comment-text, .username, .create_time, .edit-button, .delete-button, .like-button');
+            const editElements = commentElement.querySelectorAll('.edit-textarea, .save-edit-button, .cancel-edit-button');
+
+            originalCommentElements.forEach(el => el.style.display = 'none');
+            editElements.forEach(el => el.style.display = 'inline-block');
+
+            const editArea = commentElement.querySelector('.edit-textarea');
+            editArea.value = comment.content;
+        }
+
+        // -------------- 댓글 표시  -------------- //
+        function displayComments(comments) {
+            const commentsContainer = document.querySelector('.comments-list');
+            commentsContainer.innerHTML = '';
+            comments.forEach(comment => {
+                const commentElement = createCommentElement(comment);
+                commentsContainer.appendChild(commentElement);
+            });
+            const countElement = document.querySelector('.comments-count');
+            countElement.textContent = comments.length;
+        }
+
+        // -------------- 댓글 액션에 대한 이벤트 리스너 -------------- //
+        document.body.addEventListener('click', function (event) {
+            const commentElement = event.target.closest('.comment');
+
+            if (!commentElement) return;  // 댓글 요소를 찾지 못하면 아무것도 하지 않는다.
+
+
+            if (event.target.classList.contains('save-edit-button')) {
+                const commentId = commentElement.dataset.commentId;
+                const editArea = commentElement.querySelector('.edit-textarea');
+                const updatedContent = editArea.value;
+
+                if (updatedContent.trim() === "") {
+                    alert("입력된 댓글이 없습니다.");
+                    return;
+                }
+
+                fetch(`/api/comments/${commentId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({content: updatedContent})
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('댓글 수정 완료!');
+                            location.reload();
+                        } else {
+                            alert('본인 댓글이 아닙니다.');
+                            location.reload();
+                        }
+                    });
+            } else if (event.target.classList.contains('cancel-edit-button')) {
+                revertToOriginalCommentForm(commentElement);
+            }
+
+            // 여기에 'delete-button' 처리를 추가합니다.
+            else if (event.target.classList.contains('delete-button')) {
+                const confirmation = confirm("댓글을 삭제하시겠습니까?");
+                if (confirmation) {
+                    const commentId = commentElement.dataset.commentId;
+                    fetch(`/api/comments/${commentId}`, {
+                        method: 'DELETE'
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.statusCode === 200) {
+                                alert('댓글 삭제 완료!');
+                                location.reload();
+                            } else {
+                                alert('본인 댓글이 아닙니다.');
+                            }
+                        });
+                }
+            } else if (event.target.classList.contains('like-button')) {
+                const commentId = commentElement.dataset.commentId;
+                fetch(`/api/comments/${commentId}/like-status`, {
+                    method: 'GET'
+                })
+                    .then(response => response.json())
+                    .then(isLiked => {
+                        if (isLiked) {
+                            return fetch(`/api/comments/${commentId}/dislike`, {
+                                method: 'DELETE'
+                            });
+                        } else {
+                            return fetch(`/api/comments/${commentId}/like`, {
+                                method: 'POST'
+                            });
+                        }
+                    })
+                    .then(response => response.json())
+                    .finally(() => {
+                        location.reload();
+                    });
+            }
+        });
+
+        function revertToOriginalCommentForm(commentElement) {
+            const originalCommentText = commentElement.querySelector('.original-comment-text');
+            const editArea = commentElement.querySelector('.edit-textarea');
+            const editButton = commentElement.querySelector('.edit-button');
+            const deleteButton = commentElement.querySelector('.delete-button');
+            const likeButton = commentElement.querySelector('.like-button');
+            const saveButton = commentElement.querySelector('.save-edit-button');
+            const cancelButton = commentElement.querySelector('.cancel-edit-button');
+
+            originalCommentText.style.display = 'block'; // 원래 댓글 보이기
+            editArea.style.display = 'none'; // edit textarea 숨기기
+            editButton.style.display = 'inline-block'; // edit 버튼 보이기
+            deleteButton.style.display = 'inline-block'; // delete 버튼 보이기
+            likeButton.style.display = 'inline-block'; // like 버튼 보이기
+            saveButton.style.display = 'none'; // save 버튼 숨기기
+            cancelButton.style.display = 'none'; // cancel 버튼 숨기기
+        }
+
+        function checkAttendStatus() {
+            fetch(`/api/meetings/${meetingId}/isAttend`)  // 이 URL은 당신의 실제 API 경로와 일치해야 합니다.
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch attend status");
+                    }
+                    return response.json();
+                })
+                .then(isAttend => {
+                    const attendButton = document.querySelector('.detail-info button');
+                    attendButton.textContent = isAttend ? "참여취소" : "참여하기";
+                })
+                .catch(error => {
+                    console.error("Error fetching attend status:", error);
+                });
+        }
+
+
+        document.querySelector('.detail-info button').addEventListener('click', function () {
+            const buttonText = this.textContent;
+
+            if (isMeetingCompleted && buttonText === "참여하기") {
+                alert("마감된 모임입니다.");
+                return;
+            }
+
+            let requestUrl, requestMethod;
+
+            if (buttonText === "참여하기") {
+                requestUrl = `/api/meetings/${meetingId}/attend`;
+                requestMethod = "PUT";
+                alert("참여가 완료되었습니다.")
+                location.reload();
+            } else if (buttonText === "참여취소") {
+                requestUrl = `/api/meetings/${meetingId}/cancel`;
+                requestMethod = "DELETE";
+                alert("참여가 취소되었습니다.")
+                location.reload();
+            } else {
+                console.error("Unknown button text:", buttonText);
+                return;
+            }
+
+            fetch(requestUrl, {
+                method: requestMethod,
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to execute action");
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    location.reload();
+                    checkAttendStatus();  // 참여 상태를 다시 확인하여 버튼 텍스트를 업데이트 합니다.
+                })
+                .catch(error => {
+                    console.error("Error executing action:", error);
+                });
+        });
+
+        document.getElementById('close-btn').addEventListener('click', function () {
+            fetch(`/api/meetings/${meetingId}/completed`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Something went wrong");
+                    }
+                })
+                .then(data => {
+                    alert("모임이 마감되었습니다.");
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error.message);
+                    alert(error.message);
+                });
+        });
+
+        // -------------- 모임 삭제 기능  -------------- //
+        document.getElementById("delete-btn").addEventListener("click", deleteMeeting);
+
+        function deleteMeeting() {
+            const confirmation = confirm("정말로 이 모임을 삭제하시겠습니까?");  // 사용자에게 삭제 확인
+
+            if (!confirmation) {
+                return;  // 사용자가 삭제를 원하지 않는다면 아무것도 하지 않습니다.
+            }
+
+            fetch(`/api/meetings/${meetingId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('모임이 삭제되었습니다.');
+                        window.location.href = "/sub-main";
+
+                    } else {
+                        return response.json().then(err => {
+                            throw err;
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('모임 삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error('Error:', error);
+                });
+        }
+
+        // -------------- 로그아웃 기능  -------------- //
+        document.querySelector('.logout-btn').addEventListener('click', function () {
+            fetch('/logout', {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('로그아웃 되었습니다.');
+                        window.location.href = "/login";
+                    } else {
+                        alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                    alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+                });
+        });
+
+        // -------------- 수정 페이지로 이동  -------------- //
+        document.addEventListener("DOMContentLoaded", function() {
+            const editButton = document.getElementById("edit-btn");
+            const meetingId = [[${meetingId}]]; // Thymeleaf로부터 받아온 meetingId
+
+            editButton.addEventListener("click", function() {
+                // meetingId를 사용하여 원하는 URL로 리디렉션합니다.
+                window.location.href = `/meeting-update/${meetingId}`;
+            });
+        });
+
+    };
+</script>
+
+
+</body>
+</html>

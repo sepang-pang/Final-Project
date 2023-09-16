@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>회원 탈퇴</title>
+</head>
+<body>
+<h2>회원 탈퇴</h2>
+<p>회원 탈퇴를 진행하시려면 비밀번호를 입력해주세요.</p>
+<form id="withdrawForm">
+    <label for="password">비밀번호:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="button" id="withdrawButton" onclick="checkPassword()">회원 탈퇴</button>
+</form>
+
+<script>
+    function checkPassword() {
+        let password = document.getElementById("password").value;
+
+        fetch('/user/withdrawal', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({password: password}),
+        })
+
+            .then(function (response) {
+                if (response.ok) {
+                    alert("회원탈퇴가 완료되었습니다.");
+                    window.location.href = "/main";
+                } else {
+                    response.json().then(function (data) {
+                        if (data.errorMessage) {
+                            alert(data.errorMessage);
+                        } else {
+                            alert("회원탈퇴에 실패했습니다.");
+                        }
+                    });
+                }
+            })
+    }
+</script>
+</body>
+</html>

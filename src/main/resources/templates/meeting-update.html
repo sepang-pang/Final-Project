@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> 모임 수정 페이지 </title>
+
+    <!--사이트 기본설정-->
+    <meta name="description" content="모임 상세 페이지">
+    <meta name="keywords" content="모임">
+    <meta name="author" content="오세창">
+
+    <!--Viewport-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0">
+
+    <!--(IE10)-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Normalize -->
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'>
+
+    <!--load CSS-->
+    <link rel="stylesheet" href="/css/meeting-update.css"> <!-- 서버 돌릴 떄는 ../static 빼야됨 -->
+</head>
+<body>
+
+<!-- 헤더 영역 시작 -->
+<div class="header">
+    <button class="logout-btn">로그아웃</button>
+    <button class="profile-btn">내 프로필</button>
+</div>
+<!-- 헤더 영역 끝 -->
+
+<!-- 본문 컨테이너 시작 -->
+<section class="body-container">
+
+    <!-- 첫 번째 섹션: 모임 이름 입력 -->
+    <article class="first-article">
+        <label for="meeting-title">모임의 이름을 입력해주세요</label>
+        <input type="text" id="meeting-title" placeholder="모임 이름">
+    </article>
+
+    <!-- 두 번째 섹션: 이미지 업로드 -->
+    <article class="second-article">
+        <div class="photo" onclick="document.getElementById('image-input').click();">
+            <img src="이미지_링크" alt="이미지 설명" id="image-preview1">
+            <img id="image-preview" src="#" alt="이미지 미리보기" style="max-width: 300px; display: none;">
+        </div>
+        <input type="file" id="image-input" style="display: none;">
+    </article>
+
+    <!-- 세 번째 섹션: 모임 내용 입력 -->
+    <article class="third-article">
+        <label for="meeting-content">내용을 입력해주세요</label>
+        <textarea id="meeting-content" rows="5" placeholder="모임 내용"></textarea>
+    </article>
+
+    <!-- 네 번째 섹션: 날짜와 시간 설정 -->
+    <article class="fourth-article">
+        <label for="date">언제 만날까요 ?</label>
+        <div class="datetime-inputs">
+            <input type="date" id="date">
+            <select id="ampm">
+                <option value="오전">오전</option>
+                <option value="오후">오후</option>
+            </select>
+            <input type="number" id="hour" min="0" max="12" placeholder="hh">
+            <span>:</span>
+            <input type="number" id="minute" min="0" max="59" placeholder="mm">
+        </div>
+    </article>
+
+    <!-- 다섯 번째 섹션: 모임 장소 설정 -->
+    <article class="fifth-article">
+        <label for="address-input">어디서 만날까요 ?</label>
+        <input type="text" id="address-input" placeholder="장소" onclick="openAddressAPI();">
+    </article>
+
+    <!-- 여섯 번째 섹션: 참여 인원 설정 -->
+    <article class="sixth-article">
+        <label for="member-range">몇 명이서 만날까요 ?</label>
+        <span class="current-member-count"></span>
+        <div>
+            <input type="range" id="member-range" min="5" max="30" value="5">
+            <span id="member-count">5명</span>
+        </div>
+    </article>
+
+    <!-- 내비게이션 버튼 (이전 및 제출 버튼) -->
+    <div class="nav-buttons">
+        <button class="prev-btn">이전</button>
+        <button class="submit-btn">수정 완료</button>
+    </div>
+
+</section>
+<!-- 본문 컨테이너 끝 -->
+
+<!-- 푸터 영역 시작 -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
+<!-- 푸터 영역 끝 -->
+
+<script th:inline="javascript">
+    function openAddressAPI() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 선택한 주소를 input box에 입력
+                document.getElementById('address-input').value = data.address;
+            }
+        }).open();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. 페이지 URL에서 meetingId 추출하기
+        const urlParts = window.location.pathname.split('/');
+        const meetingId = urlParts[urlParts.length - 1];
+
+        // 2. 해당 meetingId로 API 호출하기
+        fetch(`/api/meetings/${meetingId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // 3. 가져온 데이터로 페이지의 요소들 채워주기
+                document.getElementById("meeting-title").value = data.title;
+                document.querySelector(".photo img").src = data.media;
+                document.getElementById("meeting-content").value = data.description;
+                document.getElementById("member-count").textContent = data.maxMember + "명";
+                document.getElementById("member-range").value = data.maxMember;
+                document.getElementById("address-input").value = data.place;
+
+                // 여기에서 data.currentDate 값을 분리하여 각 입력 필드에 설정합니다.
+                const [date, time] = data.currentDate.split(" ");
+                const [year, month, day] = date.split("-");
+                const [hour, minute] = time.split(":").map(Number);  // 시와 분을 숫자로 변환합니다.
+
+                // 날짜 설정
+                document.getElementById("date").value = `${year}-${month}-${day}`;
+
+                // 시간 설정 (오전/오후 판단 및 시와 분 설정)
+                if (hour < 12) {
+                    document.getElementById("ampm").value = "오전";
+                    document.getElementById("hour").value = hour === 0 ? 12 : hour;  // 0시는 12시 오전으로 표시합니다.
+                } else {
+                    document.getElementById("ampm").value = "오후";
+                    document.getElementById("hour").value = hour > 12 ? hour - 12 : hour;  // 13시 이상은 오후 시간으로 변환합니다.
+                }
+                document.getElementById("minute").value = minute;
+
+                // ### 이미지 미리보기 기능 추가 ###
+                document.querySelector('input[type="file"]').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            const imagePreview = document.getElementById('image-preview');
+                            imagePreview.src = e.target.result;
+                            imagePreview.style.display = 'block';  // 이미지 미리보기를 보이게 합니다.
+                        }
+
+                        reader.readAsDataURL(file);  // 파일을 읽어 data URL 형식으로 반환합니다.
+                    }
+                });
+
+                // --- memberRange 의 이벤트 리스너 --- //
+                const memberRange = document.getElementById("member-range");
+                const memberCountSpan = document.getElementById("member-count");
+
+                memberRange.addEventListener('input', function() {
+                    memberCountSpan.textContent = this.value + '명';
+                });
+
+            })
+            .catch(error => {
+                console.error("Error fetching data: ", error);
+            });
+
+        // ### 여기부터 'submit-btn' 클릭 리스너 부분입니다 ###
+        document.querySelector('.submit-btn').addEventListener('click', function() {
+            const title = document.getElementById("meeting-title").value;
+            const description = document.getElementById("meeting-content").value;
+            const maxMember = parseInt(document.getElementById("member-range").value);
+            const place = document.getElementById("address-input").value;
+            const dateElement = document.getElementById("date");
+            const hourElement = document.getElementById("hour");
+            const minuteElement = document.getElementById("minute");
+            const ampmElement = document.getElementById("ampm");
+
+            let hour = parseInt(hourElement.value);
+            if (ampmElement.value === "오후" && hour !== 12) {
+                hour += 12;
+            }
+
+            const date = `${dateElement.value} ${hour.toString().padStart(2, '0')}:${minuteElement.value.padStart(2, '0')}`;
+
+            // 생성할 DTO 객체
+            const profileDto = {
+                title: title,
+                description: description,
+                maxMember: maxMember,
+                place: place,
+                date: date
+            };
+
+            const formData = new FormData();
+
+            // DTO 객체를 JSON 형식으로 변환하여 'meetingRequestDto' 파트에 추가
+            formData.append('meetingRequestDto', new Blob([JSON.stringify(profileDto)], {type: 'application/json'}));
+
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput && fileInput.files[0]) {
+                formData.append('file', fileInput.files[0]); // 이미지 파일을 'file' 파트에 추가
+            }
+
+            fetch(`/api/meetings/${meetingId}`, {
+                method: 'PUT',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = `/api/meetings/meeting-detail/${meetingId}`;  // meeting-detail 페이지로 이동
+                        return response.json();
+                    } else {
+                        throw new Error("Network response was not ok");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating meeting: ", error);
+                });
+
+        });
+
+        document.querySelector('.prev-btn').addEventListener('click', function() {
+            window.history.back();  // 이전 페이지로 이동
+        });
+
+
+    });
+
+</script>
+
+<!-- 헤더 스크립트 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const profileBtn = document.querySelector(".profile-btn");
+        const logoutBtn = document.querySelector(".logout-btn");
+
+        profileBtn.addEventListener('click', function() {
+            window.location.href = "/api/my-profile";
+        });
+
+        logoutBtn.addEventListener('click', function() {
+            fetch("/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // 로그아웃이 성공적으로 이루어졌을 때 홈페이지나 로그인 페이지로 리디렉션
+                        window.location.href = "/";  // 홈페이지 URL로 변경하세요
+                    } else {
+                        console.error("로그아웃 실패");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    });
+</script>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+
+</body>
+</html>

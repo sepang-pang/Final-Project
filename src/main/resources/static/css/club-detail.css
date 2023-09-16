@@ -1,0 +1,690 @@
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 50px;
+    height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.container {
+    width: 50%;
+    margin: 0 auto;
+    border-bottom: 1px solid #ccc;
+}
+
+/* --- 헤더 설정 --- */
+.header-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: white;
+    z-index: 1000;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.logout-btn, .profile-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px; /* 옆으로 긴 둥근 모양 */
+    background-color: #a3d9a5; /* 연한 초록색 배경 */
+    color: #fff; /* 흰색 텍스트 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s; /* 호버 효과 */
+    margin-right: 30px;
+}
+
+.profile-btn {
+    margin-right: 30px;
+}
+
+/* 로그아웃 버튼 스타일 */
+.logout-btn:hover {
+    background-color: #77bf78; /* 호버 시 더 진한 초록색 */
+}
+
+/* 내 프로필 버튼 스타일 */
+.profile-btn:hover {
+    background-color: #77bf78; /* 호버 시 더 진한 초록색 */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+}
+
+.title-group h1 {
+    margin-right: 10px;
+}
+
+.title-group .tag1 {
+    display: inline-block; /* span 태그를 인라인-블록으로 설정하여 박스 형태를 만듭니다. */
+    margin-right: 8px; /* 오른쪽 마진을 추가하여 span 태그 사이에 간격을 줍니다. */
+    padding: 4px 8px; /* 태그 안에 텍스트에 패딩을 추가하여 더 읽기 좋게 만듭니다. */
+    border: 1px solid #cdfaaf; /* 연한 회색의 테두리를 추가합니다. */
+    border-radius: 4px; /* 태그의 모서리를 둥글게 만듭니다. */
+    background-color: #defdc5; /* 연한 회색의 배경색을 추가합니다. */
+    font-size: 0.9em; /* 글자 크기를 조정합니다. 필요에 따라 변경 가능합니다. */
+}
+
+.title-group .tag2 {
+    display: inline-block; /* span 태그를 인라인-블록으로 설정하여 박스 형태를 만듭니다. */
+    margin-right: 8px; /* 오른쪽 마진을 추가하여 span 태그 사이에 간격을 줍니다. */
+    padding: 4px 8px; /* 태그 안에 텍스트에 패딩을 추가하여 더 읽기 좋게 만듭니다. */
+    border: 1px solid #75cde6; /* 연한 회색의 테두리를 추가합니다. */
+    border-radius: 4px; /* 태그의 모서리를 둥글게 만듭니다. */
+    background-color: #a0def1; /* 연한 회색의 배경색을 추가합니다. */
+    font-size: 0.9em; /* 글자 크기를 조정합니다. 필요에 따라 변경 가능합니다. */
+}
+
+.score {
+    margin-right: 5px;
+}
+
+.button-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 신고 버튼 스타일 */
+.btn-siren {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/5626/5626266.png'); /* 이미지 경로를 설정하세요 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    background-color: transparent; /* 배경색 제거 */
+    background-size: cover;
+    max-width: 25px;
+    max-height: 25px;
+    margin-right: 15px; /* 오른쪽 여백 추가 */
+    border: none; /* 테두리 제거 */
+    width: 25px; /* 버튼 너비 조정 */
+    height: 25px; /* 버튼 높이 조정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    text-indent: -9999px; /* 버튼 텍스트 숨김 */
+}
+
+.btn-siren:hover {
+    background-color: #c81c1c; /* 호버 시 더 진한 빨간색 */
+}
+
+/* 찜 버튼 스타일 */
+.btn-heart {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/1077/1077035.png'); /* 이미지 경로를 설정하세요 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    background-color: transparent; /* 배경색 제거 */
+    background-size: cover;
+    max-width: 25px;
+    max-height: 25px;
+    border: none; /* 테두리 제거 */
+    width: 25px; /* 버튼 너비 조정 */
+    height: 25px; /* 버튼 높이 조정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    text-indent: -9999px; /* 버튼 텍스트 숨김 */
+}
+
+.btn-heart:hover {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/138/138533.png'); /* 이미지 경로를 설정하세요 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    background-color: transparent; /* 배경색 제거 */
+    background-size: cover;
+    max-width: 25px;
+    max-height: 25px;
+    border: none; /* 테두리 제거 */
+    width: 25px; /* 버튼 너비 조정 */
+    height: 25px; /* 버튼 높이 조정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    text-indent: -9999px; /* 버튼 텍스트 숨김 */
+}
+
+/* 클릭된 상태의 아이콘 색상 */
+.btn-heart.clicked {
+    background-image: url('https://cdn-icons-png.flaticon.com/128/138/138533.png'); /* 이미지 경로를 설정하세요 */
+    background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+    background-position: center; /* 배경 이미지 중앙 정렬 */
+    background-color: transparent; /* 배경색 제거 */
+    background-size: cover;
+    max-width: 25px;
+    max-height: 25px;
+    border: none; /* 테두리 제거 */
+    width: 25px; /* 버튼 너비 조정 */
+    height: 25px; /* 버튼 높이 조정 */
+    cursor: pointer; /* 커서 스타일 설정 */
+    text-indent: -9999px; /* 버튼 텍스트 숨김 */
+}
+
+.btn-heart:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+
+.btn-heart {
+    transition: background-image 0.3s;
+}
+
+
+
+
+/* ================================= club intro =================================  */
+/* === club intro header - header === */
+.club-intro-header {
+    padding: 20px 0;
+    text-align: center; /* 중앙 정렬 */
+}
+
+.photo-box {
+    width: 50%;
+    padding-bottom: 28.125%; /* 16:9 비율에 따른 높이 */
+    border: 1px solid #ccc;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+}
+
+.photo-box img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 이미지를 정중앙에 위치시킵니다. */
+}
+
+
+/* === club intro article === */
+.club-intro-article {
+    width: 50%; /* 포토박스의 너비와 동일하게 설정 */
+    margin: 20px auto; /* 중앙 정렬 및 상하 여백 설정 */
+    font-size: 1em; /* 글자 크기 설정, 필요에 따라 조절 가능 */
+    line-height: 1.6; /* 줄 간격 설정 */
+    text-align: justify; /* 양쪽 정렬 설정, 원하시면 변경 가능 */
+    white-space: pre-line; /* 줄바꿈을 위한 white-space 설정 */
+}
+/* ================================= club intro =================================  */
+
+
+
+/* ================================= time table ================================= */
+.no-schedule-message {
+    display: none;
+    justify-content: center; /* 가로 정렬 */
+    align-items: center;     /* 세로 정렬 */
+    height: 100%;            /* 부모 요소의 높이를 채우기 위해 */
+    text-align: center;
+
+}
+
+.time-table {
+    width: 50%; /* 전체 너비의 절반만 사용 */
+    margin: 20px auto; /* 중앙 정렬 및 상하 여백 설정 */
+    padding-bottom: 20px; /* 바닥 패딩 추가 */
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%; /* 컨테이너의 너비를 100%로 설정 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
+
+.card {
+    flex: 0 1 calc(48% - 10px);
+    background-color: rgba(212, 251, 255, 0.79); /* 연한 배경색 */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* 진한 그림자 효과 */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    transition: transform 0.2s; /* 호버 효과 시 크기 변경 */
+}
+
+/* 호버 효과 */
+.card:hover {
+    transform: scale(1.05); /* 호버 시 크기 확대 */
+}
+
+.card-title-section, .card-info-section {
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.card-info-section p {
+    color: gray; /* 글씨색을 회색으로 변경 */
+}
+
+.card-info-section span {
+    color: black; /* span 내의 글씨색을 검정색으로 변경 */
+}
+
+.section-divider {
+    border: 1px solid #ccc; /* 구분선 스타일 및 색상을 설정하세요 */
+    margin: 20px 0; /* 위 아래 여백을 조절하세요 */
+}
+/* ================================= time table ================================= */
+
+
+/* ================================= club info ================================= */
+.club-info {
+    width: 50%; /* time-table과 동일한 너비 */
+    margin: 20px auto; /* 중앙 정렬 및 상하 여백 설정 */
+    padding-bottom: 20px; /* 바닥 패딩 추가 */
+}
+
+.club-info-header {
+    display: flex;
+    justify-content: space-between; /* 버튼 간격 균등하게 설정 */
+    margin-bottom: 20px; /* 헤더와 아티클 사이의 여백 설정 */
+}
+
+.club-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.2s, transform 0.2s, font-size 0.2s;
+}
+
+.club-btn:hover,
+.club-btn.active {
+    background-color: #ffc107; /* 노란색 배경 */
+    transform: scale(1.05); /* 호버 시 크기 확대 */
+    font-size: 1.1em; /* 호버 시 글자 크기 확대 */
+}
+.club-btn.active{
+    pointer-events: none; /* 클릭 이벤트 비활성화 */
+}
+
+/* 각 content-section 스타일 - 초기에 숨김 처리 */
+.content-section {
+    display: none;
+    font-size:16px;
+}
+
+.club-info-article {
+    width: 100%; /* 사진 박스의 너비 */
+    height: 300px; /* 사진 박스의 높이 */
+    border: 1px solid #ccc; /* 테두리 */
+    overflow: hidden; /* 이미지가 박스를 벗어나면 숨김 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
+/* ================================= club info ================================= */
+.detail-info, .meeting-record, .activity-area, .chat-room {
+    padding: 15px;
+}
+
+.club-info-article {
+    max-height: 500px; /* 원하는 높이로 설정. 이 값은 예시입니다. */
+    overflow-y: auto;  /* 세로로 스크롤링이 가능하도록 설정 */
+}
+
+.applicant-list, .member-list {
+    width: 100%;  /* 박스의 너비를 부모 요소의 너비와 동일하게 설정 */
+    max-width: 100%;  /* 최대 너비를 부모 요소의 너비와 동일하게 설정 */
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin: 0 auto;  /* 요소를 수평으로 중앙에 배치 */
+    box-sizing: border-box;  /* 패딩과 테두리를 너비와 높이에 포함하여 계산 */
+}
+
+.applicant, .member {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    list-style-type: none;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.applicant h4, .member h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+.applicant p, .member p {
+    margin-bottom: 0;
+    color: #777;
+}
+
+.applicant img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.member img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+.nickname {
+    flex-grow: 1;  /* 이름이 길어져도 다른 요소를 밀치지 않도록 설정 */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;  /* 버튼 사이의 간격 */
+
+    padding-right: 25px; /* 좌측에 간격 추가 */
+}
+
+.accept-btn, .reject-btn {
+    padding: 5px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.accept-btn {
+    background-color: #4caf50;  /* 승인 버튼 색상 */
+    color: #ffffff;
+}
+
+.accept-btn:hover {
+    background-color: #45a049;
+}
+
+.reject-btn {
+    background-color: #f44336;  /* 거절 버튼 색상 */
+    color: #ffffff;
+}
+
+.reject-btn:hover {
+    background-color: #e53929;
+}
+
+/* ================================= 세부 정보 ================================= */
+.detail-info .detail p {
+    color: gray;  /* 회색 글씨색 설정 */
+    display: inline-block; /* <p>와 <span>을 인라인 블록 요소로 설정 */
+    vertical-align: middle; /* 텍스트 수직 가운데 정렬 (선택 사항) */
+}
+
+.detail-info .detail span {
+    color: black;  /* 검은색 글씨색 설정 */
+    display: inline-block; /* <p>와 <span>을 인라인 블록 요소로 설정 */
+    vertical-align: middle; /* 텍스트 수직 가운데 정렬 (선택 사항) */
+}
+/* ================================= 세부 정보 ================================= */
+
+
+
+/* ================================= 가입하기 ================================= */
+.apply {
+    margin-top: 20px;
+    display: flex;      /* Flexbox를 사용 */
+    justify-content: flex-end;  /* 오른쪽으로 정렬 */
+}
+/* ================================= 가입하기 ================================= */
+
+
+
+
+/* ================================= 모임기록 ================================= */
+.completed-meeting-item {
+    list-style-type: none;
+    padding: 15px; /* 상자 내부의 여백 추가 */
+    margin: 10px auto;  /* 상단과 하단의 여백 및 중앙 정렬 */
+    border: 1px solid #ddd; /* 경계선 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    background-color: #ffffff; /* 배경색 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    cursor: pointer;
+}
+
+.completed-meeting-item h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+.completed-meeting-item p {
+    margin-bottom: 0;
+    color: #777;
+}
+/* ================================= 모임기록 ================================= */
+
+/* ================================= footer ================================= */
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+/* ================================= footer ================================= */
+
+/* ================================= 모달 ================================= */
+/* 기본 모달 스타일 */
+.modal {
+    font-family: 'Arial', sans-serif;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #fff;
+    width: 60%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    position: relative;
+}
+
+.modal-header, .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-footer {
+    border-top: none;
+    justify-content: flex-end;
+    padding: 0.5em 1em;
+}
+
+.close {
+    margin: 0;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+#description {
+    height: 10em;
+}
+
+.modal-body-page1 section, .modal-body-page2 section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1em 0;  /* 간격을 줄이기 위해 padding 값을 조정합니다. */
+}
+
+input[type="text"], textarea, input[type="range"], input[type="date"], input[type="number"], select {
+    width: 80%;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.modal-footer button {
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal-footer button:hover {
+    background: #0056b3;
+}
+
+/* mid 섹션의 텍스트 입력 및 이미지 선택 버튼을 가로 일렬로 정렬 */
+.modal-body-page1 section > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* 입력 박스와 파일 선택 버튼 사이의 간격 */
+}
+
+/* 이미지 선택 버튼의 스타일 */
+#imageUpload {
+    margin-left: 10px;  /* 텍스트 입력 박스와의 간격 */
+}
+
+.date-section {
+    display: flex;
+    flex-direction: column;  /* 세로(수직) 방향으로 나열 */
+    align-items: center;
+}
+
+.date-section-header, .date-section-article {
+    width: 100%;  /* 해당 요소가 전체 너비를 차지하도록 설정 */
+    display: flex;
+    justify-content: center;  /* 센터 정렬 */
+}
+
+.datetime-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#ampm {
+    width: 100px; /* 원하는 너비로 조절 */
+}
+
+/* =========================================================================== */
+
+/* ================================= 신고 모달 ================================= */
+.report-modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.report-modal-content {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #f4f4f4;
+    width: 300px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.close-report-modal{
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.join-button {
+    border: none;
+    padding: 7px 15px;
+    border-radius: 8px;
+    margin: auto;
+    background: #fbc120; /* 노란색 배경 */
+    color: black;
+    font-weight: bold;
+}
+
+.join-button:hover {
+    background-color: #ffdb7c;
+}
+
+
+/* =========================================================================== */
+
+
+
+
+

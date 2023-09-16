@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>프로필 관리</title>
+
+    <!--Viewport-->
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0"
+          name="viewport">
+
+    <!--(IE10)-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <!-- Normalize -->
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' rel="stylesheet">
+
+    <!--load CSS-->
+    <link href="/css/manage-profile.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <h1>프로필 관리 페이지</h1>
+    </header>
+</div>
+<div class="center-container" id="center-container">
+    <div class="image-and-details">
+        <div class="btn-group">
+            <div class="profile-image">
+                <img alt="파일 미리보기" id="image-preview" src="/images/meets_logo.png">
+            </div>
+            <label for="file" id="file-label">파일 선택</label>
+            <input class="form-control" id="file" name="file" type="file">
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="nickname">이름</label>
+        <input class="form-control" id="nickname" name="nickname" placeholder="이름을 입력하세요" type="text">
+    </div>
+
+    <div class="form-group">
+        <label for="introduction">소개</label>
+        <input class="form-control" id="introduction" name="introduction" placeholder="소개글을 입력하세요" type="text">
+    </div>
+
+    <div class="form-group">
+        <input id="latitude" name="latitude" type="hidden">
+        <input id="longitude" name="longitude" type="hidden">
+        <input id="zoneCode" name="zoneCode" placeholder="우편번호" type="text">
+        <input id="locate" name="locate" placeholder="주소" type="text">
+        <input id="address-search" onclick="execDaumPostcode()" type="button" value="주소 검색">
+        <div id="map" style="width:300px;height:300px;margin-top:10px;margin-left:120px;display:none"></div>
+    </div>
+    <!-- 버튼 -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">취소</button>
+        <button class="btn btn-primary" id="btn-save" type="submit">확인</button>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>주관</h4>
+            <p>스파르타 코딩클럽</p>
+        </div>
+        <div class="footer-section">
+            <h4>팀</h4>
+            <p>떡잎마을 방범대</p>
+        </div>
+        <div class="footer-section">
+            <h4>멤버</h4>
+            <p>오세창, 고은비, 김동환, 이경원</p>
+        </div>
+        <div class="footer-section">
+            <h4>문의 메일</h4>
+            <p><a href="mailto:tpckd0533@naver.com">tpckd0533@naver.com</a></p>
+        </div>
+    </div>
+</footer>
+</footer>
+
+<!--주소 검색-->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d5cbf2c7b1151b1ca7e03a028094c2&libraries=services"></script>
+<!--load JS-->
+<script src="/js/manage-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title> 프로필 </title>
+
+    <!--Viewport-->
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale=1.0, minimum=scale=1.0"
+          name="viewport">
+
+    <!--(IE10)-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+    <!-- Normalize -->
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css' rel="stylesheet">
+
+    <!--load CSS-->
+    <link href="/css/profile.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <img alt="동호회 이미지" class="club-image" src="/images/meets_logo.png">
+        <h1 th:text="${profileDto.getNickname() + '의 프로필'}"></h1>
+    </header>
+</div>
+<div class="center-container" id="center-container">
+    <!-- 이미지와 프로필 디테일 영역 -->
+    <div class="image-and-details">
+        <!-- 프로필 이미지 -->
+        <div class="profile-image">
+            <img alt="프로필 이미지" id="profile-image" name="profileImage" src="/meets_logo.png"
+                 th:src="${profileDto.getProfileImage()}">
+        </div>
+        <!-- 닉네임, 소개글, 위치 -->
+        <div class="profile-details">
+            <div class="form-group">
+                <input id="nickname" name="nickname" placeholder="이름" readonly="readonly"
+                       th:value="${profileDto.getNickname()}"
+                       type="text">
+            </div>
+            <div class="form-group">
+                <input id="introduction" name="introduction" placeholder="소개글" readonly="readonly"
+                       th:value="${profileDto.getIntroduction()}"
+                       type="text">
+            </div>
+            <div class="form-group">
+                <input id="locate" name="locate" placeholder="위치" readonly="readonly"
+                       th:value="${profileDto.getLocate()}"
+                       type="text">
+            </div>
+        </div>
+    </div>
+    <!-- 관심사 -->
+    <div class="interests">
+        <div th:each="interest : ${profileDto.profileInterestNames}">
+            <input id="interest" readonly="readonly" th:value="${interest}" type="text">
+        </div>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="btn-group">
+        <button class="btn btn-primary" id="goBackButton" onclick="back()" type="button">메인으로</button>
+        <button class="btn btn-primary" id="btn-report" type="report">신고하기</button>
+    </div>
+</div>
+<!-- 신고하기 모달 팝업 -->
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>신고하기</h2>
+        <form id="reportForm">
+            <input type="hidden" id="targetId" name="targetId" th:value="${profileDto.getUser().getId()}">
+            <!-- 제목과 제목 입력 필드를 감싸는 div -->
+            <div class="title-container">
+            <label for="reportTitle">제목:</label>
+            <input type="text" id="reportTitle" name="reportTitle" required>
+            </div>
+            <!-- 내용과 내용 입력 필드를 감싸는 div -->
+            <div class="content-container">
+            <label for="reportContent">내용:</label>
+            <textarea id="reportContent" name="reportContent" required></textarea>
+            </div>
+            <button id="btn-submit" type="submit">제출</button>
+        </form>
+    </div>
+</div>
+<!--load JS-->
+<script src="/js/profile.js"></script>
+</body>
+</html>

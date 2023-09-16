@@ -1,0 +1,193 @@
+/* 가운데 컨테이너 설정 */
+#center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+/* 프로필 이미지를 동그랗게 만들고 가운데 정렬 */
+.profile-image {
+    border-radius: 50%;
+    width: 150px; /* 이미지 크기 조절 */
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* 이미지 아래 간격 조절 */
+    margin-left: 40%;
+    border: black;
+}
+
+.profile-image img {
+    width: 100%; /* 이미지가 부모 요소에 맞게 가득 채우도록 설정 */
+    height: 100%; /* 이미지가 부모 요소에 맞게 가득 채우도록 설정 */
+    object-fit: cover; /* 이미지의 가로세로 비율을 유지한 채로 부모 요소에 맞추고 잘린 부분은 숨깁니다. */
+}
+
+/* 파일 선택 버튼 숨김 */
+input[type="file"] {
+    display: none;
+}
+
+/* 파일 선택 버튼 스타일 */
+#file-label {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    text-align: center;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 520px;
+    margin-right: 200px;
+    transition: background-color 0.3s ease;
+}
+
+/* 닉네임 설정 */
+#nickname {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px; /* 닉네임 아래 간격 조절 */
+    text-align: center; /* 텍스트를 가운데 정렬 */
+    border: none; /* 테두리 제거 */
+    outline: none; /* 포커스 효과 제거 */
+    background: transparent; /* 배경 투명으로 설정 */
+    flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    margin-right: 10px; /* 이름 입력란과 버튼 사이의 간격 조절 */
+}
+
+#introduction {
+    width: 500px; /* 원하는 가로 크기로 조절 */
+    height: 100px; /* 가로 크기와 동일한 높이로 설정하여 정사각형 모양으로 만듭니다 */
+    border-radius: 10px; /* 모서리를 둥글게 만듭니다 */
+    border: 2px solid #ccc; /* 테두리를 두껍게 만들고 회색으로 설정합니다 */
+    padding: 10px; /* 텍스트와 테두리 사이의 간격을 조절합니다 */
+    background-color: white; /* 배경색을 하얀색으로 설정합니다 */
+    font-size: 16px; /* 글꼴 크기 설정 */
+    color: #333; /* 텍스트 색상 설정 */
+}
+
+
+
+/* 텍스트 박스 스타일 */
+input[type="text"],
+select {
+    width: 60%;
+    margin-left: 120px;
+    margin-bottom: 30px; /* 간격 조정 */
+    border-radius: 10px; /* 모서리를 둥글게 만듭니다 */
+    border: 2px solid #ccc; /* 테두리를 두껍게 만들고 회색으로 설정합니다 */
+    padding: 10px; /* 텍스트와 테두리 사이의 간격을 조절합니다 */
+    text-align: center;
+    box-sizing: border-box; /* 여백과 패딩을 포함한 크기 지정 */
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-left: 120px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* 텍스트 박스 안에 옅은 글씨로 미리 입력된 내용 스타일 */
+input::placeholder {
+    color: #bbb;
+}
+
+
+/* 주소 검색 버튼 스타일 */
+#address-search {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-group {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    text-align: right; /* 버튼 그룹을 오른쪽으로 정렬 */
+    /*margin-left: 500px;*/
+}
+
+#zoneCode {
+    margin-right: 40px;
+}
+
+/* 확인 버튼 스타일 */
+#btn-save {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+    margin-left: 10px; /* 버튼 사이 간격 조정 */
+    margin-right: 100px;
+}
+
+/* 취소 버튼 스타일 */
+#goBackButton {
+    background-color: darkgray;
+    color: #fff; /* 흰색 텍스트 */
+    padding: 15px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* 호버 효과를 위한 트랜지션 */
+    position: relative;
+}
+
+/* 버튼 호버 효과 */
+#file-label:hover, #address-search:hover, #goBackButton:hover, #btn-save:hover {
+    background-color: black; /* 호버 시 색 변경 */
+}
+/* Footer Styles */
+footer {
+    background-color: #707070;  /* 회색으로 설정 */
+    color: #fff;
+    padding: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-content {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-section {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.footer-section a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}

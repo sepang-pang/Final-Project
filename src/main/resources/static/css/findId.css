@@ -1,0 +1,47 @@
+body {
+    /*background-image: url('/static/meets_logo.png'); !* 이미지 경로 설정 *!*/
+    background-repeat: no-repeat;
+    background-size: 300px; /* 이미지 크기 설정 */
+    background-position: center top; /* 이미지 위치 설정 */
+    background-color: #749ce5;
+    background-color: #749ce5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.find-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center
+}
+
+.find-box h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+
+    background-color: #e5d674;
+    border-color: #ffb700;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}

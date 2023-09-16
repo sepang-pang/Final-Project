@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--Viewport-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum=scale-1.0, minimum=scale-1.0">
+
+    <!--(IE10)-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Nomalize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <style>
+        img {
+            width: 100%;
+        }
+
+        .login {
+            height: 1000px;
+            width: 100%;
+            background: radial-gradient(#52f6e9, #2387c5);
+            position: relative;
+        }
+
+        .login_box {
+            width: 1050px;
+            height: 600px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 1px 4px 22px -8px #0004;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .login_box .left {
+            width: 41%;
+            height: 100%;
+            padding: 25px 25px;
+
+        }
+
+        .login_box .right {
+            width: 59%;
+            height: 100%
+        }
+
+        .left .top_link a {
+            color: #452A5A;
+            font-weight: 400;
+        }
+
+        .left .top_link {
+            height: 20px
+        }
+
+        .left .contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+            height: 100%;
+            width: 73%;
+            margin: auto;
+        }
+
+        .left h3 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .left input {
+            border: none;
+            width: 80%;
+            margin: 15px 0px;
+            border-bottom: 1px solid #4f30677d;
+            padding: 7px 9px;
+            width: 100%;
+            overflow: hidden;
+            background: transparent;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .left {
+            background: linear-gradient(-45deg, #dcd7e0, #fff);
+        }
+
+        .submit {
+            border: none;
+            padding: 15px 70px;
+            border-radius: 8px;
+            display: block;
+            margin: auto;
+            margin-top: 90px;
+            background: #2b7ca9;
+            color: #fff;
+            font-weight: bold;
+            -webkit-box-shadow: 0px 9px 15px -11px rgb(52, 137, 183);
+            -moz-box-shadow: 0px 9px 15px -11px rgba(52, 137, 183);
+            box-shadow: 0px 9px 15px -11px rgba(52, 137, 183);
+        }
+
+        .right {
+            background: linear-gradient(212.38deg, rgba(12, 49, 107, 0.67) 0%, rgba(41, 152, 222, 0.6) 100%), url(https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20160309_46%2Fnhkuhak_1457488586120clAUR_JPEG%2FIMG_0527.JPG&type=sc960_832);
+            background-size: cover; /* 이미지를 화면에 가득 차게 설정 */
+            background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
+            background-position: center center; /* 이미지를 중앙으로 정렬 */
+            color: #ffffff;
+            position: relative;
+        }
+
+        .right .right-text {
+            height: 100%;
+            position: relative;
+            transform: translate(0%, 40%);
+        }
+
+        .right-text h2 {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 50px;
+            font-weight: 500;
+        }
+
+        .right-text h5 {
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 19px;
+            font-weight: 400;
+        }
+
+        .right .right-inductor {
+            position: absolute;
+            width: 70px;
+            height: 7px;
+            background: #fff0;
+            left: 50%;
+            bottom: 70px;
+            transform: translate(-50%, 0%);
+        }
+
+        .top_link img {
+            width: 28px;
+            padding-right: 7px;
+            margin-top: -3px;
+        }
+
+        /* 카카오 로그인 버튼 스타일 */
+        #login-kakao-btn {
+            background-color: rgba(255, 205, 0, 0.99); /* 노란색 배경색 */
+            border-radius: 10px; /* 모서리 둥글게 */
+            border: none;
+            color: #000; /* 텍스트 색상 */
+            padding: 10px 20px; /* 내용 주변의 여백 */
+            font-size: 13px; /* 글꼴 크기 */
+            text-decoration: none; /* 밑줄 제거 */
+            display: block; /* 가운데 정렬을 위해 블록 요소로 설정 */
+            margin: 0 auto; /* 수평 가운데 정렬 */
+            margin-top: 30px;
+        }
+
+        #login-kakao-btn:hover {
+            background-color: #FFDD33; /* 마우스 호버 시 밝은 노란색 */
+        }
+    </style>
+</head>
+<body>
+<section class="login">
+    <div class="login_box">
+        <div class="left">
+            <div class="contact">
+                <form id="loginForm" action="/api/login" method="post">
+                    <h3>LOG IN</h3>
+                    <input type="text" id="username" placeholder="ID">
+                    <input type="password" id="password" placeholder="PASSWORD" required>
+                    <button id="login-kakao-btn"
+                            onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=4284645c387b0d5bb7d529cf9658e8bc&redirect_uri=http://localhost:8080/kakao/callback&response_type=code'">
+                        카카오로 로그인하기
+                    </button>
+                    <div class="container mt-3 text-center">
+                        <p><a href="/api/findid">아이디 찾기</a> / <a href="/api/findpassword">비밀번호 찾기</a></p>
+                        <p>계정이 없으신가요? <a href="/signup">회원 가입</a></p>
+                    </div>
+                    <button class="submit" type="submit">Log In</button>
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <div class="right-text">
+                <h2>MEETS</h2>
+                <h5>내가 찾던 모든 취미 모임</h5>
+            </div>
+            <div class="right-inductor">
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (response.status === 200) {
+                alert(data.message);
+                window.location.href = "/";
+            } else {
+                alert("로그인 실패: " + data.message);
+            }
+        } catch (error) {
+            console.error('There was an error during the login process:', error);
+        }
+    });
+</script>
+</body>
+</html>
