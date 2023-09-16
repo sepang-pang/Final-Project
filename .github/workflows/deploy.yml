@@ -43,7 +43,7 @@ jobs:
           echo "${{secrets.APPLICATION_PROPERTIES}}" > ./application.properties
           touch ./application-oauth.properties
           echo "${{secrets.APPLICATION_OAUTH_PROPERTIES}}" > ./application-oauth.properties
-          shell: bash
+        shell: bash
 
       # (3) gradlew 실행 권한부여
       - name: Run chmod to make gradlew executable
