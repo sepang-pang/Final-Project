@@ -281,8 +281,10 @@ public class ClubServiceImpl implements ClubService {
             activity = ActivityTypeEnum.ONLINE;
         }
 
+        log.info("동호회 개설 6");
         String media = fileUploader.upload(file);
 
+        log.info("동호회 개설 7");
         // 동호회 개설
         log.info("동호회 개설");
         Club club = Club.builder()
@@ -302,6 +304,7 @@ public class ClubServiceImpl implements ClubService {
                 .minor(interestMinor)
                 .isTrialAvailable(clubRequestDto.isTrialAvailable())
                 .build();
+
 
         // DB 저장
         log.info("DB 저장");

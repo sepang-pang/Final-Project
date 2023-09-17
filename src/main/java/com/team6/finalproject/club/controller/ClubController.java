@@ -13,6 +13,7 @@ import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.service.ClubService;
 import com.team6.finalproject.common.dto.ApiResponseDto;
 import com.team6.finalproject.profile.likeclub.service.LikeClubService;
+import com.team6.finalproject.profile.service.ProfileService;
 import com.team6.finalproject.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +38,16 @@ public class ClubController {
     private final ClubService clubService;
     private final LikeClubService likeClubService;
     private final MemberService memberService;
+    private final ProfileService profileService;
     private final ApplyJoinClubService applyJoinClubService;
 
     @GetMapping("/open-club") // 동호회 개설
-    public String openClub() {
-        return "openClub";
+    public String openClub(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        if (profileService.existValidProfile(userDetails.getUser().getId())) {
+            return "openClub";
+        } else {
+            throw new NotExistResourceException("프로필을 먼저 작성해주세요.");
+        }
     }
 
     @GetMapping("/club-update/{clubId}") // 동호회 전체 조회
@@ -51,15 +57,16 @@ public class ClubController {
         model.addAttribute("clubUsername", clubService.findClub(clubId).getUsername());
         return "club-update";
     }
+
     @GetMapping("/club-detail/{id}") // 동호회 상세 조회
     public String clubPage(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-            model.addAttribute("clubId", id);
-            model.addAttribute("currentUsername", userDetails.getUsername());
-            model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
-            model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
-            model.addAttribute("memberStatus", memberService.existJoinClub(userDetails.getUser().getId(), id));
-            model.addAttribute("applyStatus", applyJoinClubService.hasPendingApplication(userDetails.getUser().getId(), id));
-            return "club-detail";
+        model.addAttribute("clubId", id);
+        model.addAttribute("currentUsername", userDetails.getUsername());
+        model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
+        model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
+        model.addAttribute("memberStatus", memberService.existJoinClub(userDetails.getUser().getId(), id));
+        model.addAttribute("applyStatus", applyJoinClubService.hasPendingApplication(userDetails.getUser().getId(), id));
+        return "club-detail";
     }
 
     @GetMapping("/my-club") // 개설한 동호회 목록 조회
@@ -91,7 +98,7 @@ public class ClubController {
     @ResponseBody
     public ResponseEntity createClub(@RequestPart ClubRequestDto clubRequestDto, @RequestPart MultipartFile file, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
         ClubResponseDto clubResponseDto = clubService.createClub(clubRequestDto, file, userDetails.getUser());
-         return ResponseEntity.ok().body(clubResponseDto);
+        return ResponseEntity.ok().body(clubResponseDto);
     }
 
     @PutMapping("/api/clubs/{clubId}") // 동호회 수정
@@ -99,7 +106,7 @@ public class ClubController {
         return clubService.updateClub(clubId, clubRequestDto, userDetails.getUser(), multipartFile);
     }
 
-//    @ResponseBody
+    //    @ResponseBody
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
     @ResponseBody
     public ResponseEntity<ApiResponseDto> deleteClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {

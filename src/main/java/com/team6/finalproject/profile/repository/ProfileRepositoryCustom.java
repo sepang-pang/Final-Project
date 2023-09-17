@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface ProfileRepositoryCustom {
     public Optional<Profile> existValidLocate(Long id);
     public Optional<Profile> existValidInterest(Long id);
+    public Optional<Profile> existValidProfile(Long id);
 }
