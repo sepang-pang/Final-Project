@@ -114,23 +114,30 @@ function signup() {
 
     // 만 19세 미만의 경우 회원 가입을 막습니다.
     if (ageDiff >= 19) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/signup", true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
+        fetch("/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8"
+            },
+            body: JSON.stringify(userData)
+        })
+            .then(response => {
+                if (response.status === 200) {
                     // 서버에서 성공적으로 처리되었을 경우 동작
                     alert("회원 가입이 완료되었습니다.");
                     window.location.href = "/login"; // 로그인 페이지로 이동
                 } else {
-                    // 서버에서 오류가 발생한 경우 동작
-                    alert("회원 가입 중 오류가 발생했습니다.");
+                    response.json().then(function (data) {
+                        if (data.errorMessage) {
+                            alert(data.errorMessage);
+                        } else {
+                            alert("회원 가입 중 오류가 발생했습니다.");
+                        }
+                    });
                 }
-            }
-        };
-
-        xhr.send(JSON.stringify(userData));
+            })
+            .catch(error => {
+                console.error("네트워크 오류:", error);
+            });
     }
 }
