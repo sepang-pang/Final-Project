@@ -2,14 +2,12 @@ package com.team6.finalproject.club.controller;
 
 import com.team6.finalproject.advice.custom.*;
 import com.team6.finalproject.club.apply.dto.ClubAppliesResponseDto;
-import com.team6.finalproject.club.apply.entity.ApplyJoinClub;
 import com.team6.finalproject.club.apply.service.ApplyJoinClubService;
 import com.team6.finalproject.club.dto.ClubRequestDto;
 import com.team6.finalproject.club.dto.ClubResponseDto;
 import com.team6.finalproject.club.dto.ReadInterestMajorDto;
 import com.team6.finalproject.club.enums.ApprovalStateEnum;
 import com.team6.finalproject.club.enums.ClubRoleEnum;
-import com.team6.finalproject.club.interest.service.InterestMinorService;
 import com.team6.finalproject.club.member.dto.MemberInquiryDto;
 import com.team6.finalproject.club.member.service.MemberService;
 import com.team6.finalproject.club.service.ClubService;
@@ -55,13 +53,13 @@ public class ClubController {
     }
     @GetMapping("/club-detail/{id}") // 동호회 상세 조회
     public String clubPage(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
-        model.addAttribute("clubId", id);
-        model.addAttribute("currentUsername", userDetails.getUsername());
-        model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
-        model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
-        model.addAttribute("memberStatus", memberService.existJoinClub(userDetails.getUser().getId(), id));
-        model.addAttribute("applyStatus", applyJoinClubService.hasPendingApplication(userDetails.getUser().getId(), id));
-        return "club-detail";
+            model.addAttribute("clubId", id);
+            model.addAttribute("currentUsername", userDetails.getUsername());
+            model.addAttribute("clubUsername", clubService.findClub(id).getUsername());
+            model.addAttribute("likeStatus", likeClubService.isLikeClub(id, userDetails.getUser()));
+            model.addAttribute("memberStatus", memberService.existJoinClub(userDetails.getUser().getId(), id));
+            model.addAttribute("applyStatus", applyJoinClubService.hasPendingApplication(userDetails.getUser().getId(), id));
+            return "club-detail";
     }
 
     @GetMapping("/my-club") // 개설한 동호회 목록 조회
