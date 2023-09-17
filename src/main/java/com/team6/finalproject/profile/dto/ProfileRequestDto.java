@@ -10,6 +10,5 @@ public class ProfileRequestDto {
     private String introduction;
     private Double latitude;
     private Double longitude;
-    private String zoneCode;
     private String locate;
 }

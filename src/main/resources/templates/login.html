@@ -184,12 +184,12 @@
                     <h3>LOG IN</h3>
                     <input type="text" id="username" placeholder="ID">
                     <input type="password" id="password" placeholder="PASSWORD" required>
-                    <button id="login-kakao-btn"
-                            onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=51fb0f08d9fed395f0cb89c8347dea88&redirect_uri=http://15.165.240.217/kakao/callback&response_type=code'">
+                    <button id="login-kakao-btn">
+<!--                            onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=51fb0f08d9fed395f0cb89c8347dea88&redirect_uri=http://15.165.240.217/kakao/callback&response_type=code'">-->
                         카카오로 로그인하기
                     </button>
                     <div class="container mt-3 text-center">
-                        <p><a href="/api/findid">아이디 찾기</a> / <a href="/api/findpassword">비밀번호 찾기</a></p>
+                        <p><a href="/api/find-id">아이디 찾기</a> / <a href="/api/find-password">비밀번호 찾기</a></p>
                         <p>계정이 없으신가요? <a href="/signup">회원 가입</a></p>
                     </div>
                     <button class="submit" type="submit">Log In</button>
@@ -207,6 +207,14 @@
     </div>
 </section>
 <script>
+    var btnKakao = document.getElementById('login-kakao-btn');
+    btnKakao.addEventListener('click', notify);
+
+    function notify() {
+        alert("서비스 준비 중입니다.")
+    }
+
+
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 

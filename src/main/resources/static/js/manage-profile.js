@@ -40,7 +40,6 @@ var marker = new daum.maps.Marker({
 function execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function (data) {
-            var zoneCode = data.zonecode;// 우편번호
             var locate = data.address; // 최종 주소 변수
 
             // 주소로 상세 정보를 검색
@@ -66,7 +65,6 @@ function execDaumPostcode() {
                     // 주소 정보를 해당 필드에 넣는다.
                     document.getElementById("latitude").value = latitude;
                     document.getElementById("longitude").value = longitude;
-                    document.getElementById("zoneCode").value = zoneCode;
                     document.getElementById("locate").value = locate;
                 }
             });
@@ -82,7 +80,6 @@ function submit() {
     let introduction = document.getElementById('introduction').value;
     let latitude = document.getElementById('latitude').value;
     let longitude = document.getElementById('longitude').value;
-    let zoneCode = document.getElementById('zoneCode').value;
     let locate = document.getElementById('locate').value;
     let file = document.getElementById('file').files[0]; // 선택한 파일 가져오기
     let profileDto = {
@@ -90,7 +87,6 @@ function submit() {
         introduction: introduction,
         latitude: latitude,
         longitude: longitude,
-        zoneCode: zoneCode,
         locate: locate
     };
 

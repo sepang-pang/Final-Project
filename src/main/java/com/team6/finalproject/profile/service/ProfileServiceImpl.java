@@ -34,7 +34,6 @@ public class ProfileServiceImpl implements ProfileService {
                 .profileImage(profileImage)
                 .latitude(requestDto.getLatitude())
                 .longitude(requestDto.getLongitude())
-                .zoneCode(requestDto.getZoneCode())
                 .locate(requestDto.getLocate())
                 .user(user)
                 .build();
@@ -72,10 +71,9 @@ public class ProfileServiceImpl implements ProfileService {
         String profileImage = fileUploader.upload(file);
         Double latitude = requestDto.getLatitude();
         Double longitude = requestDto.getLongitude();
-        String zoneCode = requestDto.getZoneCode();
         String locate = requestDto.getLocate();
 
-        profile.update(nickname, introduction, profileImage, latitude, longitude, zoneCode, locate);
+        profile.update(nickname, introduction, profileImage, latitude, longitude, locate);
         return new ProfileResponseDto(profile);
     }
 
