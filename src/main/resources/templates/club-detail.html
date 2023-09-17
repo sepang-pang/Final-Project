@@ -37,12 +37,13 @@
             <span class="score" title="활동점수">🔥</span> <span class="tag3">동호회 활동점수</span>
         </div>
         <div class="button-group">
+            <button class="btn btn-edit">수정</button>
+            <button class="btn btn-delete">삭제</button>
             <button class="btn btn-siren" title="신고하기" id="siren">신고하기</button>
             <button class="btn-heart" title="찜" id="heart">찜</button>
         </div>
     </header>
 </div>
-
 <!-- section : 본문 내용 -->
 <section>
     <header class="club-intro-header">
@@ -280,6 +281,8 @@
         const applyStatus = [[${applyStatus}]]; // 동호회 가입 신청 상태
         const heartBtn = document.getElementById('heart');
         const sirenBtn = document.querySelector(".btn-siren");
+        const editButton = document.querySelector('.btn-edit');
+        const deleteButton = document.querySelector('.btn-delete');
         const joinButton = document.querySelector('.join-button'); // 가입하기 버튼 선택
         const clubButtons = document.querySelectorAll('.club-btn');
 
@@ -336,6 +339,35 @@
                     console.error('Error during logout:', error);
                     alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
                 });
+        });
+
+        // 수정 버튼 클릭 이벤트
+        editButton.addEventListener("click", () => {
+            alert("서비스 준비중입니다.");
+        });
+
+        // 삭제 버튼 클릭 이벤트
+        deleteButton.addEventListener("click", () => {
+            const isConfirmed = confirm("삭제하시겠습니까?");
+            if (isConfirmed) {
+                fetch(`/api/clubs/${clubId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("API 호출 실패");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert("삭제가 되었습니다.");
+                        window.location.href = "/sub-main"; // 리디렉션
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("삭제 과정에서 오류가 발생했습니다.");
+                    });
+            }
         });
 
         // ============== 주소 선택 창 ============== //
@@ -399,6 +431,8 @@
         } else {
             clubLeaderView.style.display = 'none';
             regularUserView.style.display = 'block';
+            editButton.style.display = "none";
+            deleteButton.style.display = "none";
         }
 
         // ================================================== //

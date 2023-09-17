@@ -41,12 +41,19 @@ public class ClubController {
     private final MemberService memberService;
     private final ApplyJoinClubService applyJoinClubService;
 
-    @GetMapping("/open-club")
+    @GetMapping("/open-club") // 동호회 개설
     public String openClub() {
         return "openClub";
     }
 
-    @GetMapping("/club-detail/{id}")
+    @GetMapping("/club-update/{clubId}") // 동호회 전체 조회
+    public String updateClubPage(@PathVariable("clubId") Long clubId, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
+        model.addAttribute("clubId", clubId);
+        model.addAttribute("currentUsername", userDetails.getUsername());
+        model.addAttribute("clubUsername", clubService.findClub(clubId).getUsername());
+        return "club-update";
+    }
+    @GetMapping("/club-detail/{id}") // 동호회 상세 조회
     public String clubPage(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException {
         model.addAttribute("clubId", id);
         model.addAttribute("currentUsername", userDetails.getUsername());
@@ -89,13 +96,14 @@ public class ClubController {
          return ResponseEntity.ok().body(clubResponseDto);
     }
 
-    @PutMapping("/clubs/{clubId}") // 동호회 수정
+    @PutMapping("/api/clubs/{clubId}") // 동호회 수정
     public ClubResponseDto updateClub(@PathVariable Long clubId, @RequestPart ClubRequestDto clubRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart MultipartFile multipartFile) throws NotExistResourceException, DuplicateNameException, InvalidAgeRangeException, IOException {
         return clubService.updateClub(clubId, clubRequestDto, userDetails.getUser(), multipartFile);
     }
 
 //    @ResponseBody
     @DeleteMapping("/clubs/{clubId}") // 동호회 폐쇄
+    @ResponseBody
     public ResponseEntity<ApiResponseDto> deleteClub(@PathVariable Long clubId, @AuthenticationPrincipal UserDetailsImpl userDetails) throws NotExistResourceException, AccessDeniedException {
         return clubService.deleteClub(clubId, userDetails.getUser());
     }
