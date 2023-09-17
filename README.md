@@ -23,7 +23,7 @@
 
 |리더|부리더|팀원|팀원|
 |:---:|:---:|:---:|:---:|
-|<img src=""  width="135" height="180">|<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/e3aafa70-ddf7-4024-8d6c-a57a74167d4a"  width="135" height="170">|<img src=""  width="135" height="160">|<img src=""  width="135" height="160">|
+|<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/cfebd661-bbeb-4928-ba0d-15555d49f5f8"  width="135" height="180">|<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/e3aafa70-ddf7-4024-8d6c-a57a74167d4a"  width="135" height="170">|<img src=""  width="135" height="160">|<img src=""  width="135" height="160">|
 |오세창|고은비|이경원|김동환|
 |[Github](https://github.com/sepang-pang)<br>[Blog](https://pangpang0533.tistory.com/)|[Github](https://github.com/rhaql)<br>[Blog](https://ggomcoding.tistory.com/)|[Github](https://github.com/canseeit)<br>[Blog](https://velog.io/@canseeit)|[Github]()<br>[Blog]()|
 
@@ -56,5 +56,48 @@
 ## 05. ERD 설계도⚙️
 
 ## 06. 화면 구성🌎
+
+<details>
+<summary> 1. 로그인 화면 </summary>
+<div markdown="1">
+<br>
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/4d9275c8-ae52-4290-a814-cf80bab8638e">
+</div>
+</details>
+
+<details>
+<summary> 2. 회원가입 화면 </summary>
+<div markdown="1">
+<br>
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/f9634bc6-7e76-476b-8d65-839f34174760">
+</div>
+</details>
+
+<details>
+<summary> 3. 메인 페이지 </summary>
+<div markdown="1">
+<br>
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/4c204ee2-eb54-4889-a475-5460293d226f"><br>
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/18739c86-dbcd-4a3c-a5af-e80d1002c7a4">
+</div>
+</details>
+
+<details>
+<summary> 4. 동호회 상세 페이지 </summary>
+<div markdown="1">
+<br>
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/c9e34e90-176a-471e-9f5c-b6edee1568ea">
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/8ae0aa5f-6ea8-44d6-8a95-8f9f042d4d35"><br>
+</div>
+</details>
+
+<details>
+<summary> 5. 모임 상세 페이지 </summary>
+<div markdown="1">
+<br>
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/96023775-9c0d-4495-aea9-fe9a6cc8db6a">
+</div>
+</details>
+
 
 
