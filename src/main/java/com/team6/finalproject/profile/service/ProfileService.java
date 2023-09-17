@@ -25,6 +25,8 @@ public interface ProfileService {
     // 현재 인가된 유저의 프로필 이름 추출
     Profile findProfileByUserId(Long id) throws NotExistResourceException;
 
+    Boolean existValidProfile(Long id);
+
     // 거주지 입력 여부 확인 메서드
     public Boolean existValidLocate(Long id);
 

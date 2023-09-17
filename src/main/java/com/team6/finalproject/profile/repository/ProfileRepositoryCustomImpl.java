@@ -39,4 +39,16 @@ public class ProfileRepositoryCustomImpl implements ProfileRepositoryCustom{
                                 .fetchOne()
                 );
     }
+
+    @Override
+    public Optional<Profile> existValidProfile(Long id) {
+        return
+                Optional.ofNullable(
+                        jpaQueryFactory
+                                .selectFrom(profile)
+                                .where(profile.user.id.eq(id)
+                                        .and(profile.user.isDeleted.eq(false)))
+                                .fetchOne()
+                );
+    }
 }

@@ -126,6 +126,11 @@ function submit() {
         locate: locate
     };
 
+    // 파일 선택하지 않았을 때 기본 이미지 요청
+    if (!file) {
+        file = new File([], "empty", {type: "image/png"});
+    }
+
     let formData = new FormData();
     formData.append('clubRequestDto', new Blob([JSON.stringify(clubDto)], {type: 'application/json'}));
     formData.append('file', file); // 파일 추가
