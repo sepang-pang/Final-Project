@@ -64,8 +64,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String[] excludePath = {
                 "/", "/signup", "/login", "/user/reissue", "/aa", "/kakao/callback", "/api/sms/send", "/api/sms/check",
                 "/sub-main", "/main", "/api/clubs/get/recent", "/api/clubs/get/popularity",
-                "/api/clubs/get/interest-minor/{minorId}", "/api/findid", "/api/findpassword",
-                "/api/users/id-inquiry", "/api/users/pw-inquiry", "/api/users/pw-auth", "/api/users/id-auth"
+                "/api/clubs/get/interest-minor/{minorId}", "/api/find-id", "/api/find-password",
+                "/api/users/id-inquiry", "/api/users/pw-inquiry", "/api/users/pw-auth", "/api/users/id-auth",
+                "/api/reset-password", "/api/users/reset-password"
         };
 
         String path = request.getRequestURI();

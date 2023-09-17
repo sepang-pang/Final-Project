@@ -60,11 +60,12 @@ public class UserController {
 
     @PostMapping("/api/users/id-auth") // ID 찾기 인증
     @ResponseBody
-    public IdResponseDto returnId(@RequestBody AuthRequestDto requestDto) throws NotExistResourceException {
+    public ResponseEntity<?> returnId(@RequestBody AuthRequestDto requestDto,Model model) throws NotExistResourceException {
         if (userService.verifyCode(requestDto)) { // 인증코드 검증
 
             // 인증 성공 시 ID 반환 -> 비밀번호 재설정 페이지로 넘어가는 버튼 달기
-            return userService.returnId(requestDto.getEmail());
+            IdResponseDto idResponseDto = userService.returnId(requestDto.getEmail());
+            return ResponseEntity.ok(idResponseDto);
         }
         throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
     }
@@ -89,7 +90,7 @@ public class UserController {
         throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
     }
 
-    @PostMapping("/api/users/resetpassword") // 비밀번호 재설정
+    @PostMapping("/api/users/reset-password") // 비밀번호 재설정
     @ResponseBody
     public void updatePassword(@RequestBody ResetPasswordDto resetPasswordDto) throws NotExistResourceException{
         userService.resetPassword(resetPasswordDto);
