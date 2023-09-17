@@ -38,11 +38,16 @@ public class ProfileController {
         return "manage-profile";
     }
 
-    @GetMapping("/my-profile") // 자신의 프로필 조회
+    @GetMapping("/my-profile")
     public String getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) throws NotExistResourceException {
-        ProfileResponseDto profileDto = profileService.getProfile(userDetails.getUser());
-        model.addAttribute("profileDto", profileDto);
-        return "my-profile";
+        try {
+            ProfileResponseDto profileDto = profileService.getProfile(userDetails.getUser());
+            model.addAttribute("profileDto", profileDto);
+            return "my-profile";
+        } catch (NotExistResourceException e) {
+            // 프로필이 없을 경우 생성 페이지로 리다이렉트
+            return "redirect:/api/profile/create";
+        }
     }
 
     @GetMapping("/profile/{targetId}") // 선택한 프로필 조회
