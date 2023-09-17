@@ -119,7 +119,7 @@
         let xhr = new XMLHttpRequest();
 
         console.log(xhr.getResponseHeader("email"))
-        xhr.open("POST", "/oauthsignup", true);
+        xhr.open("POST", "/oauth-signup", true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         console.log("aa")
         xhr.onreadystatechange = function () {
@@ -148,7 +148,7 @@
     }
 
     function redirectToMain(userData) {
-        fetch("/oauthsignup", {
+        fetch("/oauth-signup", {
             method: "POST",
             body: JSON.stringify(userData),
             headers: {
@@ -158,7 +158,7 @@
             .then(response => {
                 if (response.ok) {
 // Request was successful, now navigate to /main
-                    window.location.href = "/main";
+                    window.location.href = "/sub-main";
                 } else {
 // Handle error here
                     console.error("Error:", response.status);

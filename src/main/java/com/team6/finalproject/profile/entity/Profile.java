@@ -32,8 +32,6 @@ public class Profile extends Timestamped {
     @Column
     private Double longitude;
     @Column
-    private String zoneCode;
-    @Column
     private String locate;
 
     @OneToOne
@@ -45,25 +43,23 @@ public class Profile extends Timestamped {
 
     @Builder
     public Profile(String nickname, String introduction, String profileImage,
-                   Double latitude, Double longitude, String zoneCode, String locate, User user) {
+                   Double latitude, Double longitude, String locate, User user) {
         this.nickname = nickname;
         this.introduction = introduction;
         this.profileImage = profileImage;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.zoneCode = zoneCode;
         this.locate = locate;
         this.user = user;
     }
 
     public void update(String nickname, String introduction, String profileImage,
-                       Double latitude, Double longitude, String zoneCode, String locate) {
+                       Double latitude, Double longitude, String locate) {
         this.nickname = nickname;
         this.introduction = introduction;
         this.profileImage = profileImage;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.zoneCode = zoneCode;
         this.locate = locate;
     }
 }

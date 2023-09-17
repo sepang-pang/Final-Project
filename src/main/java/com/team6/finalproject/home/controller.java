@@ -56,19 +56,19 @@ public class controller {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/api/oauthsignup")
+    @GetMapping("/api/oauth-signup")
     public String osignup() {
-        return "oAuthSignup";
+        return "oauth-signup";
     }
 
-    @GetMapping("/api/findid")
+    @GetMapping("/api/find-id")
     public String findId() {
-        return "findId";
+        return "find-id";
     }
 
-    @GetMapping("/api/findpassword")
+    @GetMapping("/api/find-password")
     public String findPassword() {
-        return "findPassword";
+        return "find-password";
     }
 
     @GetMapping("/withdrawal")
@@ -76,8 +76,8 @@ public class controller {
         return "withdrawal";
     }
 
-    @GetMapping("/api/resetpassword")
+    @GetMapping("/api/reset-password")
     public String resetPassword() {
-        return "resetpassword";
+        return "reset-password";
     }
 }

@@ -2,7 +2,6 @@ package com.team6.finalproject.oAuth.controller;
 
 import com.team6.finalproject.oAuth.dto.OAuthSignupRequestDto;
 import com.team6.finalproject.oAuth.service.KakaoService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +23,13 @@ public class KakaoController {
             return "sub-main";
         }else {
             model.addAttribute("email",httpServletResponse.getHeader("email"));
-            return "oAuthSignup";
+            return "oauth-signup";
         }
     }
 
-    @PostMapping("/oauthsignup")
+    @PostMapping("/oauth-signup")
     public String oAuthSignup(@RequestBody OAuthSignupRequestDto oAuthSignupRequestDto,HttpServletResponse httpServletResponse) {
         kakaoService.oAuthSignup(oAuthSignupRequestDto,httpServletResponse);
-        return "main";
+        return "sub-main";
     }
 }
