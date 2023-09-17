@@ -1,4 +1,3 @@
-
 // ************** container1 ************** //
 // 버튼 활성화 효과
 var selectedAges = []; // 선택한 연령대 값을 저장할 배열
@@ -73,26 +72,34 @@ btnTopic.forEach((button, index) => {
 // 위치 검색
 //주소-좌표 변환 객체를 생성
 var geocoder = new daum.maps.services.Geocoder();
+var latitude = null;
+var longitude = null;
+
 function locate1() {
     new daum.Postcode({
-        oncomplete: function(data) {
+        oncomplete: function (data) {
             var addr = data.address; // 최종 주소 변수
 
             // 주소 정보를 해당 필드에 넣는다.
             document.getElementById("locate").value = addr;
-            // 주소로 상세 정보를 검색
-            geocoder.addressSearch(data.address, function(results, status) {
 
+            // 주소로 위도와 경도 정보를 검색
+            geocoder.addressSearch(addr, function (results, status) {
+                if (status === daum.maps.services.Status.OK) {
+                    latitude = results[0].y;
+                    longitude = results[0].x;
+                } else {
+                    console.error("Geocode was not successful for the following reason: " + status);
+                }
             });
         }
     }).open();
 }
 
-
 var btnSave = document.getElementById('next-btn3');
-btnSave.addEventListener('click',submit);
+btnSave.addEventListener('click', submit);
 
-function submit(){
+function submit() {
     let clubname = document.getElementById('clubname').value;
     let locate = document.getElementById('locate').value;
     let maxMember = Number(document.getElementById('maxMember').value);
@@ -114,13 +121,13 @@ function submit(){
         maxMember: maxMember,
         minAge: minAge,
         maxAge: maxAge,
-        latitude: 0.1,
-        longitude: 0.1,
+        latitude: latitude,
+        longitude: longitude,
         locate: locate
     };
 
     let formData = new FormData();
-    formData.append('clubRequestDto', new Blob([JSON.stringify(clubDto)], { type: 'application/json' }));
+    formData.append('clubRequestDto', new Blob([JSON.stringify(clubDto)], {type: 'application/json'}));
     formData.append('file', file); // 파일 추가
 
     // Fetch를 사용하여 서버로 데이터 전송

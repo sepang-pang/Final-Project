@@ -52,6 +52,9 @@ body {
     background-color: #77bf78; /* 호버 시 더 진한 초록색 */
 }
 
+
+
+
 header {
     display: flex;
     justify-content: space-between;
@@ -103,6 +106,49 @@ header {
     cursor: pointer;
     font-weight: bold;
 }
+
+.button-group > * {
+    margin-right: 10px; /* 원하는 간격 값으로 설정 */
+}
+
+.button-group > *:last-child {
+    margin-right: 0;
+}
+
+/* 기본 버튼 스타일 */
+.btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.3s, transform 0.3s;
+    cursor: pointer;
+    outline: none;
+}
+
+/* 수정 버튼 */
+.btn-edit {
+    background-color: #007BFF; /* 블루 색상 */
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #0056b3; /* 조금 더 진한 블루 */
+    transform: scale(1.05); /* 버튼 크기를 조금 키워서 호버 효과 추가 */
+}
+
+/* 삭제 버튼 */
+.btn-delete {
+    background-color: #FF4B5C; /* 레드 색상 */
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #d43a50; /* 조금 더 진한 레드 */
+    transform: scale(1.05); /* 버튼 크기를 조금 키워서 호버 효과 추가 */
+}
+
+
 
 /* 신고 버튼 스타일 */
 .btn-siren {
