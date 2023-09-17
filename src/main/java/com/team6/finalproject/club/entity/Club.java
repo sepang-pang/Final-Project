@@ -31,7 +31,7 @@ public class Club extends Timestamped {
     @Column(name = "name")
     private String name; // 동호회 이름
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description; // 동호회 설명
 
     @Column(name = "max_member")

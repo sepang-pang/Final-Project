@@ -309,7 +309,7 @@
                 <img src="${club.media}" alt="${club.description}">
                 <div class="card-content">
                     <h3 class="title">${club.name}</h3>
-                    <p class="intro">${club.description}</p>
+                     <p class="intro">${club.description.length > 30 ? club.description.substring(0, 30) + "..." : club.description}</p>
                     <div class="activity-score-div">
                         <p class="activity-score-icon" style="margin-right: 10px;">🔥 활동점수 </p>
                         <p class="activity-score">${club.activityScore}</p>
