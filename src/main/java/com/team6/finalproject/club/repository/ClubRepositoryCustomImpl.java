@@ -63,7 +63,7 @@ public class ClubRepositoryCustomImpl implements ClubRepositoryCustom {
         return
                 jpaQueryFactory
                         .selectFrom(club)
-                        .where(club.minor.interestMajor.id.eq(minorId)
+                        .where(club.minor.id.eq(minorId)
                                 .and(club.isDeleted.eq(false)))
                         .orderBy(club.createdAt.desc()) // 최신순 정렬
                         .fetch();
