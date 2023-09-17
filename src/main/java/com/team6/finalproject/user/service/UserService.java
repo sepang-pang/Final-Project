@@ -1,7 +1,6 @@
 package com.team6.finalproject.user.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
-import com.team6.finalproject.security.UserDetailsImpl;
 import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.user.entity.User;
 import jakarta.mail.MessagingException;
@@ -25,6 +24,8 @@ public interface UserService {
     void updatePassword(UpdatePasswordDto passwordDto, User user);
     // 이메일으로 유저 찾기
     User findByEmail(String email) throws NotExistResourceException;
+
+//   UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     // Id로 유저 찾기
     public User findByUser(Long id) throws NotExistResourceException;

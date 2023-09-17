@@ -1,10 +1,9 @@
 package com.team6.finalproject.user.service;
 
 import com.team6.finalproject.advice.custom.NotExistResourceException;
-import com.team6.finalproject.common.redis.RedisUtil;
-import com.team6.finalproject.security.UserDetailsImpl;
-import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.common.email.EmailAuth;
+import com.team6.finalproject.common.redis.RedisUtil;
+import com.team6.finalproject.user.dto.*;
 import com.team6.finalproject.user.entity.User;
 import com.team6.finalproject.user.entity.UserRoleEnum;
 import com.team6.finalproject.user.repository.UserRepository;
@@ -78,6 +77,13 @@ public class UserServiceImpl implements UserService {
 
         emailAuth.sendCode(email); // 인증코드 메일 발송
     }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.findByUsername(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("아이디가 존재하지 않습니다."));
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
+//    }
 
     // 인증코드 확인
     @Override

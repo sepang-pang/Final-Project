@@ -79,7 +79,6 @@
 
         .left input {
             border: none;
-            width: 80%;
             margin: 15px 0px;
             border-bottom: 1px solid #4f30677d;
             padding: 7px 9px;
@@ -100,7 +99,6 @@
             border-radius: 8px;
             display: block;
             margin: auto;
-            margin-top: 90px;
             background: #2b7ca9;
             color: #fff;
             font-weight: bold;
@@ -112,8 +110,6 @@
         .right {
             background: linear-gradient(212.38deg, rgba(12, 49, 107, 0.67) 0%, rgba(41, 152, 222, 0.6) 100%), url(https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20160309_46%2Fnhkuhak_1457488586120clAUR_JPEG%2FIMG_0527.JPG&type=sc960_832);
             background-size: cover; /* 이미지를 화면에 가득 차게 설정 */
-            background-repeat: no-repeat; /* 배경 이미지 반복 제거 */
-            background-position: center center; /* 이미지를 중앙으로 정렬 */
             color: #ffffff;
             position: relative;
         }
@@ -167,7 +163,6 @@
             text-decoration: none; /* 밑줄 제거 */
             display: block; /* 가운데 정렬을 위해 블록 요소로 설정 */
             margin: 0 auto; /* 수평 가운데 정렬 */
-            margin-top: 30px;
         }
 
         #login-kakao-btn:hover {
@@ -236,7 +231,7 @@
                 alert(data.message);
                 window.location.href = "/";
             } else {
-                alert("로그인 실패: " + data.message);
+                alert(data.message);
             }
         } catch (error) {
             console.error('There was an error during the login process:', error);
