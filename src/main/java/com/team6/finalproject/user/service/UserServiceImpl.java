@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signup(SignupRequestDto signupRequestDto) {
         if(userRepository.findByUsername(signupRequestDto.getUsername()).isPresent()){
-            throw new IllegalArgumentException("중복된 이름입니다.");
+            throw new IllegalArgumentException("중복된 ID입니다.");
         }
 
         if(!redisUtil.isVerified(signupRequestDto.getPhoneNumber())){
