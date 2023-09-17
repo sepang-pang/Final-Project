@@ -1,5 +1,5 @@
 function back() {
-    window.location.href = "/main"
+    window.location.href = "/sub-main"
 }
 
 var btnReport = document.getElementById('btn-report');

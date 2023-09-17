@@ -44,6 +44,12 @@ public class ProfileServiceImpl implements ProfileService {
         return new ProfileResponseDto(profile);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean existValidProfile(Long id) {
+        return profileRepository.existValidProfile(id).isPresent();
+    }
+
     // 자신의 프로필 조회
     @Override
     @Transactional(readOnly = true)
