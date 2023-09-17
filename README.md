@@ -54,6 +54,7 @@
 ## 04. 시스템 아키텍처📱
 
 ## 05. ERD 설계도⚙️
+<img src="https://github.com/sepang-pang/Final-Project/assets/102966574/aa275332-f038-4c5a-b674-5ff4c507513e">
 
 ## 06. 화면 구성🌎
 
