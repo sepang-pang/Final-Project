@@ -31,6 +31,11 @@
 
 ![example workflow](https://github.com/sepang-pang/Final-Project/actions/workflows/gradle.yml/badge.svg)
 
+### Front-end
+<img src="https://img.shields.io/badge/HTML-E34F26?style=flat&logo=html5&logoColor=white">
+<img src="https://img.shields.io/badge/CSS-1572B6?style=flat&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white" />
+
 ### :hammer_and_wrench: Back-end
 <img src="https://img.shields.io/badge/java-007396?style=flat&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=Spring&logoColor=green"> 
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=yellow"> 
@@ -42,7 +47,14 @@
 <img src="https://img.shields.io/badge/gradle-02303A?style=flat&logo=gradle&logoColor=white">
 <img src="https://img.shields.io/badge/WebSocket-FF6600?style=flat&logoColor=white">
 <img src="https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white">
-<img src="https://img.shields.io/badge/Github Actions-2088FF?style=flat&logo=githubactions&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon_S3-569A31?style=flat&logo=amazons3&logoColor=white"/>
+
+### Server
+<div>
+<img src="https://img.shields.io/badge/Amazon_RDS-527FFF?style=flat&logo=amazonrds&logoColor=white"/>
+<img src="https://img.shields.io/badge/Amazon_EC2-FF9900?style=flat&logo=amazonec2&logoColor=white"/>
+<img src="https://img.shields.io/badge/Amazon_S3-569A31?style=flat&logo=amazons3&logoColor=white"/>
+<img src="https://img.shields.io/static/v1?style=flat&message=GitHub+Actions&color=2088FF&logo=GitHub+Actions&logoColor=FFFFFF&label=">
 
 
 ### :wavy_dash: Etc
@@ -52,6 +64,7 @@
 
 
 ## 04. 시스템 아키텍처📱
+<img src="https://github.com/sepang-pang/Final-Project/assets/121823367/3cfe093b-76e6-4430-8eff-35a0659a5207">
 
 ## 05. ERD 설계도⚙️
 <img src="https://github.com/sepang-pang/Final-Project/assets/102966574/aa275332-f038-4c5a-b674-5ff4c507513e">
